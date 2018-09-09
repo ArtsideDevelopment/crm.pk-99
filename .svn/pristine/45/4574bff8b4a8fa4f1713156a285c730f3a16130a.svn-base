@@ -1,0 +1,19 @@
+/* 
+    Created on : 18.03.2018, 0:51:15
+    Author     : ArtSide
+*/
+.shadow{
+    @include box-shadow(rgba(black, 0.3) 0 0 25px);
+}
+.card-shadow{
+    @include box-shadow(rgba(black, 0.2) 0 0 7px);
+}
+.button{
+    @include button($blue-dark, $font-size);
+    margin: $margin-t-b 0px;
+}
+.clear{
+    content: '';
+    display: block;
+    clear: both;
+}

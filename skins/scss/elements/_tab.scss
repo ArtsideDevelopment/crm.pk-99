@@ -1,0 +1,68 @@
+html,
+body {
+  overflow: unset !important;
+}
+.tabs{
+    width: 100%;  
+    float: none;
+    list-style: none;
+    position: relative;
+    padding: 0 20px;
+    text-align: left;
+    border-bottom: 1px solid $tabs-border;
+    background: $tabs-bg;    
+    @extend .card-shadow;    
+    li {
+        float: left;
+        display: block;
+        &:last-child:after{
+            @extend .clear;
+        }
+    }
+    input[type="radio"] {
+        position: absolute;
+        top: 0;
+        left: -9999px;
+    }
+    &__control{
+        display: block;
+        padding: 14px 21px;
+        font-size: $font-size-small;
+        font-weight: bold;
+        text-transform: uppercase;
+        cursor: pointer;
+        position: relative;
+        top: 4px; 
+        border-bottom: 2px solid $tabs-border-opacity;
+        @include transition(all 0.2s ease-in-out);
+        &:hover {  
+          border-bottom: 2px solid $tabs-border-hover;
+        }
+    }
+    &__content{
+        z-index: 2;
+        display: none; 
+        overflow: hidden;
+        width: 100%;
+        padding: 25px;  
+        position: absolute;
+        text-transform: none;
+        top: 58px;
+        left: 0; 
+        background: $tabs-bg-active;
+        @extend .card-shadow;
+    }
+    //The Magic
+    [id^="tab"]:checked + label { 
+        top: 1px;
+        padding-top: 17px; 
+        background: $tabs-bg-active; 
+        border-bottom: 2px solid $tabs-border-active;
+    }
+    [id^="tab"]:checked ~ [id^="tab-content"] {
+        display: block;
+    }
+    &:after{
+        @extend .clear;
+    }
+}

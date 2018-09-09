@@ -1,0 +1,144 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 03.03.2018, 12:51:58
+    Author     : dulebsky
+*/
+* {
+  @include box-sizing(border-box);
+}
+*:before,
+*:after {
+  @include box-sizing(border-box);
+}
+html,
+body {
+  overflow-x: hidden !important; /* Prevent scroll on narrow devices */
+  font-size: $font-size;
+}
+body {
+  margin: 0;
+  font-family: $font !important;  
+  font-weight: 300;  
+  line-height: $line-height !important;
+  background-color: $bg-color;
+  font-weight: 300;
+  color: $font-color;
+  .breadcrumbs{
+      font-size: $font-size*0.9;
+      margin-top: 5px;
+      a{
+          font-size: $font-size*0.9;
+      }
+      i{
+          display: inline-block;
+          margin: 0px 5px;
+          font-size: $font-size*0.7;
+      }
+  }
+  h1{
+      font-size: 2rem;
+      margin: 1.5rem 0 1rem 0;
+  }  
+  h2{
+      font-size: 1.6rem;
+      margin: 1.4rem 0 1rem 0;
+  }
+  h3{
+      font-size: 1.4rem;
+      margin: 1.3rem 0 1rem 0;
+  }
+  @include links(1rem, $blue-dark, $blue-darker, $blue-opacity);
+  #page-content{
+      p{
+          margin: 20px 0px;
+      }
+      margin: ($header-height) 0px 0px $sidebar-width;
+      padding: $t-b-padding $page-content-padding;
+      .page-header{
+          margin-bottom: $margin-t-b;
+          .page-header-left{
+              float: left;
+              width: 60%;
+          }
+          .page-header-right{
+              float: left;
+              width: 40%;
+              text-align: right;
+              .button{
+                  margin: 0px;
+                  padding: 10px 20px;
+                  font-size: $font-size*0.9;
+              }
+          }
+          &:after{
+              @extend .clear;
+          }
+      }
+  }
+  .as-card{
+      background-color: $white;
+      @extend .card-shadow;
+      padding: $card-padding ($card-padding+10);
+  }
+  .as-table-card{
+      background-color: $white;
+      @extend .card-shadow;
+      padding: 0;
+      table{
+          th, td{              
+              line-height: $t-line-height;              
+              color: $font-color;
+          }
+          thead{
+              tr{
+                  th{
+                     padding: $t-b-padding/2;
+                     border-top: solid 2px $t-line-color;
+                     border-bottom: solid 2px $t-line-color;
+                     font-weight: 500;
+                     text-align: left;
+                     text-transform:uppercase;
+                     font-size: $font-size*0.8;
+                  }                  
+                  //background: $gray-light;                  
+                  //color: $white;
+                  color: $font-color;
+              }              
+          }
+          tbody{
+              tr{
+                  td{
+                      border-bottom: solid 1px $t-line-color;   
+                      padding: $t-b-padding;
+                      font-weight: 400;
+                      font-size: $font-size*0.9;
+                      word-break: break-all;
+                      .old-cost{
+                          text-decoration: line-through;
+                      }
+                  }    
+                  i:parent{
+                      border: none;
+                  }
+                  &:hover{
+                      background: $t-bg-color-hover;
+                  }
+              }
+          }
+      }
+      h3{
+          padding: $card-padding ($card-padding+10);
+      }
+  }
+}
+@media screen and (max-width: $mobile-width) {
+    body {        
+        #page-content{
+            margin-left: 0;
+        }
+    }
+}

@@ -1,0 +1,36 @@
+//== Custom variables
+$white: rgb(255, 255, 255);
+$black: rgb(0, 0, 0);
+
+// Grey colors
+$gray:                     rgba(75, 90, 98, 1); // #777
+$gray-light:               lighten($gray, 40%); 
+$gray-lighter:             lighten($gray, 55%); 
+$gray-dark:                rgba(45, 54, 59, 1);
+$gray-darken:              darken($gray-dark, 5%);
+
+// Blue colors
+$blue:                     rgba(86, 192, 227, 1);
+$blue-dark:                rgba(73, 163, 193, 1);
+$blue-darker:              rgba(58, 130, 154, 1);
+$blue-opacity:             rgba(86, 192, 227, 0);
+
+//== Background colors
+$bg-color: lighten($black, 90%);
+$bg-white: $white;
+
+//== Text colors 
+$font-color: $gray-dark;
+
+
+//== Links colors
+$menu-link-color: rgb(64, 64, 64);
+$menu-link-color-hover: rgb(0, 121, 190);
+
+//== header, footer colors
+$header-text: rgb(209, 216, 219);
+$header-hover: lighten($header-text, 10%); 
+
+//== table colors
+$t-line-color:             $gray-light;
+$t-bg-color-hover:         $gray-lighter;

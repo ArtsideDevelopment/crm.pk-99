@@ -1,0 +1,84 @@
+/* 
+    Created on : 13.07.2016, 8:37:42
+    Author     : Dulebsky А.
+    Copyright 2009-2016 ArtSide, Ltd.
+*/
+// mixins
+@mixin links ($size, $link, $hover, $opacity) {
+  a {
+    color: $link;
+    font-size: $size; 
+    text-decoration: none;
+    border-bottom: 1px solid $link;
+    cursor: pointer;
+    @include transition(all .5s ease-out);
+    &:hover{
+        color: $hover;
+        text-decoration: none;
+        border-bottom: 1px solid $opacity;
+    }
+    &:visited{
+        text-decoration: none;
+    }    
+    &:active {
+        text-decoration: none;
+    }    
+    &:focus {
+        color: $hover;
+        text-decoration: none;
+        border-bottom: 1px solid $opacity;
+    }    
+  }
+}
+@mixin no-border-links ($size, $link, $hover) {
+  a {
+    color: $link;
+    font-size: $size; 
+    text-decoration: none;
+    border-bottom: none;
+    cursor: pointer;
+    font-weight: normal;  
+    @include transition(all .5s ease-out);
+    &:hover{
+        color: $hover;
+        text-decoration: none;
+    }
+    &:visited{
+        text-decoration: none;
+    }    
+    &:active {
+        text-decoration: none;
+    }    
+    &:focus {
+        color: $hover;
+        text-decoration: none;
+    }    
+  }
+}
+@mixin button ($color, $size) {
+    @include box-shadow(rgba(black, 0.3) 0 2px 8px 1px, rgba(black, 0) 0 1px 2px 1px);    
+    text-align: center;
+    background-color: $color;
+    border: 2px solid $color;
+    color: #fff;
+    text-transform:uppercase;
+    font-size: $size;
+    padding: 15px 30px;
+    margin: 0px;
+    cursor: pointer;
+    text-decoration: none;
+    @include transition(all .5s ease-out);
+    display: inline-block;
+    font-weight: normal;  
+    &:hover{
+        @include box-shadow(rgba(black, 0) 0 2px 8px 1px, rgba(black, 0.4) 0 1px 2px 1px);    
+        background-color: darken($color,10%);
+        border: 2px solid darken($color,10%);
+        color: #fff;
+        text-decoration: none;
+    }       
+    &:active {
+        @include box-shadow(rgba(black, 0) 0 3px 4px 1px, rgba(black, 0) 0 1px 2px 1px);
+    }    
+     
+}

@@ -1,0 +1,15 @@
+//== Container sizes
+$font-size:              16px;
+$font-size-small:              16px*0.8;
+$line-height:            $font-size*1.5;
+$font-menu-size:         16px;
+$sidebar-width:          250px;
+$mobile-width:           767px;
+$page-content-padding:   $font-size*2;
+$card-padding:           $font-size*1.5;
+$header-height: 60px;
+$t-b-padding: $font-size;
+$margin-t-b: $font-size*1.5;
+
+// table sizes
+$t-line-height:            $font-size*1.4;

@@ -1,0 +1,172 @@
+<?php
+/*   
+* libs/uploads_func.php 
+* File of uploads functions
+* Файл функций формы
+* @author ArtSide 13.04.2018  
+* @copyright © 2018 ArtSide   
+*/
+/** 
+* Функция обработки внешнего текста
+* function handle out text
+* @param string $text
+* @return string $text_handled 
+*/ 
+function handleOutText($text_out, $folder){    
+    $text_handled = "";
+    //$text_out = str_replace('""', '"', $text_out);
+    $text_out = htmlspecialchars_decode($text_out);
+    $links_array = findOutImgLinks($text_out);
+    //dbg ($links_array);
+    $img_array = findOutImages($links_array); 
+    //dbg($img_array);
+    $img_transfer_arr = uploadOutImages($img_array, $folder);
+    dbg($img_transfer_arr);
+    $text_handled=$text_out;
+    foreach ($img_transfer_arr as $img) {
+        foreach ($img as $old_img => $new_img) {
+            $text_handled = str_replace($old_img, $new_img, $text_handled);
+        }
+    }
+    $search = array(
+        'highslide',
+        'return hs.expand(this)',
+        '../uploads/'
+    );
+    $replace= array(
+        'pk-gallery',
+        '',
+        AS_HOST.'uploads/'
+    );
+    return str_replace($search, $replace, $text_handled); 
+    //return $text_handled; 
+    //return str_replace('../uploads/content/transfer/', AS_HOST.'uploads/content/transfer/', $text_handled);
+    
+}
+/** 
+* Функция поиска ссылок с изображениями
+* function find links with images
+* @param string $text
+* @return string $text_handled 
+*/ 
+function findOutImgLinks($text_out){
+    //$text_out = mb_convert_encoding($text_out, "UTF-8");
+    //$text_out = mb_convert_encoding($text_out, 'HTML-ENTITIES', "UTF-8");    
+    //dbg($text_out);
+    preg_match_all('/<a.*img.*<\/a>/', (string)$text_out, $links_array);    
+    return $links_array;
+}
+/** 
+* Функция поиска всех изображений в тексте
+* function handle out text
+* @param string $text
+* @return string $text_handled 
+*/ 
+function findOutImages($links_array){    
+    $img_array = array();    
+    $i=0;
+    foreach($links_array[0] as $link_tag)
+    {
+        //dbg($img_tag);
+        $img_array_tmp = array('thumb'=>'','big'=>'');
+        preg_match_all('/src=("[^"]*")/', (string)$link_tag, $img_src);
+        preg_match_all('/href=("[^"]*[.png|.jpg|.gif]")/', (string)$link_tag, $img_href);      
+        if(isset($img_src[1][0])){
+            $img_array_tmp['thumb'] = str_replace('..','',(string)$img_src[1][0]);
+        }
+        if(isset($img_href[1][0])){
+            $img_array_tmp['big'] = str_replace('..','',(string)$img_href[1][0]);
+        }
+        //dbg($img_src);
+        //dbg($img_href);
+        $img_array[$i] = $img_array_tmp;
+        $i++;
+    }    
+    return $img_array;
+}
+function findOutImages2($text_out){    
+    $img_array = array();
+    preg_match_all('/<img[^>]+>/', $text_out, $img_array); 
+    $img = array();
+    foreach($img_array[0] as $img_tag)
+    {
+        //dbg($img_tag);
+        preg_match_all('/src=("[^"]*")/', (string)$img_tag, $img[(string)$img_tag]);
+        preg_match_all('/src:("[^"]*")/', (string)$img_tag, $img_2[(string)$img_tag]);
+    }    
+    $img_src_arr = array();
+    foreach($img as $img_tag_s => $img_src){
+        //dbg($img_src[1]);
+        $img_src_arr[$img_tag_s]=$img_src[1][0];
+    }
+    //dbg($img_src_arr);
+    //uploadOutImages($img_src_arr);
+    return $img_src_arr;
+}
+/** 
+* Функция поиска скачивания изображения с удаленного сервера
+* function upload out images
+* @param array $text
+* @return string $text_handled 
+*/ 
+function uploadOutImages($img_src_arr, $folder){ 
+    $transfer_img_arr = array();
+    $i=0;
+    foreach($img_src_arr as $img_src){
+        //dbg($img_src);
+        $array_tmp = array();
+        if(strlen(trim($img_src['big']))>0){
+            $array_tmp = array();
+            $img_src_big_clear = trim(trim((string)$img_src['big'],'"'), '/');
+            $new_img_src_big = uploadOutImagesCurl($img_src_big_clear, $folder);
+            $array_tmp[$img_src_big_clear]=$new_img_src_big;
+            $transfer_img_arr[$i] = $array_tmp;
+            $i++;
+        }
+        if(strlen(trim($img_src['thumb']))>0){
+            $array_tmp = array();
+            $img_src_thumb_clear = trim(trim((string)$img_src['thumb'],'"'), '/');
+            $new_img_src_thumb = uploadOutImagesCurl($img_src_thumb_clear, $folder, 'thumb_');
+            $array_tmp[$img_src_thumb_clear]=$new_img_src_thumb;
+            $transfer_img_arr[$i] = $array_tmp;
+            $i++;
+        } 
+    }
+    return $transfer_img_arr;
+}
+/** 
+* Функция функция скачивания изображения curl 
+* function curl function for upload out images
+* @param array $text
+* @return string $text_handled 
+*/ 
+function uploadOutImagesCurl($img_src_clear, $folder='', $prefix=''){  
+    $new_img="";
+    $img_path="http://pk-99.ru/";
+    $dest_path="uploads/images/".trim($folder, '/').'/';
+    $dest_folder =AS_ROOT.$dest_path;
+    
+    $img_url = $img_path.$img_src_clear;
+    $Headers = @get_headers($img_url); 
+    //dbg($Headers[0]);
+    //dbg($img_url);
+    if(preg_match("|200|", $Headers[0])) {            
+        $ch = curl_init($img_url);  
+        curl_setopt($ch, CURLOPT_HEADER, 0);  
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);  
+        curl_setopt($ch, CURLOPT_BINARYTRANSFER,1); 
+        if(curl_exec($ch) === false)
+        {
+            echo 'Ошибка curl: ' . curl_error($ch);
+        }
+        else{
+            $img_name = array_pop(explode('/', $img_src_clear));
+            $out = curl_exec($ch);  
+            $image_sv = $dest_folder.$prefix.$img_name;
+            $new_img = $dest_path.$prefix.$img_name;
+            $img_sc = file_put_contents($image_sv, $out);
+        }              
+        curl_close($ch);
+    }
+    return $new_img;
+}

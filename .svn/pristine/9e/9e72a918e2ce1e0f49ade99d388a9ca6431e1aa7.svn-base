@@ -1,0 +1,41 @@
+/* 
+    Created on : 18.03.2018, 0:46:33
+    Author     : ArtSide
+*/
+#header{
+    width: 100%;
+    height: $header-height;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1001;    
+    background-color:  $gray;
+    @extend .shadow;
+    padding: 10px $page-content-padding;  
+    .logo{
+        float: left;
+        width: 50%;
+    }
+    .logout{
+        float: right;
+        width:50%;
+        margin: 10px 0px 0px 0px;
+        text-align: right;
+        a, span{
+            color: $header-text;
+            display: inline-block;
+            margin-left: 10px;
+        }
+        a{
+            border: none; 
+            font-size: $font-size*1.5;
+            &:hover{
+                color: $header-hover;
+            }
+        }
+    }
+    &:after{
+        @extend .clear;
+    }
+}
