@@ -98,7 +98,8 @@ elseif(Users::checkUserAut()){
             require_once(AS_ROOT .'libs/xajax/xajax_pages_func_inc.php');       
         break; 
         case 'shop':
-            require_once(AS_ROOT .'libs/xajax/xajax_shop_func_inc.php');       
+            require_once(AS_ROOT .'libs/xajax/xajax_shop_func_inc.php'); 
+            require_once(AS_ROOT .'libs/xajax/xajax_products_actions_func_inc.php'); 
         break;
         default :
         break;
