@@ -1,9 +1,4 @@
 <?php
-/**  
-* We connect a configuration file  
-* Подключаем конфигурационный файл  
-*/  
-    define('AS_KEY', true);
     header("Content-Type: application/json");
 /**   
 * Installation of a key of access to files   
