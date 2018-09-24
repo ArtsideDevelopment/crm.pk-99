@@ -12,7 +12,7 @@
     </div>
 </div>
 <div class="as-card">
-    <form id="FormProductsFilter" action="javascript:void(null);" onSubmit="tinyMCE.triggerSave(false,false); xajax_Products_Filtr(xajax.getFormValues('FormProductsFilter'));"> 
+    <form id="FormProductsFilter" action="javascript:void(null);" onSubmit="xajax_Products_Filtr(xajax.getFormValues('FormProductsFilter'));"> 
         <div class="form-row">
             <div class="form-input">
                 <div class="form-group">
@@ -34,6 +34,24 @@
 </div>
 <p>&nbsp;</p>
 
-<div class="as-table-card" id="pages_table_replace">
-    <?php echo $products_table;?>
-</div>
+<form id="FormProductsGroupActions" action="javascript:void(null);" onSubmit="xajax_Products_Actions(xajax.getFormValues('FormProductsGroupActions'));">
+    <div class="as-table-card" id="pages_table_replace">    
+        <?php echo $products_table;?>      
+    </div>
+    <div class="row">
+        <div class="col-8">
+            <div class="form-group">
+                <select id="shop_product_actions" name="goods_actions">
+                    <option selected="selected">Выберите действие</option>
+                    <optgroup label="Удалить данные или таблицу">
+                        <option value="empty_tbl">Очистить</option>
+                        <option value="drop_tbl">Удалить</option>
+                    </optgroup>                                   
+                </select>
+                <label class="control-label" for="goods_actions">Выберите действия с отмеченными товарами</label><i class="bar"></i>
+                <div class="form_error" id="form_error_name"></div>
+            </div>                
+        </div>
+        <div class="col-4"><input type="submit" name="send_form" id="send_form" class="button" value="Применить" /></div>
+    </div>      
+</form>

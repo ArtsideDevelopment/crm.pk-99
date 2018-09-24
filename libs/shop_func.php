@@ -123,7 +123,6 @@ function getProductsTable(){
     $num_rows = $res->num_rows;
     if($num_rows>0){
         $table="
-        <form>
         <table width='100%' border='0' cellspacing='0' cellpadding='0' class='dataTables'>
             <thead>
                 <tr class='tr_header'>
@@ -168,8 +167,7 @@ function getProductsTable(){
                 ";
         }
         $table.="</tbody>
-        </table>
-        </form>";
+        </table>";
     } 
     else{
         $table = "<h3>У вас пока нет ни одного товара в интернет-магазине.</h3>"; 

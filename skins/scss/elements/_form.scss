@@ -125,6 +125,7 @@ form{
 
             textarea {
                     resize: none;
+                    height: 100px;
             }
 
             select {
@@ -179,8 +180,7 @@ form{
                     width: 100%;
                     color: transparent;
                     transition: all $mf-transition-speed ease;
-                    box-shadow: none;
-                    height: 100px;
+                    box-shadow: none;                    
             }
 
             input[type="file"] {
