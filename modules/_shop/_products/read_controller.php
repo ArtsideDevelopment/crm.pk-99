@@ -25,8 +25,11 @@
    $PAGE = Page::getInstance(Router::getUrlPath());
    if(Users::checkUserAccess($PAGE::getId())){     
        include_once AS_ROOT .'libs/shop_func.php';
+       include_once AS_ROOT .'libs/form_func.php';
+       $as_categories_select= getParentSelect('catalog');
        $lk_bread_crumbs = $PAGE->getBreadCrumbs();       
        $products_table=  getProductsTable();
+       
    }
    else{
        Router::routeAccessDenied();

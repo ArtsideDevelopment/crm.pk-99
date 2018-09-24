@@ -76,6 +76,34 @@ function getCategoriesStructTable($parent_id, $table, $hierarchy, $nbsp){
     }
 }
 /** 
+* Функция получения массива категорий
+* Function get objects array
+* @param
+* @return string 
+*/ 
+function getCategoriesArray(){
+    $categories_array = array();
+    try{
+        $res = DB::mysqliQuery(AS_DATABASE,"
+            SELECT 
+               id, name
+            FROM 
+                ". AS_DBPREFIX ."catalog             
+            "  
+        );
+    }
+    catch (ExceptionDataBase $edb){
+        throw new ExceptionDataBase("Ошибка в стеке запросов к базе данных",2, $edb);
+    }
+    if($res->num_rows > 0)
+    {
+        while($row = $res->fetch_assoc()){
+            $object_array[] = $row;
+        }
+    }
+    return $object_array;
+}
+/** 
 * Функция получения таблицы категорий интернет-магазина
 * Function get categories table
 * @param
@@ -95,9 +123,11 @@ function getProductsTable(){
     $num_rows = $res->num_rows;
     if($num_rows>0){
         $table="
+        <form>
         <table width='100%' border='0' cellspacing='0' cellpadding='0' class='dataTables'>
             <thead>
                 <tr class='tr_header'>
+                    <th width='20px'></th>
                     <th width='250px'>Товар</th>
                     <th width='150px'>Категория</th>            
                     <th>Цена</th>
@@ -110,6 +140,9 @@ function getProductsTable(){
         while($row = $res->fetch_assoc()){
             $table.="
                 <tr>
+                    <td>
+                        <input type='checkbox' name='productsChecked[]' value='".$row['id']."' />
+                    </td>
                     <td align='left'>
                         ".$row['name']."
                         <div><a href='".AS_SITE.$row['url_path']."' target='_blank'>".$row['url_path']."</a></div>
@@ -135,7 +168,8 @@ function getProductsTable(){
                 ";
         }
         $table.="</tbody>
-        </table>";
+        </table>
+        </form>";
     } 
     else{
         $table = "<h3>У вас пока нет ни одного товара в интернет-магазине.</h3>"; 

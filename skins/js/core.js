@@ -33,7 +33,7 @@ $(document).ready(function(){
         init: function(target) {
             if ($(target).length > 0) {
                 $(target).DataTable({
-                    "paging":   false,
+                    "paging":   true,
                     "ordering": false,
                     "info":     false,
                     "language": {

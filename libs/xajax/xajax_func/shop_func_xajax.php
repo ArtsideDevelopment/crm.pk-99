@@ -468,3 +468,32 @@ function Edit_Category($Id)
   $objResponse->assign("all_error","innerHTML", $all_error);
   return $objResponse;
 }
+/* 
+* Функция формирвоания отчета
+* Function get report
+* @param array $Id 
+* @return xajaxResponse 
+*/ 
+function Filter_Product($Id){
+    $objResponse = new xajaxResponse(); 
+    include_once AS_ROOT .'libs/report_func.php';
+        $as_price_id = isset($Id['as_prices_id']) ? $Id['as_prices_id'] : 0; 
+        if(Users::getUserType()=='engineer'){
+            $parent_id = isset($Id['parent_id']) ? $Id['parent_id'] : Users::getCookieUserId();
+            $reports_completed = getEnginerReports(RequestStatus::completed, $Id['date_start'], $Id['date_end'], $Id['as_contractors_id'], $as_price_id, $parent_id, $Id['as_request_type_id'], $Id['reports_n']);
+            $reports_confirmed = getEnginerReports(RequestStatus::confirmed, $Id['date_start'], $Id['date_end'], $Id['as_contractors_id'], $as_price_id, $parent_id, $Id['as_request_type_id'], $Id['reports_n']);
+            $reports_paid = "";
+        }
+        else{
+            $parent_id = isset($Id['parent_id']) ? $Id['parent_id'] : 0;
+            $reports_completed = getReports(RequestStatus::completed, $Id['date_start'], $Id['date_end'], $Id['as_contractors_id'], $as_price_id, $parent_id, $Id['as_request_type_id'], $Id['reports_n']);
+            $reports_confirmed = getReports(RequestStatus::confirmed, $Id['date_start'], $Id['date_end'], $Id['as_contractors_id'], $as_price_id, $parent_id, $Id['as_request_type_id'], $Id['reports_n']);
+            $reports_paid = getReports(RequestStatus::paid, $Id['date_start'], $Id['date_end'], $Id['as_contractors_id'], $as_price_id, $parent_id, $Id['as_request_type_id'], $Id['reports_n']);
+        }        
+        
+        $objResponse->assign("reports_completed_replace","innerHTML",  $reports_completed);
+        $objResponse->assign("reports_confirmed_replace","innerHTML",  $reports_confirmed);
+        $objResponse->assign("reports_paid_replace","innerHTML",  $reports_paid);
+
+    return $objResponse;
+}
