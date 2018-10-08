@@ -15,7 +15,7 @@
 class Mailer{
     private $_content_type = "text/html";
     private $_to;
-    private $_to_admin = "support@artside.su";
+    private $_to_admin = "dulebsky.a@artside.su";
     //private $_to_admin = "dulebsky@mail.ru";
     private $_from = "no-reply";
     /** 
@@ -59,8 +59,9 @@ class Mailer{
     private function createHeaders() 
     { 
        $headers  = "Content-type: text/html; charset=utf-8 \r\n";
-       $headers .= "From: ".$this->_from."<".$this->_from."@".AS_DOMAIN.">\r\n";      
+       $headers .= "From: ".$this->_from."@".AS_DOMAIN."<".$this->_from."@".AS_DOMAIN.">\r\n";      
        $headers .= "Bcc: dulebsky@gmail.com\r\n";
+       $headers .= "X-Mailer: PHP/".phpversion()."\r\n";
        
        return $headers; 
     } 
@@ -163,8 +164,17 @@ class Mailer{
     */ 
     function sendMail($subject, $mail_body) 
     { 
+        /*
+        $to      = $this->_to;
+        $subject = $subject;
+        $message = $mail_body;
+        $headers = $this->createHeaders();
+
+        mail($to, $subject, $message, $headers);
+         * 
+         */      
         require(AS_ROOT ."libs/sendgrid-php/sendgrid-php.php");
-        $sendgrid = new SendGrid('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');
+        $sendgrid = new SendGrid('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');
         $email = new SendGrid\Email();
         $email
             ->addTo($this->_to)
@@ -173,7 +183,7 @@ class Mailer{
             ->setSubject($subject)
             ->setHtml($this->createBody($mail_body))
         ;
-        $sendgrid->send($email);        
+        $sendgrid->send($email);     
     }
     /** 
     * Функция создания тела письма
@@ -183,9 +193,18 @@ class Mailer{
     */ 
     public function sendExeption($mail_body) 
     { 
+        /*
+        $subject = "Исключение на ".AS_DOMAIN;
+        $to      = $this->_to_admin;
+        $message = $mail_body;
+        $headers = $this->createHeaders();
+        
+         mail($to, $subject, $message, $headers);
+         * 
+         */
         $subject = "Исключение на ".AS_DOMAIN;
         require(AS_ROOT ."libs/sendgrid-php/sendgrid-php.php");
-        $sendgrid = new SendGrid('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');
+        $sendgrid = new SendGrid('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');
         $email = new SendGrid\Email();
         $email
             ->addTo($this->_to_admin)

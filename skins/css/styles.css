@@ -54,7 +54,7 @@ table {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  padding: 16px; }
+  padding: 8px; }
   [class^="col-"]:last-child {
     margin-right: 0%; }
 
@@ -1970,6 +1970,10 @@ body {
     Created on : 15.03.2018, 17:08:39
     Author     : ArtSide
 */
+form .header {
+  font-size: 12.8px;
+  color: #353f45;
+  font-weight: normal; }
 form .form-row .form-input, form .form-row .form-input-50, form .form-row .form-description {
   float: left;
   width: 50%;
@@ -2152,7 +2156,7 @@ form .radio {
   form .radio input:checked ~ .helper::before {
     color: #56c0e3; }
 form .checkbox {
-  margin-top: 32px;
+  margin-top: 16px;
   margin-bottom: 16px; }
   form .checkbox .helper {
     color: #b4bfc5;

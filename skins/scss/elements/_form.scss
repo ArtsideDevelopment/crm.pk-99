@@ -41,7 +41,12 @@ $mf-transition-speed: 0.28s !default;
 
 
 // The Styles for the form
-form{      
+form{ 
+    .header{
+        font-size: $mf-active-font-size;
+        color: $mf-active-color;
+        font-weight: normal;
+    }
     .form-row{        
         .form-input, .form-input-50, .form-description{
             float: left;
@@ -304,9 +309,8 @@ form{
     .checkbox {
             // scss-lint:disable QualifyingElement
 
-            margin-top: ($mf-gap * 2);
-            margin-bottom: $mf-font-size;
-
+            margin-top: ($mf-gap);
+            margin-bottom: $mf-font-size;            
             .helper {
                     color: $mf-border-color;
                     position: absolute;

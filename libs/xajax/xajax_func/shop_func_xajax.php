@@ -474,26 +474,17 @@ function Edit_Category($Id)
 * @param array $Id 
 * @return xajaxResponse 
 */ 
-function Filter_Product($Id){
+function Products_Filter($Id){
     $objResponse = new xajaxResponse(); 
-    include_once AS_ROOT .'libs/report_func.php';
-        $as_price_id = isset($Id['as_prices_id']) ? $Id['as_prices_id'] : 0; 
-        if(Users::getUserType()=='engineer'){
-            $parent_id = isset($Id['parent_id']) ? $Id['parent_id'] : Users::getCookieUserId();
-            $reports_completed = getEnginerReports(RequestStatus::completed, $Id['date_start'], $Id['date_end'], $Id['as_contractors_id'], $as_price_id, $parent_id, $Id['as_request_type_id'], $Id['reports_n']);
-            $reports_confirmed = getEnginerReports(RequestStatus::confirmed, $Id['date_start'], $Id['date_end'], $Id['as_contractors_id'], $as_price_id, $parent_id, $Id['as_request_type_id'], $Id['reports_n']);
-            $reports_paid = "";
-        }
-        else{
-            $parent_id = isset($Id['parent_id']) ? $Id['parent_id'] : 0;
-            $reports_completed = getReports(RequestStatus::completed, $Id['date_start'], $Id['date_end'], $Id['as_contractors_id'], $as_price_id, $parent_id, $Id['as_request_type_id'], $Id['reports_n']);
-            $reports_confirmed = getReports(RequestStatus::confirmed, $Id['date_start'], $Id['date_end'], $Id['as_contractors_id'], $as_price_id, $parent_id, $Id['as_request_type_id'], $Id['reports_n']);
-            $reports_paid = getReports(RequestStatus::paid, $Id['date_start'], $Id['date_end'], $Id['as_contractors_id'], $as_price_id, $parent_id, $Id['as_request_type_id'], $Id['reports_n']);
-        }        
+    include_once AS_ROOT .'libs/shop_func.php';
+        $as_categories_id = isset($Id['parent_id']) ? $Id['parent_id'] : 0; 
+        $as_vendor_id = isset($Id['as_vendor_id']) ? $Id['as_vendor_id'] : 0; 
+        $amount = isset($Id['amount']) ? $Id['amount'] : ''; 
+        $button_link = isset($Id['button_link']) ? $Id['button_link'] : '';
+        $mail_text_checked = isset($Id['mail_text']) ? $Id['mail_text'] : '';  
+        $size_checked = isset($Id['size']) ? $Id['size'] : '';  
+        $products_table=  getProductsTable($as_categories_id, $as_vendor_id, $amount, $button_link, $mail_text_checked, $size_checked);
+        $objResponse->assign("products_table_replace","innerHTML",  $products_table);
         
-        $objResponse->assign("reports_completed_replace","innerHTML",  $reports_completed);
-        $objResponse->assign("reports_confirmed_replace","innerHTML",  $reports_confirmed);
-        $objResponse->assign("reports_paid_replace","innerHTML",  $reports_paid);
-
     return $objResponse;
 }

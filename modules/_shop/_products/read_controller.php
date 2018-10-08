@@ -27,6 +27,7 @@
        include_once AS_ROOT .'libs/shop_func.php';
        include_once AS_ROOT .'libs/form_func.php';
        $as_categories_select= getParentSelect('catalog');
+       $as_vendor_select= getSelectBlock(AS_DATABASE_SITE, 'vendor', 'name', 'as_vendor_id');
        $lk_bread_crumbs = $PAGE->getBreadCrumbs();       
        $products_table=  getProductsTable();
        

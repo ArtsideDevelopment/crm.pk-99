@@ -1,6 +1,6 @@
 $(document).ready(function(){
     artside_main_sidebar.init();
-    artside_data_tables.init('.dataTables');
+    artside_data_tables.init('.dataTables', true);
 });
 // 1. Common functions & variables
         
@@ -30,10 +30,10 @@ $(document).ready(function(){
     }
     // 1.2 datatables
     var artside_data_tables = {
-        init: function(target) {
+        init: function(target, paging) {
             if ($(target).length > 0) {
                 $(target).DataTable({
-                    "paging":   true,
+                    "paging":   paging,
                     "ordering": false,
                     "info":     false,
                     "language": {

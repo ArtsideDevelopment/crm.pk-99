@@ -79,10 +79,10 @@ function getSelectBlock($database, $table, $table_row_name, $select_name, $activ
                 <option value='0'>------------</option>\n\t";
         while ($row=  $res->fetch_assoc()){  
             if($row['id']*1===$active*1){
-                $select_block.="<option value='".$row['id']."' selected='selected'>".$row[$table_row_name]."</option>\n\t";
+                $select_block.="<option value='".$row['id']."' selected='selected'>".htmlspecialchars_decode($row[$table_row_name])."</option>\n\t";
             }
             else{
-                $select_block.="<option value='".$row['id']."' >".$row[$table_row_name]."</option>\n\t";
+                $select_block.="<option value='".$row['id']."' >".htmlspecialchars_decode($row[$table_row_name])."</option>\n\t";
             }
             
         }
