@@ -13,6 +13,8 @@
 class DialogMessages extends Enum
 {    
     const error="<h2>Что-то пошло не так, обратитесь к разработчику системы</h2>";
-    const arhive="";
+    const delete_products_success="
+            <h2>Товары успешно удалены</h2>
+            <p>Вы можете продолжить работу с системой</p>";
     const absent="";
 }

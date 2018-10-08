@@ -157,7 +157,7 @@ function getProductsTable($categories_id=0, $as_vendor_id=0, $amount="", $button
     try{     
         $res = DB::mysqliQuery(AS_DATABASE_SITE,"
             SELECT 
-                *
+                cost, cost_old, products.name, vendor_code, cost, 1c, amount, products.id as product_id, as_catalog_id, url_path
             FROM 
                 ". AS_DBPREFIX ."products AS products
             JOIN
@@ -197,7 +197,7 @@ function getProductsTable($categories_id=0, $as_vendor_id=0, $amount="", $button
             $table.="
                 <tr>
                     <td>
-                        <input type='checkbox' name='productsChecked[]' value='".$row['id']."' />
+                        <input type='checkbox' name='productsChecked[]' value='".$row['product_id']."' />
                     </td>
                     <td align='left'>
                         ".$row['name']."
@@ -220,8 +220,8 @@ function getProductsTable($categories_id=0, $as_vendor_id=0, $amount="", $button
                         ".$row['amount']."                         
                     </td>
                     <td align='center'>                    
-                        <a href='javascript:void(null);' onclick='if (confirm(\"Вы действительно хотите удалить товар?\")) xajax_Delete_Category(".$row['id']."); return false;' class='btn btn-danger'><i class='icon-trash'></i></a>
-                        <a href='/shop/products/edit-product?product_id=".$row['id']."' class='btn btn-default'><i class='icon-note'></i></a>                   
+                        <a href='javascript:void(null);' onclick='if (confirm(\"Вы действительно хотите удалить товар?\")) xajax_Delete_Category(".$row['product_id']."); return false;' class='btn btn-danger'><i class='icon-trash'></i></a>
+                        <a href='/shop/products/edit-product?product_id=".$row['product_id']."' class='btn btn-default'><i class='icon-note'></i></a>                   
                     </td>
                 </tr>
                 ";

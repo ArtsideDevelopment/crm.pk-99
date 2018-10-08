@@ -28,6 +28,7 @@ function autoloadClass ($className) {
         'ExceptionDataBase' => AS_ROOT . 'libs/classes/ExceptionDataBase.class.php', 
         'Enum' => AS_ROOT . 'libs/classes/enums/Enum.class.php',
         'ProductStatus' => AS_ROOT . 'libs/classes/enums/ProductStatus.class.php',
+        'DialogMessages' => AS_ROOT . 'libs/classes/enums/DialogMessages.class.php',
         'xajax' => AS_ROOT . 'libs/xajax/xajax_core/xajax.inc.php',
         'PHPExcel' => AS_ROOT . 'libs/classes/PHPExcel.class.php'
     );

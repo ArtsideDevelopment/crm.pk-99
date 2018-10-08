@@ -150,12 +150,32 @@ function Products_Actions_Delete($Id){
     $dialog_msg= "";
     $products_checked="";
     if(isset($Id['productsChecked'])){
-        $products_checked = explode(",", $Id['productsChecked']);
+        //$products_checked = explode(",", $Id['productsChecked']);
+        $products_checked = trim($Id['productsChecked'], ',');
+        try{     
+            $res = DB::mysqliQuery(AS_DATABASE_SITE,"
+                DELETE                 
+                FROM 
+                    ". AS_DBPREFIX ."products               
+                WHERE
+                    `id` IN (".$products_checked.") 
+                "  
+            ); 
+            $dialog_msg=DialogMessages::delete_products_success;
+            include_once AS_ROOT .'libs/shop_func.php';       
+            $products_table=  getProductsTable();
+            $objResponse->assign("products_table_replace","innerHTML",  $products_table);
+            $objResponse->call("artside_data_tables.init('.dataTables', true)");
+        }
+        catch (ExceptionDataBase $edb){
+            $edb->HandleExeption(__FILE__."->".__FUNCTION__."->".__LINE__);
+            $dialog_msg = $edb->GetNoticeExeption("delete_error");
+        }         
     }
     else{
         $dialog_msg= DialogMessages::error;
     }        
-    $objResponse->assign("modal_content_replace","innerHTML",  $products_checked);
+    $objResponse->assign("modal_content_replace","innerHTML",  $dialog_msg);
     $objResponse->call("modal_dialog_show");
     return $objResponse;
 }
