@@ -203,7 +203,7 @@ function getProductsTable($categories_id=0, $as_vendor_id=0, $amount="", $button
                         ".$row['name']."
                         <div><a href='".AS_SITE.$row['url_path']."' target='_blank'>".$row['url_path']."</a></div>
                     </td>
-                    <td align='left'>
+                    <td align='left' id='category_".$row['product_id']."'>
                         ".$categories_array[$row['as_catalog_id']]."
                     </td>
                     <td align='left'>
@@ -216,7 +216,7 @@ function getProductsTable($categories_id=0, $as_vendor_id=0, $amount="", $button
                     <td align='left'>
                         ".$row['1c']."                         
                     </td>
-                    <td align='left'>
+                    <td align='left' id='amount_".$row['product_id']."'>
                         ".$row['amount']."                         
                     </td>
                     <td align='center'>                    
@@ -274,7 +274,7 @@ function getCategoriesStructTableCheck($parent_id, $table, $hierarchy, $nbsp){
             SELECT *   
             FROM `". AS_DBPREFIX .$table."` 
             WHERE `parent_id`='".$parent_id."' 
-            ORDER BY `hierarchy` "  
+            ORDER BY `id` "  
                 );        
     }
     catch (ExceptionDataBase $edb){
@@ -286,7 +286,7 @@ function getCategoriesStructTableCheck($parent_id, $table, $hierarchy, $nbsp){
     else{	     
         while($row = $res->fetch_assoc()){   
             $time_hierarchy="";			
-            $time_hierarchy=$hierarchy.$row['hierarchy']."."; 
+            $time_hierarchy=$hierarchy.$row['id']."."; 
             $st.="
             <tr>   
                 <td>

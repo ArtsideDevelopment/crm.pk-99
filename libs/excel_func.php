@@ -12,7 +12,7 @@
 * @param 
 * @return string 
 */
-function loadProductsFromExcel($file="5b90bf171afbc.xlsx"){ 
+function loadProductsFromExcel($file="5b90bf171afbc.xlsx", $file_type='job',$start, $limit){ 
     if(is_file(AS_EXCEL_FILES_ROOT.$file)){
         require_once(AS_ROOT .'libs/PHPExcel/IOFactory.php');
         $xls = PHPExcel_IOFactory::load(AS_EXCEL_FILES_ROOT.$file);
@@ -25,16 +25,21 @@ function loadProductsFromExcel($file="5b90bf171afbc.xlsx"){
         $rows_count = $worksheet->getHighestRow();
         $columns_count = PHPExcel_Cell::columnIndexFromString($worksheet->getHighestColumn());
         $values = array();
-        for ($row = 2; $row <= $rows_count; $row++) {
+        $count=$start;
+        for ($row = $start; $row <= $rows_count; $row++) {
             // Строка со значениями всех столбцов в строке листа Excel
             $row_values = "";
             for ($column = 0; $column < $columns_count; $column++) {
                 $cell = $worksheet->getCellByColumnAndRow($column, $row);  
-                $row_values[]= check_form($cell->getCalculatedValue());   
+                $row_values[]= $cell->getCalculatedValue();   
             }
             if(!empty($row_values)){
                 $values[] = $row_values;
-            }            
+            }     
+            $count++;
+            if($count==$limit){
+                break;
+            }
         }
         //dbg($values);
         // Добавляем строки в таблицу
@@ -53,17 +58,39 @@ function loadProductsFromExcel($file="5b90bf171afbc.xlsx"){
                     // url_path
                     $url_path = "product/".$alias; 
                     // Стоимость
-                    $cost = $value[3]*1;
+                    if($file_type=='arhive'){
+                        $cost = 0;
+                    }
+                    else{
+                        $cost = $value[3]*1;
+                    }
                     // Количество
                     $amount = $value[4];
                     // Measure
                     $unit = $value[5];
                     // 1C
-                    $one_c = $value[10];
+                    $one_c = "";
+                    $one_c_strlen = strlen($value[10]);
+                    $one_c_prefix = array(
+                        0=>'',
+                        1=>'0',
+                        2=>'00',
+                        3=>'000',
+                        4=>'0000',
+                        5=>'00000',
+                        6=>'000000',
+                        7=>'0000000',
+                    );
+                    if($one_c_strlen>0 && $one_c_strlen<8 ){
+                        $one_c = $one_c_prefix[8-$one_c_strlen].$value[10];
+                    }
+                    else{
+                        $one_c = $value[10];
+                    }                    
                     // category
                     $category_id = getCategoryIdByExcel($value[11]);
                     if($category_id==0){
-                        $category_id=2;
+                        $category_id=  ProductCategories::empty_category;
                     }
                     // category_id_old
                     $category_id_old = $value[11];
@@ -86,10 +113,15 @@ function loadProductsFromExcel($file="5b90bf171afbc.xlsx"){
                     
                     
                     // Описание товара
-                    $description = check_form(handleOutText($value[16],'products/transfer', $url_path, $url_path_old));
+                    $description = handleOutText($value[16],'products/transfer', $url_path, $url_path_old);
                     
                     // cost_old
-                    $cost_old = $value[20]*1;
+                    if($file_type=='arhive'){
+                        $cost_old = 0;
+                    }
+                    else{
+                        $cost_old = $value[20]*1;
+                    }                    
                     // characteristic
                     $characteristic = $value[21];
                     // sizes_old
@@ -126,36 +158,36 @@ function loadProductsFromExcel($file="5b90bf171afbc.xlsx"){
                          INSERT INTO   
                             `". AS_DBPREFIX ."products`
                           SET
-                            `product_id_old`=".$product_id_old.",
-                            `name`='".$name."',
-                            `alias`='".$alias."', 
-                            `url_path`='".$url_path."', 
-                            `cost`=".$cost.",
-                            `cost_old`=".$cost_old.",
-                            `amount`=".$amount.",
-                            `unit`='".$unit."',
-                            `1c`='".$one_c."',
-                            `description`='".$description."',
-                            `as_vendor_id` = ".$vendor_id.",  
-                            `vendor_code` = '".$vendor_code."',
-                            `announce` = '".$announce."',
-                            `characteristic` = '".$characteristic."',
-                            `sizes_old` = '".$sizes_old."',
-                            `img` = '".$image."',
-                            `thumb_img` = '".$thumb_img."',
-                            `url_path_old` = '".$url_path_old."',  
-                            `button_link_text`= '".$button_link_text."',  
-                            `button_link`= '".$button_link."',
-                            `button_link_show_set`= ".$button_link_show_set.",
-                            `mail_text`= '".$mail_text."',
-                            `delivery_set` = ".$delivery_set.",
-                            `category_id_old` = '".$category_id_old."',
-                            `category_name_old` = '".$category_name_old."',
-                            `meta_keywords` = '".$meta_keywords."',
-                            `meta_description` = '".$meta_description."',
-                            `title` = '".$title."',
-                            `noindex_set` = ".$noindex_set.",
-                            `as_status_id`=".$as_status."                    
+                            `product_id_old`=".check_form($product_id_old).",
+                            `name`='".check_form($name)."',
+                            `alias`='".check_form($alias)."', 
+                            `url_path`='".check_form($url_path)."', 
+                            `cost`=".check_form($cost).",
+                            `cost_old`=".check_form($cost_old).",
+                            `amount`=".check_form($amount).",
+                            `unit`='".check_form($unit)."',
+                            `1c`='".check_form($one_c)."',
+                            `description`='".check_form($description)."',
+                            `as_vendor_id` = ".check_form($vendor_id).",  
+                            `vendor_code` = '".check_form($vendor_code)."',
+                            `announce` = '".check_form($announce)."',
+                            `characteristic` = '".check_form($characteristic)."',
+                            `sizes_old` = '".check_form($sizes_old)."',
+                            `img` = '".check_form($image)."',
+                            `thumb_img` = '".check_form($thumb_img)."',
+                            `url_path_old` = '".check_form($url_path_old)."',  
+                            `button_link_text`= '".check_form($button_link_text)."',  
+                            `button_link`= '".check_form($button_link)."',
+                            `button_link_show_set`= ".check_form($button_link_show_set).",
+                            `mail_text`= '".check_form($mail_text)."',
+                            `delivery_set` = ".check_form($delivery_set).",
+                            `category_id_old` = '".check_form($category_id_old)."',
+                            `category_name_old` = '".check_form($category_name_old)."',
+                            `meta_keywords` = '".check_form($meta_keywords)."',
+                            `meta_description` = '".check_form($meta_description)."',
+                            `title` = '".check_form($title)."',
+                            `noindex_set` = ".check_form($noindex_set).",
+                            `as_status_id`=".check_form($as_status)."                    
                         "); 
                     $product_id=DB::getInsertId(); 
                     // Добавляем к продукту категорию
@@ -167,6 +199,7 @@ function loadProductsFromExcel($file="5b90bf171afbc.xlsx"){
                             `as_catalog_id`=".$category_id.",
                             `main_category_set`=1   
                         "); 
+                    set_time_limit(20);
                 }                
             }
             else{
@@ -188,7 +221,7 @@ function loadProductsFromExcel($file="5b90bf171afbc.xlsx"){
 * @param 
 * @return string 
 */
-function loadCategoriesFromExcel($file="5b191cd21c227.xlsx"){ 
+function loadCategoriesFromExcel($file="folders.xls", $start, $limit){ 
     if(is_file(AS_EXCEL_FILES_ROOT.$file)){
         require_once(AS_ROOT .'libs/PHPExcel/IOFactory.php');
         $xls = PHPExcel_IOFactory::load(AS_EXCEL_FILES_ROOT.$file);
@@ -201,19 +234,25 @@ function loadCategoriesFromExcel($file="5b191cd21c227.xlsx"){
         $rows_count = $worksheet->getHighestRow();
         $columns_count = PHPExcel_Cell::columnIndexFromString($worksheet->getHighestColumn());
         $values = array();
-        for ($row = 2; $row <= $rows_count; $row++) {
+        $count=$start;
+        for ($row = $start; $row <= $rows_count; $row++) {
             // Строка со значениями всех столбцов в строке листа Excel
             $row_values = "";
             for ($column = 0; $column < $columns_count; $column++) {
                 $cell = $worksheet->getCellByColumnAndRow($column, $row);                                   
-                $row_values[]= check_form($cell->getCalculatedValue());           
+                $row_values[]= $cell->getCalculatedValue();           
             }
             if(!empty($row_values)){
                 $values[] = $row_values;
-            }            
+            }     
+            $count++;
+            if($count==$limit){
+                break;
+            }
         }
         //dbg($values);
         // Добавляем строки в таблицу
+
         require_once(AS_ROOT .'libs/translit_func.php');
         require_once(AS_ROOT .'libs/uploads_func.php');
         $parent_id=0;
@@ -232,24 +271,24 @@ function loadCategoriesFromExcel($file="5b191cd21c227.xlsx"){
                     //$name = iconv('windows-1251', 'UTF-8', $value[1]);
                     $name = $value[1];
                     // Создаем url категории                    
-                    $translit = check_form(strToUrl($name));
+                    $translit = strToUrl($name);
                     $url_path = 'catalog/'.$translit;
                     // content
                     //$content = check_form(iconv('windows-1251', 'UTF-8', $value[2]));
-                    $content = check_form(handleOutText($value[2], 'categories/transfer', $url_path));
+                    $content = handleOutText($value[2], 'categories/transfer', $url_path);
                     
                     $res = DB::mysqliQuery(AS_DATABASE_SITE,"
                      INSERT INTO   
                         `". AS_DBPREFIX ."catalog`
                      SET
-                        `category_id_old`=".$value[0].",
-                        `hierarchy`=".$hierarchy.",
+                        `category_id_old`=".check_form($value[0]).",
+                        `hierarchy`=".check_form($hierarchy).",
                         `parent_id`=0,   
-                        `name`='".$name."',
-                        `alias`='".$translit."',  
-                        `url_path`='".$url_path."',    
-                        `content`='".$content."',
-                        `as_status_id`=".$as_status."
+                        `name`='".check_form($name)."',
+                        `alias`='".check_form($translit)."',  
+                        `url_path`='".check_form($url_path)."',    
+                        `content`='".check_form($content)."',
+                        `as_status_id`=".check_form($as_status)."
                     ");
                     $category_id=DB::getInsertId(); 
                     $hierarchy++;
@@ -262,7 +301,7 @@ function loadCategoriesFromExcel($file="5b191cd21c227.xlsx"){
         catch (ExceptionDataBase $edb){
             throw new ExceptionDataBase("Ошибка в запросе к базе данных",2, $edb);
         }
-        
+
         return true;
     }    
     else{

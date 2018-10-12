@@ -93,7 +93,8 @@ function findOutImages($links_array, $img_count, $url="", $url_old=""){
                         `url`='".$url."',
                         `url_old`='".$url_old."',
                         `count`=".$count.", 
-                        `type`='content'
+                        `type`='shop',
+                        `as_catalog_id`='355'
                     ");
         } catch (ExceptionDataBase $edb) {
             throw new ExceptionDataBase("Ошибка в запросе к базе данных",2, $edb);

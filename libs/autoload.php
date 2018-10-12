@@ -29,6 +29,7 @@ function autoloadClass ($className) {
         'Enum' => AS_ROOT . 'libs/classes/enums/Enum.class.php',
         'ProductStatus' => AS_ROOT . 'libs/classes/enums/ProductStatus.class.php',
         'DialogMessages' => AS_ROOT . 'libs/classes/enums/DialogMessages.class.php',
+        'ProductCategories' => AS_ROOT . 'libs/classes/enums/ProductCategories.class.php',
         'xajax' => AS_ROOT . 'libs/xajax/xajax_core/xajax.inc.php',
         'PHPExcel' => AS_ROOT . 'libs/classes/PHPExcel.class.php'
     );

@@ -46,6 +46,11 @@ class ExceptionDataBase extends Exception
                 <div id='modal_dialog_notice'>                    
                     В процессе сохранении информации произошла ошибка! Обратитесь к администратору системы
                 </div>",
+            "add_error"=>"  
+                <div id='modal_dialog_header'>Ошибка</div>
+                <div id='modal_dialog_notice'>                    
+                    В процессе добавления информации произошла ошибка! Обратитесь к администратору системы
+                </div>",
             "delete_error"=>"  
                 <div id='modal_dialog_header'>Ошибка</div>
                 <div id='modal_dialog_notice'>                    

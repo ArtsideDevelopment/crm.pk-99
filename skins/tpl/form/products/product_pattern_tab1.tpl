@@ -114,16 +114,6 @@
 <div class="form-row">
     <div class="form-input">
         <div class="form-group">
-            <input type="text" name="button_link_text" id="button_link_text" value="<? echo $CONTENT['button_link']; ?>"/>
-            <label class="control-label" for="button_link">Cсылка под кнопкой Купить</label><i class="bar"></i>           
-        </div> 
-    </div>
-    <div class="form-description">        
-    </div>
-</div> 
-<div class="form-row">
-    <div class="form-input">
-        <div class="form-group">
             <input type="text" name="button_link" id="button_link" value="<? echo $CONTENT['button_link']; ?>"/>
             <label class="control-label" for="button_link">Cсылка под кнопкой Купить</label><i class="bar"></i>           
         </div> 
