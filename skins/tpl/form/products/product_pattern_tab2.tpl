@@ -33,13 +33,13 @@
 <div class="form-row">    
     <div class="form-group">
         <p><strong>Характеристика товара</strong></p>
-        <textarea name="characteristic" id="characteristic" class="tinymce"><? echo $CONTENT['characteristic']; ?></textarea>        
+        <textarea name="characteristic" id="characteristic" class="tinymce_min"><? echo $CONTENT['characteristic']; ?></textarea>        
     </div>   
 </div>
 <div class="form-row">    
     <div class="form-group">
         <p><strong>Анонс товара</strong></p>
-        <textarea name="announce" id="announce" class="tinymce"><? echo $CONTENT['announce']; ?></textarea>        
+        <textarea name="announce" id="announce" class="tinymce_min"><? echo $CONTENT['announce']; ?></textarea>        
     </div>   
 </div>
 <div class="form-row">    

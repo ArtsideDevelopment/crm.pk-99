@@ -7,7 +7,8 @@
 * @copyright © 2014 ArtSide   
 */
 $new_product_str= array( //переменные для записи в базу информации по странице
-    "name"=>"str",    
+    "name"=>"str",
+    "url_path_old"=>"str",
     "img"=>"str",
     "as_vendor_id"=>"numb",
     "vendor_code"=>"str",

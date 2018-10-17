@@ -9,6 +9,6 @@
         <a href="/shop/catalog/add-category" class="button">Добавить категорию</a>
     </div>
 </div>
-<div class="as-table-card">
+<div class="as-table-card" id="catalog_table_replace">
     <?php echo $categories_table;?>
 </div>

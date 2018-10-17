@@ -28,7 +28,7 @@
     require_once(AS_ROOT .'libs/uploads_func.php');
     $log_table = getImgLog();
     $stat_category = getImgLogStat('catalog');
-    $stat_product = getImgLogStat('product');
+    $stat_product = getImgLogStat('shop');
     $stat_content = getImgLogStat('content');
     
    

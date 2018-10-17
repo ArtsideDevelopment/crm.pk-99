@@ -2,6 +2,33 @@
 $(function(){
     //CKEDITOR.replace('content');
     tinymce.init({         
+        selector:'textarea.tinymce_min',
+        language:"ru",
+        height : "100",
+        //language_url : '/skins/js/libs/languages/ru.js',
+        plugins: [
+         "code link image anchor table paste advlist lists responsivefilemanager"
+        ],
+        paste_auto_cleanup_on_paste : true,
+        paste_convert_headers_to_strong : false,
+        paste_strip_class_attributes : "all",
+        paste_remove_spans : true,
+        paste_remove_styles : true,
+        //relative_urls : false,
+        //remove_script_host : false,
+        paste_retain_style_properties : "",
+        toolbar: "code | undo redo | formatselect bold italic | alignleft aligncenter alignright | table bullist numlist | link unlink | image responsivefilemanager",
+        content_css: [
+            '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+            '//http://pk-99.u0096264.plsk.regruhosting.ru/skins/css/styles.css'
+          ],
+        image_advtab: true ,
+   
+       external_filemanager_path:"/filemanager/",
+       filemanager_title:"Responsive Filemanager" ,
+       external_plugins: { "filemanager" : "/filemanager/plugin.min.js"}
+         });
+    tinymce.init({         
         selector:'textarea.tinymce',
         language:"ru",
         height : "400",

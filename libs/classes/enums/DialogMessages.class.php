@@ -28,4 +28,7 @@ class DialogMessages extends Enum
     const add_value_success="
             <h2>Изменения сохранены</h2>
             <p>Вы можете продолжить работу с системой</p>";
+    const delete_category_success="
+            <h2>Категория успешно удалена</h2>
+            <p>Вы можете продолжить работу с системой</p>";
 }

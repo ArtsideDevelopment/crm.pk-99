@@ -230,7 +230,9 @@ function getImgLog(){
             $img_log.="
             <tr>        
                 <td align='center'>".$row['id']."</td>         
-                <td align='left'><a href='".AS_SITE.$row['url']."' target='_blank'>".$row['url']."</a></td>
+                <td align='left'>
+                    <a href='".AS_SITE.$row['url']."' target='_blank'>".$row['url']."</a>                    
+                </td>
                 <td align='left'><a href='".$row['url_old']."' target='_blank'>".$row['url_old']."</a></td> 
                 <td align='center'>".$row['count']."</td> 
                 <td align='center'> ".$row['type']."</td> 

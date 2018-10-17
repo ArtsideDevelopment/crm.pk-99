@@ -16,7 +16,7 @@ function Add_Product($Id)
 {
   $objResponse = new xajaxResponse();
   require_once(AS_ROOT .'libs/query_set.php');
-  require_once(AS_ROOT .'libs/query_variables/query_content.php'); 
+  require_once(AS_ROOT .'libs/query_variables/query_product.php'); 
   $all_error="";
    // Подключаем проверку заполнения полей
   include_once AS_ROOT .'libs/check/check_product.php';   
@@ -24,8 +24,8 @@ function Add_Product($Id)
       $date = date('Y-m-d H:i:s');
       //инициализация переменных
       // проверяем все входящие переменные на наличие xss и sql инъекции
-      $parent_id=check_form($Id['parent_id']);
-      $url_path=str_replace(" ", "-", strtolower(trim(trim(check_form($Id['alias'])),"/")));
+      $alias=str_replace(" ", "-", strtolower(trim(trim(check_form($Id['alias'])),"/")));
+      $url_path='product/'.$alias;
       try{
           /*
           * Добавляем продукт в базу данных
@@ -35,10 +35,10 @@ function Add_Product($Id)
               INSERT INTO
                   `". AS_DBPREFIX ."products`
               SET 
-                  ".m_query($new_page_str, $Id).",                  
+                  ".m_query($new_product_str, $Id).",
+                  `alias`='".$alias."',
                   `url_path`='".$url_path."',
-                  `date`='".$date."',
-                  `content`='".$content."'
+                  `date`='".$date."'
               ");
           $dialog_msg= DB::GetSuccessExeption('success');
           $objResponse->assign("modal_content_replace","innerHTML",  $dialog_msg);
@@ -66,109 +66,40 @@ function Edit_Product($Id)
   $objResponse = new xajaxResponse();
   // подключаем необходимые библиотеки
   require_once(AS_ROOT .'libs/query_set.php');
-  require_once(AS_ROOT .'libs/query_variables/query_content.php');
+  require_once(AS_ROOT .'libs/query_variables/query_product.php');
   // Подключаем проверку заполнения полей
   $all_error="";
-  include_once AS_ROOT .'libs/check/check_page.php';   
+  include_once AS_ROOT .'libs/check/check_product.php';   
   if($errors==0){
       //инициализация переменных      
       $url_path="";
       // проверяем все входящие переменные на наличие xss и sql инъекции
-      $page_id=check_form($Id['page_id']);
-      $parent_id=check_form($Id['parent_id']);
-      $parent_id_old=check_form($Id['parent_id_old']);
-      $hierarchy_old=check_form($Id['hierarchy_old']);
+      $product_id = check_form($Id['product_id']);
       $alias=str_replace(" ", "-", strtolower(trim(trim(check_form($Id['alias'])),"/")));
-      $content = check_form(str_replace('../uploads/content/transfer/', AS_HOST.'uploads/content/transfer/', $Id['content']));
+      $url_path='product/'.$alias;
+      $date_change = date('Y-m-d H:i:s');
       //$content = $Id['content'];
       /*----------------------------------------
       * Формируем url адрес страницы
       * get url of new page   
       -----------------------------------------*/
       try {
-          // находим url адрес родителя для построения текущего url адреса страницы      
-          if($parent_id*1>0){
-              $res_parent = DB::mysqliQuery(AS_DATABASE_SITE, "
-                  SELECT 
-                      `url_path` 
-                  FROM
-                      `". AS_DBPREFIX ."content` 
-                  WHERE  
-                      `id`=".$parent_id." 
-                  "); 
-              if($res_parent->num_rows>0){
-                   $row_parent = $res_parent->fetch_array();
-                   $url_path = trim($row_parent['url_path'], "/"); // удаляем лишние / чтобы сформировать необходимый url
-              }
-          }
-          // формируем url адрес текущей страницы
-          $url_path=trim($url_path."/".$alias, "/"); // удаляем лишние / он появляется если parent_id = 0 
-          /*----------------------------------------
-          * Проверяем изменился ли родитель страницы
-          * check parent page    
-          -----------------------------------------*/ 
-          // родитель изменился
-          if($parent_id!=$parent_id_old){
-              $hierarchy =1;
-              /*
-              * находим максимальное занчение hierarchy, записанное в bd, 
-              * для определения текущего значения hierarchy для редактируемой страницы    
-              */      
-              $res_hierarchy = DB::mysqliQuery(AS_DATABASE_SITE, "
-                  SELECT 
-                      MAX(hierarchy) 
-                  FROM
-                      `". AS_DBPREFIX ."content` 
-                  WHERE  
-                      `parent_id`=".$parent_id." 
-                  ");
-              if($res_hierarchy->num_rows>0){
-                  $row_hierarchy = $res_hierarchy->fetch_array();;
-                  $hierarchy=$row_hierarchy[0]+1;
-              }
-              // уменьшаем на 1 иерархию всех страниц являющихся братьями
-              $res_hierarchy = DB::mysqliQuery(AS_DATABASE_SITE,"
-                   UPDATE   
-                       `". AS_DBPREFIX ."content` 
-                   SET
-                       hierarchy = hierarchy - 1
-                   WHERE  `parent_id`=".$parent_id_old." && hierarchy>".$hierarchy_old." "  
-                              );
-              /*
-              * Обновляем информацию странице в базе данных
-              * Update page data in db      
-              */ 
-              $res_update = DB::mysqliQuery(AS_DATABASE_SITE,"
-                   UPDATE   
-                       `". AS_DBPREFIX ."content` 
-                   SET 
-                       ".m_query($new_page_str, $Id).",
-                       `url_path`='".$url_path."', 
-                       `alias`='".$alias."', 
-                       `hierarchy`=".$hierarchy.",
-                       `content`='".$content."'
-                   WHERE
-                       `id`=".$page_id."
-                   ");
-          }
-          // Родитель не измнился
-          else{ 
-              /*
-              * Обновляем информацию странице в базе данных
-              * Update page data in db      
-              */ 
-              $res_update = DB::mysqliQuery(AS_DATABASE_SITE,"
-                   UPDATE   
-                       `". AS_DBPREFIX ."content` 
-                   SET 
-                       ".m_query($new_page_str, $Id).",
-                       `url_path`='".$url_path."', 
-                       `alias`='".$alias."',
-                       `content`='".$content."'
-                   WHERE
-                       `id`=".$page_id."
-                   ");
-          }      
+          /*
+          * Обновляем информацию странице в базе данных
+          * Update page data in db      
+          */ 
+          $res_update = DB::mysqliQuery(AS_DATABASE_SITE,"
+               UPDATE   
+                   `". AS_DBPREFIX ."products` 
+               SET 
+                   ".m_query($new_product_str, $Id).",
+                   `alias`='".$alias."',
+                   `url_path`='".$url_path."',
+                   `date_change`='".$date_change."'
+               WHERE
+                   `id`=".$product_id."
+               ");         
+          
           /*--------------------------------------*/
           $dialog_msg= DB::GetSuccessExeption('success');
           $objResponse->assign("modal_content_replace","innerHTML",  $dialog_msg);
@@ -187,8 +118,8 @@ function Edit_Product($Id)
   return $objResponse;
 }
 /* 
-* Функция удаления страницы 
-* Function to delit a page 
+* Функция удаления товара 
+* Function to delete a product 
 * @param array $Id 
 * @return xajaxResponse 
 */ 
@@ -333,6 +264,59 @@ function Add_Category($Id)
   }
   $objResponse->assign("all_error","innerHTML", $all_error);
   return $objResponse;
+}
+/* 
+* Функция удаления категории 
+* Function to delete a category 
+* @param array $Id 
+* @return xajaxResponse 
+*/ 
+function Delete_Category($Id){
+    if(strlen(trim($Id))!=0){
+        $objResponse = new xajaxResponse();
+        /*
+        * проверяем все входящие переменные на sql иньекции
+        * check all input variables on sql injections
+        */ 
+        $catalog_id=  check_form($Id);        
+        try {
+            DB::mysqliBegin(AS_DATABASE_SITE);
+            /*
+            * Удаляем категорию из таблицы as_product_categories
+            * Delete category from table as_product_categories      
+            */ 
+            $res_del = DB::mysqliQuery(AS_DATABASE_SITE,"
+                DELETE FROM   
+                    `". AS_DBPREFIX ."product_categories`
+                WHERE 
+                    `as_catalog_id`=".$catalog_id.""  
+                              ); 
+            /*
+            * Удаляем категорию из таблицы as_catalog
+            * Delete category from table as_catalog
+            */  
+             $res_del = DB::mysqliQuery(AS_DATABASE_SITE,"
+                DELETE FROM   
+                    `". AS_DBPREFIX ."catalog`
+                WHERE 
+                    `id`=".$catalog_id.""  
+                              ); 
+            /*-----------------------------------*/
+            DB::mysqliCommit();
+            $dialog_msg = DialogMessages::delete_category_success;
+            include_once AS_ROOT .'libs/shop_func.php'; 
+            $categories_table=  getCategoriesTable('catalog');
+            $objResponse->assign("catalog_table_replace", "innerHTML", $categories_table);
+            $objResponse->call("artside_data_tables.init('.dataTables', true)");
+        }
+        catch (ExceptionDataBase $edb){
+            $edb->HandleExeption(__FILE__."->".__FUNCTION__."->".__LINE__);
+            $dialog_msg = $edb->GetNoticeExeption("save_error");
+        }                 
+    }
+    $objResponse->assign("modal_content_replace","innerHTML",  $dialog_msg);
+    $objResponse->call("modal_dialog_show");
+    return $objResponse;
 }
 /* 
 * Функция редактирования категории 

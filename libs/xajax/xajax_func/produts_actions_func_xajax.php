@@ -326,7 +326,7 @@ function Products_Actions_Delete_Category($Id){
             $query.="(1, ".ProductCategories::empty_category.", ".$product_id."),";
         }
         try{  
-            DB::mysqliBegin(AS_DATABASE);
+            DB::mysqliBegin(AS_DATABASE_SITE);
             $res_del = DB::mysqliQuery(AS_DATABASE_SITE,"
                 DELETE                 
                 FROM 

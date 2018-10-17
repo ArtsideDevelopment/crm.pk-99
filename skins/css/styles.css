@@ -1774,6 +1774,10 @@ body {
       word-break: break-all; }
       body .as-table-card table tbody tr td .old-cost {
         text-decoration: line-through; }
+      body .as-table-card table tbody tr td .product-url {
+        margin-bottom: 10px; }
+        body .as-table-card table tbody tr td .product-url a {
+          font-size: 11.2px; }
     body .as-table-card table tbody tr i:parent {
       border: none; }
     body .as-table-card table tbody tr:hover {

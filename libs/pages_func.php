@@ -69,7 +69,7 @@ function getPagesStructTable($parent_id, $table, $hierarchy, $nbsp){
                 
                 <td align='center'>                    
                     ".$del."
-                    <a href='/pages/edit-page?page_id=".$row['id']."'><i class='icon-note'></i></a>                   
+                    <a href='/pages/edit-page?page_id=".$row['id']."' target='_blank'><i class='icon-note'></i></a>                   
                 </td>
             </tr>
             ";

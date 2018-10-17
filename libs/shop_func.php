@@ -65,8 +65,8 @@ function getCategoriesStructTable($parent_id, $table, $hierarchy, $nbsp){
                 <td align='left'>".$nbsp.$time_hierarchy." ".$row['name']."</td>
                 <td align='left'><a href='".AS_SITE.$row['url_path']."' target='_blank'>".$row['url_path']."</a></td>                    
                 <td align='center'>                    
-                    <a href='javascript:void(null);' onclick='if (confirm(\"Вы действительно хотите удалить страницу?\")) xajax_Delete_Category(\"type=content&id=".$row['id']."&hierarchy=".$row['hierarchy']."&parent_id=".$row['parent_id']."\"); return false;' class='btn btn-danger'><i class='icon-trash'></i></a>
-                    <a href='/shop/catalog/edit-category?category_id=".$row['id']."' class='btn btn-default'><i class='icon-note'></i></a>                   
+                    <a href='javascript:void(null);' onclick='if (confirm(\"Вы действительно хотите удалить категорию?\")) xajax_Delete_Category(".$row['id']."); return false;' class='btn btn-danger'><i class='icon-trash'></i></a>
+                    <a href='/shop/catalog/edit-category?category_id=".$row['id']."' class='btn btn-default' target='_blank'><i class='icon-note'></i></a>                   
                 </td>
             </tr>
             ";
@@ -201,7 +201,8 @@ function getProductsTable($categories_id=0, $as_vendor_id=0, $amount="", $button
                     </td>
                     <td align='left'>
                         ".$row['name']."
-                        <div><a href='".AS_SITE.$row['url_path']."' target='_blank'>".$row['url_path']."</a></div>
+                        <div class='product-url'><a href='".AS_SITE.$row['url_path']."' target='_blank'>".$row['url_path']."</a></div>
+                        <div><a href='/shop/products/edit-product?product_id=".$row['product_id']."' class='btn btn-default' target='_blank'><i class='icon-note'></i> редактировать</a> </div>
                     </td>
                     <td align='left' id='category_".$row['product_id']."'>
                         ".$categories_array[$row['as_catalog_id']]."
@@ -221,7 +222,7 @@ function getProductsTable($categories_id=0, $as_vendor_id=0, $amount="", $button
                     </td>
                     <td align='center'>                    
                         <a href='javascript:void(null);' onclick='if (confirm(\"Вы действительно хотите удалить товар?\")) xajax_Delete_Category(".$row['product_id']."); return false;' class='btn btn-danger'><i class='icon-trash'></i></a>
-                        <a href='/shop/products/edit-product?product_id=".$row['product_id']."' class='btn btn-default'><i class='icon-note'></i></a>                   
+                                          
                     </td>
                 </tr>
                 ";

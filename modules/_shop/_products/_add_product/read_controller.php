@@ -33,6 +33,7 @@
        // Переменная для безопасности работы uploadifive
        $timestamp = time();
        $token=md5('as_salt' . $timestamp);
+       $img = "";
    }
    else{
        Router::routeAccessDenied();

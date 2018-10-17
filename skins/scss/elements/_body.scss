@@ -120,6 +120,12 @@ body {
                       .old-cost{
                           text-decoration: line-through;
                       }
+                      .product-url{
+                          a{
+                              font-size: $font-size*0.7;
+                          }
+                          margin-bottom: 10px;
+                      }
                   }    
                   i:parent{
                       border: none;
