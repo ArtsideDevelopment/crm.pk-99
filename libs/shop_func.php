@@ -291,7 +291,7 @@ function getCategoriesStructTableCheck($parent_id, $table, $hierarchy, $nbsp){
             $st.="
             <tr>   
                 <td>
-                    <input type='checkbox' name='categoriesChecked[]' value='".$row['id']."' />
+                    <input type='checkbox' name='categoriesChecked[]' value='".$row['id']."' data-text='".$row['name']."' />
                 </td>
                 <td align='left'>".$nbsp.$nbsp.$time_hierarchy." ".$row['name']."</td>                
             </tr>

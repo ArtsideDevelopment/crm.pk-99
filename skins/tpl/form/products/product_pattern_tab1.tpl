@@ -34,6 +34,30 @@
 </div> 
 <div class="form-row">
     <div class="form-input">
+        <div class="form-chosen">
+            <? echo $as_main_category_select; ?>
+            <label class="control-label" for="as_main_category_id">Основная категория товара*</label><i class="bar"></i>
+            <div class="form_error" id="form_error_main_category"></div>
+        </div> 
+    </div>
+    <div class="form-description">
+        
+    </div>
+</div>
+<div class="form-row">
+    <div class="form-input">
+        <div class="form-group">
+            <input type="hidden" id="product_categories_val" name="product_categories_val" value="">
+            <ul class="product_categories_block"></ul>
+            <a ref="javascript:void(null);" onClick="xajax_Get_Product_Category_Form(0);">Добавить категории</a>
+        </div> 
+    </div>
+    <div class="form-description">
+        
+    </div>
+</div>
+<div class="form-row">
+    <div class="form-input">
         <div class="form-group">
             <? echo $as_status; ?>
             <label class="control-label" for="as_status_id">Статус*</label><i class="bar"></i>

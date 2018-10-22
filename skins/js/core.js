@@ -43,22 +43,41 @@ $(document).ready(function(){
             }            
         }
     };
-var ChangeInputVal = function () {
-    function changeVal(target, val){
-        $(target).val(val);
-    }
-    return {
-        //main function to initiate the module
-        init: function () {
-            $('.change-input-val').on('click', function () {                
-                changeVal($(this).data('target'), $(this).data('val'));
+    var ChangeInputVal = function () {
+        function changeVal(target, val){
+            $(target).val(val);
+        }
+        return {
+            //main function to initiate the module
+            init: function () {
+                $('.change-input-val').on('click', function () {                
+                    changeVal($(this).data('target'), $(this).data('val'));
+                });
+            },
+            value: function (target, val) {            
+                changeVal(target, val);
+            }
+        };
+    }();
+    var ProductCategoriesCheck = {
+        init: function(){
+            $(".categories_check input").change(function(){
+                
+                var category_id=$(this).val();
+                //if($(this).hasClass("find_area")) li_location_class = "area";
+                //if($(this).hasClass("find_metro")) li_location_class = "metro";
+                if(this.checked){            
+                    var category_name=$(this).data('text');
+                    var location_block="<li data-text='"+location_id+"' id='category_"+category_id+"'>"+category_name+"<span class='form_location_close'></span></li>";
+                    $(".product_categories_block").append(location_block);
+                    //alert($(this).val());
+                }
+                else{
+                    $("#viz_"+li_location_class+"_"+location_id).remove();
+                }
             });
-        },
-        value: function (target, val) {            
-            changeVal(target, val);
         }
     };
-}();
 /*var GoToLabel = function () {
     return {
         

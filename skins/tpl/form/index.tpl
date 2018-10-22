@@ -40,6 +40,8 @@
         <!--<script src="/skins/js/libs/ckeditor/ckeditor.js"></script>-->
         <script src="/skins/js/libs/tinymce/tinymce.min.js"></script>
         <script src="/skins/js/libs/jquery.uploadifive.min.js" type="text/javascript"></script>
+        <script src='/skins/js/libs/chosen.jquery.min.js'></script>
+        <script src="/skins/js/libs/datatables/datatables.min.js"></script>
         <!--<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>-->
         <script src="/skins/js/core.js"></script>
         <script src="/skins/js/form.js"></script>

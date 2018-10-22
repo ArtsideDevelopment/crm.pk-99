@@ -187,6 +187,7 @@ $chosen-sprite-retina: url('/skins/img/libs/chosen/chosen-sprite@2x.png') !defau
     padding: 5px 6px;
     list-style: none;
     line-height: 15px;
+    float: none !important;
     word-wrap: break-word;
     -webkit-touch-callout: none;
     &.active-result {

@@ -226,9 +226,9 @@ function getUserChildSelectRecursion($id, $nbsp, $current_user_id=0){
 * @param string $table
 * @return string $select_parent 
 */ 
-function getParentSelect($table, $parent_selected=0){
+function getParentSelect($table, $parent_selected=0, $select_name="parent_id"){
     $select_parent = "
-        <select name='parent_id' id='parent_id'>
+        <select name='".$select_name."' id='".$select_name."' class='chosen-select'>
             <option value='0'>------------</option>
             ".  getParentSelectRecursion($table, 0, "", $parent_selected)."
         </select>\n\t";

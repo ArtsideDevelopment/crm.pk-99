@@ -472,3 +472,28 @@ function Products_Filter($Id){
         
     return $objResponse;
 }
+/* 
+* Функция вызова окна выбора категории для товара
+* Function get product category firm
+* @param array $Id 
+* @return xajaxResponse 
+*/ 
+function Get_Product_Category_Form($Id){
+    $objResponse = new xajaxResponse(); 
+    include_once AS_ROOT .'libs/shop_func.php';
+    $categories_check = getCategoriesTableCheck('catalog');
+    $dialog_form = '
+        <form id="FormProductsCategoryDialog" action="javascript:void(null);" onSubmit="xajax_Add_Product_To_Category(xajax.getFormValues(\'FormProductsCategoryDialog\'));">
+            <h2>Укажите категории, в которые необходимо добавить товар</h2>
+            <div class="categories_check">
+                '.$categories_check.' 
+            </div>
+            <div class="form_error" id="form_error_replace"></div>
+            <input type="submit" name="send_form" id="send_form" class="button" value="Добавить" />
+        </form>';
+    $objResponse->assign("modal_content_replace","innerHTML",  $dialog_form);
+    $objResponse->call("modal_dialog_show");
+    $objResponse->call("artside_data_tables.init('.dataTablesCategories', false)");
+    $objResponse->call("ProductCategoriesCheck.init()");
+    return $objResponse;
+}
