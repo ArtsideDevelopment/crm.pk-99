@@ -287,16 +287,16 @@ function getCategoriesStructTableCheck($parent_id, $table, $hierarchy, $nbsp){
     else{	     
         while($row = $res->fetch_assoc()){   
             $time_hierarchy="";			
-            $time_hierarchy=$hierarchy.$row['id']."."; 
+            $time_hierarchy=$hierarchy.$row['hierarchy']."."; 
             $st.="
             <tr>   
                 <td>
                     <input type='checkbox' name='categoriesChecked[]' value='".$row['id']."' />
                 </td>
-                <td align='left'>".$nbsp.$time_hierarchy." ".$row['name']."</td>                
+                <td align='left'>".$nbsp.$nbsp.$time_hierarchy." ".$row['name']."</td>                
             </tr>
             ";
-            $st.=getCategoriesStructTable($row['id'], $table, $time_hierarchy, $nbsp);
+            $st.=getCategoriesStructTableCheck($row['id'], $table, $time_hierarchy, $nbsp);
         }
         return $st;
     }

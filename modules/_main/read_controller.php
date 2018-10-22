@@ -31,5 +31,8 @@
     $stat_product = getImgLogStat('shop');
     $stat_content = getImgLogStat('content');
     
+    include_once AS_ROOT .'libs/fix_bugs.php';
+   // fixCategoriesHierarhy();
+    
    
     

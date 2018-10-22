@@ -164,26 +164,12 @@ class Mailer{
     */ 
     function sendMail($subject, $mail_body) 
     { 
-        /*
         $to      = $this->_to;
         $subject = $subject;
         $message = $mail_body;
         $headers = $this->createHeaders();
 
-        mail($to, $subject, $message, $headers);
-         * 
-         */      
-        require(AS_ROOT ."libs/sendgrid-php/sendgrid-php.php");
-        $sendgrid = new SendGrid('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');
-        $email = new SendGrid\Email();
-        $email
-            ->addTo($this->_to)
-            //->addTo('bar@foo.com') //One of the most notable changes is how `addTo()` behaves. We are now using our Web API parameters instead of the X-SMTPAPI header. What this means is that if you call `addTo()` multiple times for an email, **ONE** email will be sent with each email address visible to everyone.
-            ->setFrom($this->_from."@".AS_DOMAIN)
-            ->setSubject($subject)
-            ->setHtml($this->createBody($mail_body))
-        ;
-        $sendgrid->send($email);     
+        mail($to, $subject, $message, $headers);    
     }
     /** 
     * Функция создания тела письма
@@ -193,26 +179,14 @@ class Mailer{
     */ 
     public function sendExeption($mail_body) 
     { 
-        /*
+
         $subject = "Исключение на ".AS_DOMAIN;
         $to      = $this->_to_admin;
         $message = $mail_body;
         $headers = $this->createHeaders();
         
          mail($to, $subject, $message, $headers);
-         * 
-         */
-        $subject = "Исключение на ".AS_DOMAIN;
-        require(AS_ROOT ."libs/sendgrid-php/sendgrid-php.php");
-        $sendgrid = new SendGrid('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');
-        $email = new SendGrid\Email();
-        $email
-            ->addTo($this->_to_admin)
-            //->addTo('bar@foo.com') //One of the most notable changes is how `addTo()` behaves. We are now using our Web API parameters instead of the X-SMTPAPI header. What this means is that if you call `addTo()` multiple times for an email, **ONE** email will be sent with each email address visible to everyone.
-            ->setFrom($this->_from."@".AS_DOMAIN)
-            ->setSubject($subject)
-            ->setHtml($this->createBody($mail_body))
-        ;
-        $sendgrid->send($email);
+
+
     }    
 }
