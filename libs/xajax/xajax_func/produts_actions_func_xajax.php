@@ -143,8 +143,8 @@ function Products_Actions($Id){
     else{
         $dialog_form= "<h2>Не отмечено ни одного товара</h2>";
     }        
-    $objResponse->assign("modal_content_replace","innerHTML",  $dialog_form);
-    $objResponse->call("modal_dialog_show");
+    $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_form);
+    $objResponse->call("ModalDialog.show('notice')");
     $objResponse->call("artside_data_tables.init('.dataTablesCategories', false)");
     return $objResponse;
 }
@@ -184,8 +184,8 @@ function Products_Actions_Delete($Id){
     else{
         $dialog_msg= DialogMessages::error;
     }        
-    $objResponse->assign("modal_content_replace","innerHTML",  $dialog_msg);
-    $objResponse->call("modal_dialog_show");
+    $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+    $objResponse->call("ModalDialog.show('notice')");
     return $objResponse;
 }
 /* 
@@ -232,8 +232,8 @@ function Products_Actions_Add_To_Category($Id){
     else{
         $dialog_msg= DialogMessages::error;
     }        
-    $objResponse->assign("modal_content_replace","innerHTML",  $dialog_msg);
-    $objResponse->call("modal_dialog_show");
+    $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+    $objResponse->call("ModalDialog.show('notice')");
     return $objResponse;
 }
 /* 
@@ -304,8 +304,8 @@ function Products_Actions_Move_To_Category($Id){
     else{
         $dialog_msg= DialogMessages::error;
     }        
-    $objResponse->assign("modal_content_replace","innerHTML",  $dialog_msg);
-    $objResponse->call("modal_dialog_show");
+    $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+    $objResponse->call("ModalDialog.show('notice')");
     return $objResponse;
 }
 /* 
@@ -356,8 +356,8 @@ function Products_Actions_Delete_Category($Id){
     else{
         $dialog_msg= DialogMessages::error;
     }        
-    $objResponse->assign("modal_content_replace","innerHTML",  $dialog_msg);
-    $objResponse->call("modal_dialog_show");
+    $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+    $objResponse->call("ModalDialog.show('notice')");
     return $objResponse;
 }
 /* 
@@ -407,8 +407,8 @@ function Products_Actions_Add_Vendor($Id){
     else{
         $dialog_msg= DialogMessages::error;
     }        
-    $objResponse->assign("modal_content_replace","innerHTML",  $dialog_msg);
-    $objResponse->call("modal_dialog_show");
+    $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+    $objResponse->call("ModalDialog.show('notice')");
     return $objResponse;
 }
 /* 
@@ -454,8 +454,8 @@ function Products_Actions_Add_Numeric_Values($Id){
     else{
         $dialog_msg= DialogMessages::error;
     }        
-    $objResponse->assign("modal_content_replace","innerHTML",  $dialog_msg);
-    $objResponse->call("modal_dialog_show");
+    $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+    $objResponse->call("ModalDialog.show('notice')");
     return $objResponse;
 }
 /* 
@@ -499,7 +499,7 @@ function Products_Actions_Add_Text_Values($Id){
     else{
         $dialog_msg= DialogMessages::error;
     }        
-    $objResponse->assign("modal_content_replace","innerHTML",  $dialog_msg);
-    $objResponse->call("modal_dialog_show");
+    $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+    $objResponse->call("ModalDialog.show('notice')");
     return $objResponse;
 }

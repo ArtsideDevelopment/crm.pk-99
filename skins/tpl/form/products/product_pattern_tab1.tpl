@@ -3,6 +3,7 @@
         <div class="form-group">
             <input type="text" required="required" name="name" id="name" class="translit" value="<? echo $CONTENT['name']; ?>"/>
             <label class="control-label" for="name">Название товара*</label><i class="bar"></i>
+            <!--<a href="javascript:void(null);" onClick="xajax_Modal_Dialog_Open(0);">Вызвать окно</a>-->
             <div class="form_error" id="form_error_name"></div>
         </div> 
     </div>
@@ -45,16 +46,12 @@
     </div>
 </div>
 <div class="form-row">
-    <div class="form-input">
-        <div class="form-group">
-            <input type="hidden" id="product_categories_val" name="product_categories_val" value="">
-            <ul class="product_categories_block"></ul>
-            <a ref="javascript:void(null);" onClick="xajax_Get_Product_Category_Form(0);">Добавить категории</a>
-        </div> 
-    </div>
-    <div class="form-description">
-        
-    </div>
+    <div class="form-multiple-choice">        
+        <input type="hidden" id="product_categories_val" name="product_categories_val" value="">
+        <ul class="form-multiple-choice__items"></ul>        
+        <div id="modal-dialog-categories__show" class="form-multiple-choice__button">Добавить категории</div>
+       
+    </div>     
 </div>
 <div class="form-row">
     <div class="form-input">

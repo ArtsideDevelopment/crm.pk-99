@@ -7,4 +7,4 @@ $xajax->register(XAJAX_FUNCTION, "Add_Category");
 $xajax->register(XAJAX_FUNCTION, "Edit_Category");
 $xajax->register(XAJAX_FUNCTION, "Delete_Category");
 $xajax->register(XAJAX_FUNCTION, "Products_Filter");
-$xajax->register(XAJAX_FUNCTION, "Get_Product_Category_Form");
+$xajax->register(XAJAX_FUNCTION, "Modal_Dialog_Open");

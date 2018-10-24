@@ -53,6 +53,14 @@ else{
 }
 $objResponse->assign("form_error_alias","innerHTML",$form_error_alias);
 
+//Основная категория
+$form_error_main_category="";
+if($Id['as_main_category_id']*1==0){
+    $form_error_main_category="Необходимо выбрать значение"; 
+    $errors++;
+}
+$objResponse->assign("form_error_main_category","innerHTML",$form_error_main_category);
+
 // Старый url адрес
 $form_error_url_path_old="";
 if(strlen(trim($Id['url_path_old']))==0){

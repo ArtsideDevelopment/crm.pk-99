@@ -40,9 +40,42 @@ function Add_Product($Id)
                   `url_path`='".$url_path."',
                   `date`='".$date."'
               ");
+          $product_id=DB::getInsertId();
+          /*
+          * Добавляем категории
+          * insert categories     
+          */ 
+          // Основная категория
+          if($Id['as_main_category_id']*1>0){
+                $res = DB::mysqliQuery(AS_DATABASE_SITE,"
+                    INSERT 
+                    INTO ". AS_DBPREFIX ."product_categories 
+                    SET
+                        as_catalog_id= ".  check_form($Id['as_main_category_id']).",
+                        as_products_id= ".$product_id.",
+                        main_category_set=1    
+                    "  
+                ); 
+          }
+          // Дополнительные категории
+          if(isset($Id['categoriesChecked'])){
+            $categories_checked = $Id['categoriesChecked'];
+            $query="";            
+            foreach ($categories_checked as $category_id) {
+                $query.="(".$category_id.", ".$product_id."),";
+            }    
+            $res = DB::mysqliQuery(AS_DATABASE_SITE,"
+                INSERT 
+                INTO ". AS_DBPREFIX ."product_categories 
+                    (as_catalog_id, as_products_id)
+                VALUES
+                    ".trim(check_form($query), ",").";
+                "  
+            );                                
+          }          
           $dialog_msg= DB::GetSuccessExeption('success');
-          $objResponse->assign("modal_content_replace","innerHTML",  $dialog_msg);
-          $objResponse->call("modal_dialog_show");
+          $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+          $objResponse->call("ModalDialog.show('notice')");
       }
       catch (ExceptionDataBase $edb){
           $edb->HandleExeption(__FILE__."->".__FUNCTION__."->".__LINE__);
@@ -102,8 +135,8 @@ function Edit_Product($Id)
           
           /*--------------------------------------*/
           $dialog_msg= DB::GetSuccessExeption('success');
-          $objResponse->assign("modal_content_replace","innerHTML",  $dialog_msg);
-          $objResponse->call("modal_dialog_show");
+          $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+          $objResponse->call("ModalDialog.show('notice')");
       }
       catch (ExceptionDataBase $edb){
           $edb->HandleExeption(__FILE__."->".__FUNCTION__."->".__LINE__);
@@ -251,8 +284,8 @@ function Add_Category($Id)
                   `priority`=0.8
               ");
           $dialog_msg= DB::GetSuccessExeption('success');
-          $objResponse->assign("modal_content_replace","innerHTML",  $dialog_msg);
-          $objResponse->call("modal_dialog_show");
+          $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+          $objResponse->call("ModalDialog.show('notice')");
       }
       catch (ExceptionDataBase $edb){
           $edb->HandleExeption(__FILE__."->".__FUNCTION__."->".__LINE__);
@@ -314,8 +347,8 @@ function Delete_Category($Id){
             $dialog_msg = $edb->GetNoticeExeption("save_error");
         }                 
     }
-    $objResponse->assign("modal_content_replace","innerHTML",  $dialog_msg);
-    $objResponse->call("modal_dialog_show");
+    $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+    $objResponse->call("ModalDialog.show('notice')");
     return $objResponse;
 }
 /* 
@@ -437,8 +470,8 @@ function Edit_Category($Id)
           }      
           /*--------------------------------------*/
           $dialog_msg= DB::GetSuccessExeption('success');
-          $objResponse->assign("modal_content_replace","innerHTML",  $dialog_msg);
-          $objResponse->call("modal_dialog_show");
+          $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+          $objResponse->call("ModalDialog.show('notice')");
       }
       catch (ExceptionDataBase $edb){
           $edb->HandleExeption(__FILE__."->".__FUNCTION__."->".__LINE__);
@@ -473,27 +506,15 @@ function Products_Filter($Id){
     return $objResponse;
 }
 /* 
-* Функция вызова окна выбора категории для товара
-* Function get product category firm
+* Функция формирвоания отчета
+* Function get report
 * @param array $Id 
 * @return xajaxResponse 
 */ 
-function Get_Product_Category_Form($Id){
+function Modal_Dialog_Open($Id){
     $objResponse = new xajaxResponse(); 
-    include_once AS_ROOT .'libs/shop_func.php';
-    $categories_check = getCategoriesTableCheck('catalog');
-    $dialog_form = '
-        <form id="FormProductsCategoryDialog" action="javascript:void(null);" onSubmit="xajax_Add_Product_To_Category(xajax.getFormValues(\'FormProductsCategoryDialog\'));">
-            <h2>Укажите категории, в которые необходимо добавить товар</h2>
-            <div class="categories_check">
-                '.$categories_check.' 
-            </div>
-            <div class="form_error" id="form_error_replace"></div>
-            <input type="submit" name="send_form" id="send_form" class="button" value="Добавить" />
-        </form>';
-    $objResponse->assign("modal_content_replace","innerHTML",  $dialog_form);
-    $objResponse->call("modal_dialog_show");
-    $objResponse->call("artside_data_tables.init('.dataTablesCategories', false)");
-    $objResponse->call("ProductCategoriesCheck.init()");
+    $objResponse->assign("modal-dialog-notice__replace","innerHTML", "test");
+    $objResponse->call("ModalDialog.show('notice')");
+        
     return $objResponse;
 }

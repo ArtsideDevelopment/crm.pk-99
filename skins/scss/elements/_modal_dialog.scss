@@ -1,4 +1,4 @@
-#modal-dialog-bg{
+.modal-dialog-bg{
     background: rgba($bg-white, 0.8);
     width: 100%;
     height: 100%;
@@ -10,7 +10,7 @@
     z-index: 99999;
     }
     /* Устанавливаем свойства дива, в котором показывается контент модального окна */
-#modal-dialog{
+.modal-dialog{
     background:$bg-white;
     border: 1px solid $gray-light;  
     width: 800px;
