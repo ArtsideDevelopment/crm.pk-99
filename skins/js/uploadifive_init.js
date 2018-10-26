@@ -17,7 +17,8 @@ var Uploadifive = function () {
                 'queueID': target+'_img_queue',
                 'uploadScript': '/libs/uploadifive/uploadifive.php',
                 'onUploadComplete': function(file, data) {
-                    var upload_block="<input type='hidden' name='"+name+"' id='"+name+"' value='"+data+"'>";            
+                    var upload_block="<input type='hidden' name='"+name+"' id='"+name+"' value='"+data+"'>"+
+                            "<img src='/uploads/images/"+target+'/'+data+"'>";            
                    $('#'+target+'_img_data_block').html(upload_block);           
                 }
             }); 

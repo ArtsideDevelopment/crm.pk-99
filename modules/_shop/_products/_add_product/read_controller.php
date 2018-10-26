@@ -27,6 +27,7 @@
        include_once AS_ROOT .'libs/form_func.php';
        include_once AS_ROOT .'libs/shop_func.php';       
        $product_id = 0;
+       $copy_prefix="";
        $CONTENT= DB::getTableArray(AS_DATABASE_SITE, "products");
        $as_status = getSelectBlock(AS_DATABASE_SITE, "status", "name", "as_status_id", 1);
        $as_main_category_select = getParentSelect("catalog", 0, "as_main_category_id");

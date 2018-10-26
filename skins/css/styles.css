@@ -2270,6 +2270,7 @@ form .form_error {
   background: white;
   border: 1px solid #b4bfc5;
   width: 800px;
+  min-height: 270px;
   margin: 10px auto;
   position: relative;
   padding: 40px;

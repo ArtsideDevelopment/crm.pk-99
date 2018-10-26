@@ -103,31 +103,47 @@ $(document).ready(function(){
     };
     var MultipleChoise = {
         init: function(){
-            if ($(".form-multiple-choice__modal").length > 0) {
+            if ($(".form-multiple-choice__modal").length > 0) {                
+                $('.form-multiple-choice__modal input').each(function(){
+                    if(this.checked){ 
+                        var choice_id=$(this).val();
+                        var choice_name=$(this).data('text');
+                        MultipleChoise.appendChoiceItem(choice_id, choice_name);
+                        MultipleChoise.deleteChoiceItemInit();
+                    }
+                });
                 $(".form-multiple-choice__modal input").change(function(){
-                    //var parent = $(this).parent();
-                    var choice_id=$(this).val();                    
+                    var choice_id=$(this).val();
+                    //var parent = $(this).parent();                                        
                     if(this.checked){            
                         var choice_name=$(this).data('text');                    
-                        var choice_item="<li data-text='"+choice_id+"' id='form-multiple-choice__items_item-id-"+choice_id+"'>"+choice_name+"<i class='icon-close form-multiple-choice__delete'></i></li>";
-                        $(".form-multiple-choice__items").append(choice_item);
-                        $(".form-multiple-choice__delete").click(function(){
-                            console.log("Failed to open the specified link");
-                            var li = $(this).parent('li');                    
-                            var choice_id = li.data('text');                
-                            $(".form-multiple-choice__checkbox_check-id-"+choice_id).prop( "checked", false );
-                            li.remove();                
-                        }); 
+                        //var choice_item="<li data-text='"+choice_id+"' id='form-multiple-choice__items_item-id-"+choice_id+"'>"+choice_name+"<i class='icon-close form-multiple-choice__delete'></i></li>";
+                        MultipleChoise.appendChoiceItem(choice_id, choice_name);
+                        MultipleChoise.deleteChoiceItemInit();
                     }
                     else{
                         $("#form-multiple-choice__items_item-id-"+choice_id).remove();
                     }
                 });                
             }            
+        },
+        appendChoiceItem:  function(choice_id, choice_name){
+            var choice_item="<li data-text='"+choice_id+"' id='form-multiple-choice__items_item-id-"+choice_id+"'>"+choice_name+"<i class='icon-close form-multiple-choice__delete'></i></li>";
+            $(".form-multiple-choice__items").append(choice_item);
+        },
+        deleteChoiceItemInit: function(){
+            $(".form-multiple-choice__delete").click(function(){
+                //console.log("Failed to open the specified link");
+                var li = $(this).parent('li');                    
+                var choice_id = li.data('text');                
+                $(".form-multiple-choice__checkbox_check-id-"+choice_id).prop( "checked", false );
+                li.remove();                
+            }); 
         }
     };
 jQuery.fn.VerticalAlign = function () {
     var block_height=this.outerHeight();
+    console.log("Block height:"+block_height);
     var window_height=$(window).height();
     if(window_height>block_height){
         this.css("top", ((window_height - block_height) / 2) + "px");

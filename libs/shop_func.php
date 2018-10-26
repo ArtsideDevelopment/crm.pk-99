@@ -202,7 +202,7 @@ function getProductsTable($categories_id=0, $as_vendor_id=0, $amount="", $button
                     <td align='left'>
                         ".$row['name']."
                         <div class='product-url'><a href='".AS_SITE.$row['url_path']."' target='_blank'>".$row['url_path']."</a></div>
-                        <div><a href='/shop/products/edit-product?product_id=".$row['product_id']."' class='btn btn-default' target='_blank'><i class='icon-note'></i> редактировать</a> </div>
+                        <div><a href='/shop/products/edit-product?product_id=".$row['product_id']."' class='btn btn-default' target='_blank'><i class='icon-note'></i> редактировать</a> <a href='/shop/products/copy-product?product_id=".$row['product_id']."' class='btn btn-default' target='_blank'><i class='icon-note'></i> копировать</a></div>
                     </td>
                     <td align='left' id='category_".$row['product_id']."'>
                         ".$categories_array[$row['as_catalog_id']]."
@@ -242,8 +242,9 @@ function getProductsTable($categories_id=0, $as_vendor_id=0, $amount="", $button
 * @param
 * @return string 
 */ 
-function getCategoriesTableCheck($table){
-    $table_body=getCategoriesStructTableCheck(0, $table, "", "");
+function getCategoriesTableCheck($table, $product_id=0){
+    $categories_arr = getCategoriesCheckArray($product_id);
+    $table_body=getCategoriesStructTableCheck(0, $table, "", "", $categories_arr);
     $table = "<h3>У вас пока нет ни одной категории в интернет-магазине.</h3>";
     if(strlen(trim($table_body))>0){
         $table="
@@ -267,9 +268,9 @@ function getCategoriesTableCheck($table){
 * @param int $id, string $table, int $hierarchy string $nbsp
 * @return string 
 */ 
-function getCategoriesStructTableCheck($parent_id, $table, $hierarchy, $nbsp){
+function getCategoriesStructTableCheck($parent_id, $table, $hierarchy, $nbsp, $categories_arr=  array()){
     $st="";
-    $nbsp.="&nbsp;&nbsp;";
+    $nbsp.="&nbsp;&nbsp;";    
     try{        
         $res = DB::mysqliQuery(AS_DATABASE_SITE,"
             SELECT *   
@@ -287,19 +288,50 @@ function getCategoriesStructTableCheck($parent_id, $table, $hierarchy, $nbsp){
     else{	     
         while($row = $res->fetch_assoc()){   
             $time_hierarchy="";			
-            $time_hierarchy=$hierarchy.$row['hierarchy']."."; 
+            $time_hierarchy=$hierarchy.$row['hierarchy'].".";
+            $cheched="";
+            if(in_array($row['id'], $categories_arr)){
+                $cheched="checked";
+            }
             $st.="
             <tr>   
                 <td>
-                    <input type='checkbox' name='categoriesChecked[]' value='".$row['id']."' class='form-multiple-choice__checkbox_check-id-".$row['id']."' data-text='".$row['name']."' />
+                    <input type='checkbox' name='categoriesChecked[]' value='".$row['id']."' class='form-multiple-choice__checkbox_check-id-".$row['id']."' data-text='".$row['name']."' ".$cheched."/>
                 </td>
                 <td align='left'>".$nbsp.$nbsp.$time_hierarchy." ".$row['name']."</td>                
             </tr>
             ";
-            $st.=getCategoriesStructTableCheck($row['id'], $table, $time_hierarchy, $nbsp);
+            $st.=getCategoriesStructTableCheck($row['id'], $table, $time_hierarchy, $nbsp, $categories_arr);
         }
         return $st;
     }
+}
+/** 
+* Функция получения массива категорий товара
+* function get products category id array
+* @param int $product_id
+* @return array 
+*/ 
+function getCategoriesCheckArray($product_id){
+    $categories_array=array();
+    if($product_id>0){
+        try{        
+            $res = DB::mysqliQuery(AS_DATABASE_SITE,"
+                SELECT `as_catalog_id`   
+                FROM `". AS_DBPREFIX ."product_categories` 
+                WHERE `as_products_id`='".  check_form($product_id)."' && `main_category_set`!=1 "  
+                    );        
+        }
+        catch (ExceptionDataBase $edb){
+            throw new ExceptionDataBase("Ошибка в запросе к базе данных",2, $edb);
+        }    
+        if($res->num_rows > 0){	     
+            while($row = $res->fetch_array()){   
+                $categories_array[]=$row[0];
+            }        
+        }
+    }
+    return $categories_array;
 }
 
 /** 
@@ -344,4 +376,38 @@ function getVendorTableCheck(){
             </table>";        
     }
     return $table;
+}
+/** 
+* Функция получения id основной категории товара
+* Function get product main category id
+* @param
+* @return string 
+*/ 
+function getProductMainCategoryId($poduct_id){ 
+    $category_id=0;
+    if($poduct_id*1>0){        
+        try{     
+            $res = DB::mysqliQuery(AS_DATABASE_SITE,"
+                SELECT 
+                    as_catalog_id
+                FROM 
+                    ". AS_DBPREFIX ."product_categories
+                WHERE
+                    as_products_id=".  check_form($poduct_id)." && main_category_set=1                  
+                "  
+            );             
+        }
+        catch (ExceptionDataBase $edb){
+            throw new ExceptionDataBase("Ошибка в запросе к базе данных",2, $edb);
+        }
+        $num_rows = $res->num_rows;
+        if($num_rows==1){
+            $row = $res->fetch_array();
+            $category_id = $row[0];
+        }
+        else{
+            throw new ExceptionFiles("При запросе главной категории продукта получено более одного ответа или ноль");
+        }
+    }    
+    return $category_id;
 }

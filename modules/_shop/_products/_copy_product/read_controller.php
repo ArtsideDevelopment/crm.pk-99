@@ -27,7 +27,7 @@
        include_once AS_ROOT .'libs/form_func.php';
        include_once AS_ROOT .'libs/shop_func.php';
        $product_id = isset($_GET['product_id']) ? $_GET['product_id'] : 0;
-       $copy_prefix="";
+       $copy_prefix="Copy-";
        $CONTENT= DB::getTableArray(AS_DATABASE_SITE, "products", $product_id);
        $as_status = getSelectBlock(AS_DATABASE_SITE, "status", "name", "as_status_id", $CONTENT['as_status_id']);
        $main_category_id = getProductMainCategoryId($product_id);

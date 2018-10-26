@@ -1,7 +1,7 @@
 <div class="form-row">
     <div class="form-input">
         <div class="form-group">
-            <input type="text" required="required" name="name" id="name" class="translit" value="<? echo $CONTENT['name']; ?>"/>
+            <input type="text" required="required" name="name" id="name" class="translit" value="<? echo $copy_prefix; ?><? echo $CONTENT['name']; ?>"/>
             <label class="control-label" for="name">Название товара*</label><i class="bar"></i>
             <!--<a href="javascript:void(null);" onClick="xajax_Modal_Dialog_Open(0);">Вызвать окно</a>-->
             <div class="form_error" id="form_error_name"></div>
@@ -12,8 +12,8 @@
 <div class="form-row">
     <div class="form-input">
         <div class="form-group">
-            <input type="text" required="required" name="alias" id="alias" value="<? echo $CONTENT['alias']; ?>"/>
-            <label class="control-label" for="alias">Алиас товара</label><i class="bar"></i>
+            <input type="text" required="required" name="alias" id="alias" value="<? echo $copy_prefix; ?><? echo $CONTENT['alias']; ?>"/>
+            <label class="control-label" for="alias">Алиас товара*</label><i class="bar"></i>
             <div class="form_error" id="form_error_alias"></div>
         </div> 
     </div>
@@ -68,13 +68,13 @@
 <div class="form-row">
     <div class="form-input-25">
         <div class="form-group">
-            <input type="text" name="vendor_code" id="vendor_code" value="<? echo $CONTENT['vendor_code']; ?>"/>
+            <input type="text" name="vendor_code" required="required" id="vendor_code" value="<? echo $CONTENT['vendor_code']; ?>"/>
             <label class="control-label" for="vendor_code">Артикул</label><i class="bar"></i>
         </div> 
     </div>
     <div class="form-input-25">
         <div class="form-group">
-            <input type="text" name="1c" id="1c" value="<? echo $CONTENT['1c']; ?>"/>
+            <input type="text" name="1c" id="1c" required="required" value="<? echo $CONTENT['1c']; ?>"/>
             <label class="control-label" for="1c">1С</label><i class="bar"></i>
         </div> 
     </div>
@@ -83,13 +83,13 @@
 <div class="form-row">
     <div class="form-input-25">
         <div class="form-group">
-            <input type="text" name="amount" id="vamount" value="<? echo $CONTENT['amount']; ?>"/>
+            <input type="text" name="amount" required="required" id="vamount" value="<? echo $CONTENT['amount']; ?>"/>
             <label class="control-label" for="amount">Количество единиц</label><i class="bar"></i>
         </div> 
     </div>
     <div class="form-input-25">
         <div class="form-group">
-            <input type="text" name="unit" id="unit" value="<? echo $CONTENT['unit']; ?>"/>
+            <input type="text" name="unit" id="unit" required="required" value="<? echo $CONTENT['unit']; ?>"/>
             <label class="control-label" for="unit">Единица измерения</label><i class="bar"></i>
         </div> 
     </div>
@@ -98,13 +98,13 @@
 <div class="form-row">
     <div class="form-input-25">
         <div class="form-group">
-            <input type="text" name="cost" id="cost" value="<? echo $CONTENT['cost']; ?>"/>
+            <input type="text" name="cost" required="required" id="cost" value="<? echo $CONTENT['cost']; ?>"/>
             <label class="control-label" for="cost">Цена</label><i class="bar"></i>
         </div> 
     </div>
     <div class="form-input-25">
         <div class="form-group">
-            <input type="text" name="cost_old" id="cost_old" value="<? echo $CONTENT['cost_old']; ?>"/>
+            <input type="text" name="cost_old" required="required" id="cost_old" value="<? echo $CONTENT['cost_old']; ?>"/>
             <label class="control-label" for="cost_old">Зачеркнутая цена</label><i class="bar"></i>
         </div> 
     </div>
@@ -125,7 +125,7 @@
 <div class="form-row">
     <div class="form-input">
         <div class="form-group">
-            <input type="text" name="button_link_text" id="button_link_text" value="<? echo $CONTENT['button_link_text']; ?>"/>
+            <input type="text" name="button_link_text" required="required" id="button_link_text" value="<? echo $CONTENT['button_link_text']; ?>"/>
             <label class="control-label" for="button_link_text">Текст ссылки под кнопкой Купить</label><i class="bar"></i>           
         </div> 
     </div>
@@ -135,7 +135,7 @@
 <div class="form-row">
     <div class="form-input">
         <div class="form-group">
-            <input type="text" name="button_link" id="button_link" value="<? echo $CONTENT['button_link']; ?>"/>
+            <input type="text" name="button_link" required="required" id="button_link" value="<? echo $CONTENT['button_link']; ?>"/>
             <label class="control-label" for="button_link">Cсылка под кнопкой Купить</label><i class="bar"></i>           
         </div> 
     </div>
@@ -152,7 +152,7 @@
 <div class="form-row">
     <div class="form-input">
         <div class="form-group">
-            <input type="text" name="mail_text" id="mail_text" value="<? echo $CONTENT['mail_text']; ?>"/>
+            <input type="text" name="mail_text" required="required" id="mail_text" value="<? echo $CONTENT['mail_text']; ?>"/>
             <label class="control-label" for="mail_text">Поле в письме клиенту:</label><i class="bar"></i>           
         </div> 
     </div>

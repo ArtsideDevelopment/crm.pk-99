@@ -13,7 +13,7 @@
 <div class="form-row">
     <div class="form-input">
         <div class="form-group">
-            <textarea name="meta_keywords" id="meta_keywords"><? echo $CONTENT['meta_keywords']; ?></textarea>
+            <textarea name="meta_keywords" required="required" id="meta_keywords"><? echo $CONTENT['meta_keywords']; ?></textarea>
             <label class="control-label" for="meta_keywords">Meta-keywords:</label><i class="bar"></i>
         </div> 
     </div>    
@@ -21,7 +21,7 @@
 <div class="form-row">
     <div class="form-input">
         <div class="form-group">
-            <textarea name="meta_description" id="meta_description"><? echo $CONTENT['meta_description']; ?></textarea>
+            <textarea name="meta_description" required="required" id="meta_description"><? echo $CONTENT['meta_description']; ?></textarea>
             <label class="control-label" for="meta_description">Meta-description:</label><i class="bar"></i>
         </div> 
     </div>    

@@ -46,12 +46,13 @@ function Add_Product($Id)
           * insert categories     
           */ 
           // Основная категория
-          if($Id['as_main_category_id']*1>0){
+          $main_category_id = check_form($Id['as_main_category_id']);
+          if($main_category_id*1>0){
                 $res = DB::mysqliQuery(AS_DATABASE_SITE,"
                     INSERT 
                     INTO ". AS_DBPREFIX ."product_categories 
                     SET
-                        as_catalog_id= ".  check_form($Id['as_main_category_id']).",
+                        as_catalog_id= ". $main_category_id .",
                         as_products_id= ".$product_id.",
                         main_category_set=1    
                     "  
@@ -62,7 +63,9 @@ function Add_Product($Id)
             $categories_checked = $Id['categoriesChecked'];
             $query="";            
             foreach ($categories_checked as $category_id) {
-                $query.="(".$category_id.", ".$product_id."),";
+                if($main_category_id!==$category_id){
+                    $query.="(".$category_id.", ".$product_id."),";
+                }
             }    
             $res = DB::mysqliQuery(AS_DATABASE_SITE,"
                 INSERT 
@@ -84,6 +87,9 @@ function Add_Product($Id)
   } 
   else{
       $all_error="Проверьте правильность заполнения полей отмеченных *. ";
+      $dialog_msg = DialogMessages::validation_error;
+      $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+      $objResponse->call("ModalDialog.show('notice')");
   }
   $objResponse->assign("all_error","innerHTML", $all_error);
   return $objResponse;
@@ -132,7 +138,50 @@ function Edit_Product($Id)
                WHERE
                    `id`=".$product_id."
                ");         
-          
+          /*
+          * Добавляем категории
+          * insert categories     
+          */ 
+          // удаляем все предыдущие значения
+          $res_del = DB::mysqliQuery(AS_DATABASE_SITE,"
+                DELETE                 
+                FROM 
+                    ". AS_DBPREFIX ."product_categories               
+                WHERE
+                    `as_products_id`=".$product_id." 
+                "  
+            ); 
+          // Основная категория
+          $main_category_id = check_form($Id['as_main_category_id']);
+          if($main_category_id*1>0){
+                $res = DB::mysqliQuery(AS_DATABASE_SITE,"
+                    INSERT 
+                    INTO ". AS_DBPREFIX ."product_categories 
+                    SET
+                        as_catalog_id= ". $main_category_id .",
+                        as_products_id= ".$product_id.",
+                        main_category_set=1    
+                    "  
+                ); 
+          }
+          // Дополнительные категории
+          if(isset($Id['categoriesChecked'])){
+            $categories_checked = $Id['categoriesChecked'];
+            $query="";            
+            foreach ($categories_checked as $category_id) {
+                if($main_category_id!==$category_id){
+                    $query.="(".$category_id.", ".$product_id."),";
+                }
+            }    
+            $res = DB::mysqliQuery(AS_DATABASE_SITE,"
+                INSERT 
+                INTO ". AS_DBPREFIX ."product_categories 
+                    (as_catalog_id, as_products_id)
+                VALUES
+                    ".trim(check_form($query), ",").";
+                "  
+            );                                
+          }          
           /*--------------------------------------*/
           $dialog_msg= DB::GetSuccessExeption('success');
           $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
@@ -146,6 +195,9 @@ function Edit_Product($Id)
   }
   else{
       $all_error="Проверьте правильность заполнения полей, отмеченных *. ";
+      $dialog_msg = DialogMessages::validation_error;
+      $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+      $objResponse->call("ModalDialog.show('notice')");
   }
   $objResponse->assign("all_error","innerHTML", $all_error);
   return $objResponse;

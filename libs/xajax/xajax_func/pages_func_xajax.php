@@ -82,8 +82,8 @@ function Add_Page($Id)
                   `priority`=0.8
               ");
           $dialog_msg= DB::GetSuccessExeption('success');
-          $objResponse->assign("modal_content_replace","innerHTML",  $dialog_msg);
-          $objResponse->call("modal_dialog_show");
+          $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+          $objResponse->call("ModalDialog.show('notice')");
       }
       catch (ExceptionDataBase $edb){
           $edb->HandleExeption(__FILE__."->".__FUNCTION__."->".__LINE__);
@@ -215,8 +215,8 @@ function Edit_Page($Id)
           }      
           /*--------------------------------------*/
           $dialog_msg= DB::GetSuccessExeption('success');
-          $objResponse->assign("modal_content_replace","innerHTML",  $dialog_msg);
-          $objResponse->call("modal_dialog_show");
+          $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+          $objResponse->call("ModalDialog.show('notice')");
       }
       catch (ExceptionDataBase $edb){
           $edb->HandleExeption(__FILE__."->".__FUNCTION__."->".__LINE__);
@@ -349,8 +349,8 @@ function Edit_Page_Script_Free($Id)
           }      
           /*--------------------------------------*/
           $dialog_msg= DB::GetSuccessExeption('success');
-          $objResponse->assign("modal_content_replace","innerHTML",  $dialog_msg);
-          $objResponse->call("modal_dialog_show");
+          $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+          $objResponse->call("ModalDialog.show('notice')");
       }
       catch (ExceptionDataBase $edb){
           $edb->HandleExeption(__FILE__."->".__FUNCTION__."->".__LINE__);

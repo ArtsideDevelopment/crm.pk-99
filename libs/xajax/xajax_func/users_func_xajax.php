@@ -50,8 +50,8 @@ function Add_User($Id)
       $name=$Id['name']." ".$Id['patronymic'];      
       $mail = new UserRegistration('no-reply', $user_mail);
       $mail->sendUserConfirmMail($user_id, $name, $hash);
-      $objResponse->assign("modal_content_replace","innerHTML",  $dialog_msg);
-      $objResponse->call("modal_dialog_show");
+      $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+      $objResponse->call("ModalDialog.show('notice')");
   } 
   else{
       $all_error="Проверьте правильность заполнения полей отмеченных *. ";
@@ -95,8 +95,8 @@ function Edit_User($Id)
           $edb->HandleExeption(__FILE__."->".__FUNCTION__."->".__LINE__);
           $dialog_msg = $edb->GetNoticeExeption("save_error");
       }       
-      $objResponse->assign("modal_content_replace","innerHTML",  $dialog_msg);
-      $objResponse->call("modal_dialog_show");
+      $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+      $objResponse->call("ModalDialog.show('notice')");
   } 
   else{
       $all_error="Проверьте правильность заполнения полей отмеченных *. ";
@@ -138,8 +138,8 @@ function Delete_User($Id)
       $dialog_msg="<h3>Ошибка!</h3>
               <p>В процессе удаления что-то пошло не так!</p>";
   }
-  $objResponse->assign("modal_content_replace","innerHTML",  $dialog_msg);
-  $objResponse->call("modal_dialog_show");
+  $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+  $objResponse->call("ModalDialog.show('notice')");
   return $objResponse;
 }
 /* 
@@ -477,7 +477,7 @@ function Delete_Img_Log($Id)
       $dialog_msg="<h3>Ошибка!</h3>
               <p>В процессе удаления что-то пошло не так!</p>";
   }
-  $objResponse->assign("modal_content_replace","innerHTML",  $dialog_msg);
-  $objResponse->call("modal_dialog_show");
+  $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+  $objResponse->call("ModalDialog.show('notice')");
   return $objResponse;
 }
