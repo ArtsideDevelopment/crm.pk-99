@@ -52,7 +52,7 @@
 
 <div class="form-row">
     <div class="form-input">
-        <div class="form-group">
+        <div class="form-chosen">
             <? echo $as_select_parent; ?>
             <label class="control-label" for="parent_id">Родитель категории</label><i class="bar"></i>
         </div> 

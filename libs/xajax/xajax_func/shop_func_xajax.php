@@ -421,6 +421,7 @@ function Edit_Category($Id)
   if($errors==0){
       //инициализация переменных      
       $url_path="";
+      $url_prefix="";
       // проверяем все входящие переменные на наличие xss и sql инъекции
       $category_id=check_form($Id['category_id']);
       $parent_id=check_form($Id['parent_id']);
@@ -450,8 +451,11 @@ function Edit_Category($Id)
                    $url_path = trim($row_parent['url_path'], "/"); // удаляем лишние / чтобы сформировать необходимый url
               }
           }
+          else{
+              $url_prefix="catalog/";
+          }
           // формируем url адрес текущей страницы
-          $url_path=trim($url_path."/".$alias, "/"); // удаляем лишние / он появляется если parent_id = 0 
+          $url_path=$url_prefix.trim($url_path."/".$alias, "/"); // удаляем лишние / он появляется если parent_id = 0 
           /*----------------------------------------
           * Проверяем изменился ли родитель страницы
           * check parent page    
