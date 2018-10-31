@@ -12,8 +12,30 @@
     @include button($blue-dark, $font-size);
     margin: $margin-t-b 0px;
 }
+.border-button{
+    @include border-button($gray, $gray-light, $font-size);
+    margin: $margin-t-b 0px;
+}
 .clear{
     content: '';
     display: block;
     clear: both;
+}
+.floating-block-bottom{
+    width: 100%;   
+    padding-left: $sidebar-width+$page-content-padding;
+    padding-right: $page-content-padding;
+    position: fixed;     
+    bottom: 0px;
+    left: 0px;
+    z-index:999;
+    &__block{
+        background: $bg-color;
+        //@extend .shadow;
+        border-top: 1px solid $gray-light;
+        input, a{
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
+    }
 }

@@ -1,7 +1,7 @@
 <div class="form-row">
     <div class="form-input">
         <div class="form-group">
-            <input type="text" required="required" name="name" id="name" class="translit" value="<? echo $copy_prefix; ?><? echo $CONTENT['name']; ?>"/>
+            <input type="text" required="required" name="name" id="name" class="<? echo $tranlit_class; ?>" value="<? echo $copy_prefix; ?><? echo $CONTENT['name']; ?>"/>
             <label class="control-label" for="name">Название товара*</label><i class="bar"></i>
             <!--<a href="javascript:void(null);" onClick="xajax_Modal_Dialog_Open(0);">Вызвать окно</a>-->
             <div class="form_error" id="form_error_name"></div>
@@ -159,4 +159,3 @@
     <div class="form-description">        
     </div>
 </div> 
-<input type="submit" name="send_form" id="send_form" class="button" value="Сохранить" />

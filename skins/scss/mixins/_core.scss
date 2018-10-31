@@ -62,8 +62,8 @@
     border: 2px solid $color;
     color: #fff;
     text-transform:uppercase;
-    font-size: $size;
-    padding: 15px 30px;
+    font-size: $size - 2px;
+    padding: 12px 20px;
     margin: 0px;
     cursor: pointer;
     text-decoration: none;
@@ -79,6 +79,31 @@
     }       
     &:active {
         @include box-shadow(rgba(black, 0) 0 3px 4px 1px, rgba(black, 0) 0 1px 2px 1px);
+    }    
+     
+}
+@mixin border-button ($color, $border-color, $size) {       
+    text-align: center;
+    background-color: none;
+    border: 2px solid $border-color;
+    color: $color;
+    text-transform:uppercase;
+    font-size: $size - 2px;
+    padding: 8px 20px;
+    margin: 0px;
+    cursor: pointer;
+    text-decoration: none;
+    @include transition(all .5s ease-out);
+    display: inline-block;
+    font-weight: normal;  
+    &:hover{            
+        background-color: rgba($border-color, 0.2);
+        border: 2px solid darken($border-color,20%);
+        color: $color;
+        text-decoration: none;
+    }       
+    &:active {
+       
     }    
      
 }

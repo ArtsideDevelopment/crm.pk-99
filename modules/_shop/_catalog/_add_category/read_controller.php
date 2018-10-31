@@ -34,7 +34,8 @@
        // Переменная для безопасности работы uploadifive
        $timestamp = time();
        $token=md5('as_salt' . $timestamp);
-       $alias_old = "";
+       $alias_old = "";  
+       $tranlit_class = "translit";
    }
    else{
        Router::routeAccessDenied();

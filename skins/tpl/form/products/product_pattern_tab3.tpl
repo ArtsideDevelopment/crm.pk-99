@@ -33,4 +33,3 @@
         </label>
     </div>
 </div>
-<input type="submit" name="send_form" id="send_form" class="button" value="Сохранить" />

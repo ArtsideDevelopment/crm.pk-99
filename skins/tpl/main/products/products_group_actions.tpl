@@ -1,4 +1,5 @@
-<div class="row">
+<div class="floating-block-bottom">
+    <div class="row floating-block-bottom__block">
         <div class="col-8">
             <div class="form-group">
                 <select id="products_actions" name="products_actions">
@@ -27,4 +28,5 @@
             </div>                
         </div>
         <div class="col-4"><input type="submit" name="send_form" id="send_form" class="button" value="Применить" /></div>
-    </div>      
+    </div>   
+</div>

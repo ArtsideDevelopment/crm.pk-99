@@ -57,7 +57,7 @@ body {
           margin: 20px 0px;
       }
       margin: ($header-height) 0px 0px $sidebar-width;
-      padding: $t-b-padding $page-content-padding;
+      padding: $t-b-padding $page-content-padding 0px $page-content-padding;
       .page-header{
           margin-bottom: $margin-t-b;
           .page-header-left{
@@ -82,12 +82,12 @@ body {
   .as-card{
       background-color: $white;
       @extend .card-shadow;
-      padding: $card-padding ($card-padding+10);
+      padding: $card-padding ($card-padding+10) ($card-padding+40) ($card-padding+10);
   }
   .as-table-card{
       background-color: $white;
       @extend .card-shadow;
-      padding: 0;
+      padding: 0 0 ($card-padding+90) 0;
       table{
           th, td{              
               line-height: $t-line-height;              

@@ -62,11 +62,12 @@ function getCategoriesStructTable($parent_id, $table, $hierarchy, $nbsp){
             $time_hierarchy=$hierarchy.$row['hierarchy']."."; 
             $st.="
             <tr>                    
-                <td align='left'>".$nbsp.$time_hierarchy." ".$row['name']."</td>
+                <td align='left'>".$nbsp.$time_hierarchy." ".$row['name']."
+                    <div>".$nbsp."<a href='/shop/catalog/edit-category?category_id=".$row['id']."' class='btn btn-default' target='_blank'><i class='icon-note'></i> редактировать</a></div></td>
                 <td align='left'><a href='".AS_SITE.$row['url_path']."' target='_blank'>".$row['url_path']."</a></td>                    
                 <td align='center'>                    
                     <a href='javascript:void(null);' onclick='if (confirm(\"Вы действительно хотите удалить категорию?\")) xajax_Delete_Category(".$row['id']."); return false;' class='btn btn-danger'><i class='icon-trash'></i></a>
-                    <a href='/shop/catalog/edit-category?category_id=".$row['id']."' class='btn btn-default' target='_blank'><i class='icon-note'></i></a>                   
+                                       
                 </td>
             </tr>
             ";

@@ -38,6 +38,7 @@
        $timestamp = time();
        $token=md5('as_salt' . $timestamp);
        $img = "";
+       $tranlit_class="tranlit";
    }
    else{
        Router::routeAccessDenied();

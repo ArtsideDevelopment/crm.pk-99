@@ -32,12 +32,14 @@ function handleOutText($text_out, $folder, $url="", $url_old=""){
     $search = array(
         'highslide',
         'return hs.expand(this)',
-        '../uploads/'
+        '../../',
+        '../'
     );
     $replace= array(
         'pk-gallery',
         '',
-        AS_HOST.'uploads/'
+        '/',
+        '/'
     );
     return str_replace($search, $replace, $text_handled); 
     //return $text_handled; 
@@ -366,12 +368,12 @@ function handleText($text){
         $text_handled = createGallery($text_handled, $link_replace_array, $img_replace_arr);
     }
     $search = array(        
-        '../uploads/',
-        '../uploads_thumbs/'
+        '../../',
+        '../'
     );
     $replace_host= array(        
-        AS_HOST.'uploads/',
-        AS_HOST.'uploads_thumbs/'
+       '/',
+        '/'
     );    
     //dbg($text_handled);
     return str_replace($search, $replace_host, $text_handled);

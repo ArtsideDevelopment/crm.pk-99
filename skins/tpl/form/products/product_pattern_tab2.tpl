@@ -48,4 +48,3 @@
         <textarea name="description" id="description" class="tinymce"><? echo $CONTENT['description']; ?></textarea>        
     </div>   
 </div>
-<input type="submit" name="send_form" id="send_form" class="button" value="Сохранить" />

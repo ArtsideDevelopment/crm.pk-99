@@ -85,3 +85,13 @@ function ouputLogFile($file, $file_header, $file_info){
 function formatStrToNumber($numb){
     return str_ireplace(' ', '', str_ireplace(',', '.', $numb));
 }
+/** 
+* Функция формирования кнопки просмотра
+* Function get preview butyon
+* @param string $date
+* @return string 
+*/ 
+function getPreviewButton($url_path){
+    $button = '<a href="'.trim(AS_SITE, '/').'/'.$url_path.'" target="_blank" class="border-button"><i class="icon-link"></i> &nbsp;Предпросмотр</a>';
+    return $button;
+}

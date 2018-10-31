@@ -44,7 +44,7 @@ body {
         display: none; 
         overflow: hidden;
         width: 100%;
-        padding: 25px;  
+        padding: $card-padding ($card-padding+10) ($card-padding+40) ($card-padding+10);;  
         position: absolute;
         text-transform: none;
         top: 58px;

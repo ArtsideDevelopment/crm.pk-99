@@ -79,7 +79,6 @@
 <p>&nbsp;</p>
 
 <form id="FormProductsGroupActions" action="javascript:void(null);" onSubmit="xajax_Products_Actions(xajax.getFormValues('FormProductsGroupActions'));">
-    <?php include 'skins/tpl/main/products/products_group_actions.tpl'; ?>
     <div class="as-table-card" id="products_table_replace">    
         <?php echo $products_table;?>      
     </div>

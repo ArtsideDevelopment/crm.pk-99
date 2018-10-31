@@ -83,6 +83,8 @@ function Add_Page($Id)
               ");
           $dialog_msg= DB::GetSuccessExeption('success');
           $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+          $preview_btn = getPreviewButton($url_path);
+          $objResponse->assign("preview_btn_replace","innerHTML",  $preview_btn);
           $objResponse->call("ModalDialog.show('notice')");
       }
       catch (ExceptionDataBase $edb){
@@ -216,6 +218,8 @@ function Edit_Page($Id)
           /*--------------------------------------*/
           $dialog_msg= DB::GetSuccessExeption('success');
           $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+          $preview_btn = getPreviewButton($url_path);
+          $objResponse->assign("preview_btn_replace","innerHTML",  $preview_btn);
           $objResponse->call("ModalDialog.show('notice')");
       }
       catch (ExceptionDataBase $edb){
@@ -350,6 +354,8 @@ function Edit_Page_Script_Free($Id)
           /*--------------------------------------*/
           $dialog_msg= DB::GetSuccessExeption('success');
           $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+          $preview_btn = getPreviewButton($url_path);
+          $objResponse->assign("preview_btn_replace","innerHTML",  $preview_btn);
           $objResponse->call("ModalDialog.show('notice')");
       }
       catch (ExceptionDataBase $edb){

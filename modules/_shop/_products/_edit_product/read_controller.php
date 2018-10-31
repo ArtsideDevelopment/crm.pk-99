@@ -40,6 +40,7 @@
        $timestamp = time();
        $token=md5('as_salt' . $timestamp);
        $alias_old = $CONTENT['alias'];
+       $tranlit_class="no_tranlit";
    }
    else{
        Router::routeAccessDenied();

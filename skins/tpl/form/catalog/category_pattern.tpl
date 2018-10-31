@@ -5,7 +5,7 @@
 <div class="form-row">
     <div class="form-input">
         <div class="form-group">
-            <input type="text" required="required" name="name" id="name" class="translit" value="<? echo $CONTENT['name']; ?>"/>
+            <input type="text" required="required" name="name" id="name" class="<? echo $tranlit_class; ?>" value="<? echo $CONTENT['name']; ?>"/>
             <label class="control-label" for="name">Название категории*</label><i class="bar"></i>
             <div class="form_error" id="form_error_name"></div>
         </div> 

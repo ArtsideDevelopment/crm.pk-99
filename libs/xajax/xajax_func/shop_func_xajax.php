@@ -78,6 +78,8 @@ function Add_Product($Id)
           }          
           $dialog_msg= DB::GetSuccessExeption('success');
           $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+          $preview_btn = getPreviewButton($url_path);
+          $objResponse->assign("preview_btn_replace","innerHTML",  $preview_btn);
           $objResponse->call("ModalDialog.show('notice')");
       }
       catch (ExceptionDataBase $edb){
@@ -185,6 +187,8 @@ function Edit_Product($Id)
           /*--------------------------------------*/
           $dialog_msg= DB::GetSuccessExeption('success');
           $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+          $preview_btn = getPreviewButton($url_path);
+          $objResponse->assign("preview_btn_replace","innerHTML",  $preview_btn);
           $objResponse->call("ModalDialog.show('notice')");
       }
       catch (ExceptionDataBase $edb){
@@ -337,6 +341,8 @@ function Add_Category($Id)
               ");
           $dialog_msg= DB::GetSuccessExeption('success');
           $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+          $preview_btn = getPreviewButton($url_path);
+          $objResponse->assign("preview_btn_replace","innerHTML",  $preview_btn);
           $objResponse->call("ModalDialog.show('notice')");
       }
       catch (ExceptionDataBase $edb){
@@ -428,8 +434,11 @@ function Edit_Category($Id)
       $parent_id_old=check_form($Id['parent_id_old']);
       $hierarchy_old=check_form($Id['hierarchy_old']);
       $alias=str_replace(" ", "-", strtolower(trim(trim(check_form($Id['alias'])),"/")));
-      $content = check_form(str_replace('../uploads/', AS_HOST.'uploads/', $Id['content']));
-      $content_bottom = check_form(str_replace('../uploads/', AS_HOST.'uploads/', $Id['content_bottom']));
+      require_once(AS_ROOT .'libs/uploads_func.php');
+      $content = check_form(handleOutText($Id['content'], 'categories/transfer', $url_path, $Id['url_path_old']));
+      $content_bottom = check_form(handleOutText($Id['content_bottom'], 'categories/transfer', $url_path, $Id['url_path_old']));
+      //$content = check_form(str_replace('../uploads/', AS_HOST.'uploads/', $Id['content']));
+      //$content_bottom = check_form(str_replace('../uploads/', AS_HOST.'uploads/', $Id['content_bottom']));
       //$content = $Id['content'];
       /*----------------------------------------
       * Формируем url адрес страницы
@@ -525,8 +534,151 @@ function Edit_Category($Id)
                    ");
           }      
           /*--------------------------------------*/
-          $dialog_msg= DB::GetSuccessExeption('success');
+          $dialog_msg= DB::GetSuccessExeption('success');          
           $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+          $preview_btn = getPreviewButton($url_path);
+          $objResponse->assign("preview_btn_replace","innerHTML",  $preview_btn);
+          $objResponse->call("ModalDialog.show('notice')");
+      }
+      catch (ExceptionDataBase $edb){
+          $edb->HandleExeption(__FILE__."->".__FUNCTION__."->".__LINE__);
+          $dialog_msg = $edb->GetNoticeExeption("save_error");
+      }
+      
+  }
+  else{
+      $all_error="Проверьте правильность заполнения полей, отмеченных *. ";
+  }
+  $objResponse->assign("all_error","innerHTML", $all_error);
+  return $objResponse;
+}
+/* 
+* Функция редактирования категории без использования скрипта 
+* Function to edit a category 
+* @param array $Id 
+* @return xajaxResponse 
+*/ 
+function Edit_Category_Script_Free($Id)
+{
+  $objResponse = new xajaxResponse();
+  // подключаем необходимые библиотеки
+  require_once(AS_ROOT .'libs/query_set.php');
+  require_once(AS_ROOT .'libs/query_variables/query_category.php');
+  // Подключаем проверку заполнения полей
+  $all_error="";
+  include_once AS_ROOT .'libs/check/check_category.php';   
+  if($errors==0){
+      //инициализация переменных      
+      $url_path="";
+      $url_prefix="";
+      // проверяем все входящие переменные на наличие xss и sql инъекции
+      $category_id=check_form($Id['category_id']);
+      $parent_id=check_form($Id['parent_id']);
+      $parent_id_old=check_form($Id['parent_id_old']);
+      $hierarchy_old=check_form($Id['hierarchy_old']);
+      $alias=str_replace(" ", "-", strtolower(trim(trim(check_form($Id['alias'])),"/")));
+      require_once(AS_ROOT .'libs/uploads_func.php');
+      $content = check_form(handleText($Id['content']));
+      $content_bottom = check_form(handleText($Id['content_bottom']));
+      //$content = $Id['content'];
+      /*----------------------------------------
+      * Формируем url адрес страницы
+      * get url of new page   
+      -----------------------------------------*/
+      try {
+          // находим url адрес родителя для построения текущего url адреса страницы      
+          if($parent_id*1>0){
+              $res_parent = DB::mysqliQuery(AS_DATABASE_SITE, "
+                  SELECT 
+                      `url_path` 
+                  FROM
+                      `". AS_DBPREFIX ."catalog` 
+                  WHERE  
+                      `id`=".$parent_id." 
+                  "); 
+              if($res_parent->num_rows>0){
+                   $row_parent = $res_parent->fetch_array();
+                   $url_path = trim($row_parent['url_path'], "/"); // удаляем лишние / чтобы сформировать необходимый url
+              }
+          }
+          else{
+              $url_prefix="catalog/";
+          }
+          // формируем url адрес текущей страницы
+          $url_path=$url_prefix.trim($url_path."/".$alias, "/"); // удаляем лишние / он появляется если parent_id = 0 
+          /*----------------------------------------
+          * Проверяем изменился ли родитель страницы
+          * check parent page    
+          -----------------------------------------*/ 
+          // родитель изменился
+          if($parent_id!=$parent_id_old){
+              $hierarchy =1;
+              /*
+              * находим максимальное занчение hierarchy, записанное в bd, 
+              * для определения текущего значения hierarchy для редактируемой страницы    
+              */      
+              $res_hierarchy = DB::mysqliQuery(AS_DATABASE_SITE, "
+                  SELECT 
+                      MAX(hierarchy) 
+                  FROM
+                      `". AS_DBPREFIX ."catalog` 
+                  WHERE  
+                      `parent_id`=".$parent_id." 
+                  ");
+              if($res_hierarchy->num_rows>0){
+                  $row_hierarchy = $res_hierarchy->fetch_array();;
+                  $hierarchy=$row_hierarchy[0]+1;
+              }
+              // уменьшаем на 1 иерархию всех страниц являющихся братьями
+              $res_hierarchy = DB::mysqliQuery(AS_DATABASE_SITE,"
+                   UPDATE   
+                       `". AS_DBPREFIX ."catalog` 
+                   SET
+                       hierarchy = hierarchy - 1
+                   WHERE  `parent_id`=".$parent_id_old." && hierarchy>".$hierarchy_old." "  
+                              );
+              /*
+              * Обновляем информацию в базе данных
+              * Update data in db      
+              */ 
+              $res_update = DB::mysqliQuery(AS_DATABASE_SITE,"
+                   UPDATE   
+                       `". AS_DBPREFIX ."catalog` 
+                   SET 
+                       ".m_query($new_category_str, $Id).",
+                       `url_path`='".$url_path."', 
+                       `alias`='".$alias."', 
+                       `hierarchy`=".$hierarchy.",
+                       `content`='".$content."',
+                       `content_bottom`='".$content_bottom."'
+                   WHERE
+                       `id`=".$category_id."
+                   ");
+          }
+          // Родитель не измнился
+          else{ 
+              /*
+              * Обновляем информацию в базе данных
+              * Update data in db      
+              */ 
+              $res_update = DB::mysqliQuery(AS_DATABASE_SITE,"
+                   UPDATE   
+                       `". AS_DBPREFIX ."catalog` 
+                   SET 
+                       ".m_query($new_category_str, $Id).",
+                       `url_path`='".$url_path."', 
+                       `alias`='".$alias."',
+                       `content`='".$content."',
+                       `content_bottom`='".$content_bottom."'
+                   WHERE
+                       `id`=".$category_id."
+                   ");
+          }      
+          /*--------------------------------------*/
+          $dialog_msg= DB::GetSuccessExeption('success');          
+          $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+          $preview_btn = getPreviewButton($url_path);
+          $objResponse->assign("preview_btn_replace","innerHTML",  $preview_btn);
           $objResponse->call("ModalDialog.show('notice')");
       }
       catch (ExceptionDataBase $edb){
