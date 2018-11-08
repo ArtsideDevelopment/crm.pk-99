@@ -17,7 +17,7 @@
     <div class="form-input">
         <div class="form-group">
             <input type="text" required="required" name="alias" id="alias" value="<? echo $CONTENT['alias']; ?>"/>
-            <label class="control-label" for="alias">Алиас категории</label><i class="bar"></i>
+            <label class="control-label" for="alias">Алиас категории*</label><i class="bar"></i>
             <div class="form_error" id="form_error_alias"></div>
         </div> 
     </div>
@@ -41,7 +41,7 @@
     <div class="form-input">
         <div class="form-group">
             <input type="text" required="required" name="category_id_old" id="category_id_old" value="<? echo $CONTENT['category_id_old']; ?>"/>
-            <label class="control-label" for="url_path_old">id категории в старой системе*</label><i class="bar"></i>
+            <label class="control-label" for="url_path_old">id категории в старой системе</label><i class="bar"></i>
             <div class="form_error" id="form_error_category_id_old"></div>
         </div> 
     </div>
@@ -85,7 +85,7 @@
     <div class="form-input">
         <div class="form-group">
             <input type="text" required="required" name="title" id="title" value="<? echo $CONTENT['title']; ?>"/>
-            <label class="control-label" for="title">Заголовок (title):*</label><i class="bar"></i>
+            <label class="control-label" for="title">Заголовок (title):</label><i class="bar"></i>
             <div class="form_error" id="form_error_title"></div>
         </div> 
     </div>

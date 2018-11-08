@@ -4,3 +4,4 @@
     <?php include AS_ROOT.'skins/tpl/form/products/product_pattern.tpl';  ?>
     <?php include AS_ROOT.'skins/tpl/form/for_all/floating_form_btn.tpl';  ?>
 </form>
+<?php include AS_ROOT.'skins/tpl/form/for_all/modal_category_check.tpl';  ?>

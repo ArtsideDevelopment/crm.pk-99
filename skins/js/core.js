@@ -1,8 +1,9 @@
 $(document).ready(function(){
     artside_main_sidebar.init();
-    artside_data_tables.init('.dataTables', true);
+    artside_data_tables.init('.dataTables', true, false);
     ModalDialog.init('categories');
-    artside_data_tables.init('.dataTablesCategories', false);
+    artside_data_tables.init('.dataTablesProduct', false, true);
+    artside_data_tables.init('.dataTablesCategories', false, false);
     MultipleChoise.init();
 });
 // 1. Common functions & variables
@@ -33,11 +34,12 @@ $(document).ready(function(){
     }
     // 1.2 datatables
     var artside_data_tables = {
-        init: function(target, paging) {
+        init: function(target, paging, ordering) {
             if ($(target).length > 0) {
                 $(target).DataTable({
                     "paging":   paging,
-                    "ordering": false,
+                    stateSave: true,
+                    "ordering": ordering,
                     "info":     false,
                     "language": {
                         "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Russian.json"
@@ -73,6 +75,7 @@ $(document).ready(function(){
         show: function(target){
             var oldBodyOuterWidth = $('body').outerWidth();
             $('body').css("overflow", "hidden");
+            $(document).bind('touchmove', false);
             var newBodyOuterWidth = $('body').outerWidth();
             $('body').css('margin-right', (newBodyOuterWidth - oldBodyOuterWidth) + 'px');
             $('.modal-dialog-bg').css({'top':$(window).scrollTop()});

@@ -116,7 +116,8 @@ body {
                       padding: $t-b-padding;
                       font-weight: 400;
                       font-size: $font-size*0.9;
-                      word-break: break-all;
+                      vertical-align: middle;
+                      word-break: break-all;                      
                       .old-cost{
                           text-decoration: line-through;
                       }
@@ -125,6 +126,15 @@ body {
                               font-size: $font-size*0.7;
                           }
                           margin-bottom: 10px;
+                      }
+                      .action-btn{
+                          a{
+                              font-size: $font-size*0.8;
+                              margin-left: 5px;
+                              &:first-child{
+                                  margin: 0px;
+                              }
+                          }
                       }
                   }    
                   i:parent{

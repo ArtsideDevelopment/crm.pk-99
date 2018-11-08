@@ -16,6 +16,9 @@
     @include border-button($gray, $gray-light, $font-size);
     margin: $margin-t-b 0px;
 }
+.round-button{
+    @include round-button($blue-dark, $font-size);
+}
 .clear{
     content: '';
     display: block;

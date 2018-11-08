@@ -25,7 +25,7 @@
     <div class="form-input">
         <div class="form-group">
             <input type="text" required="required" name="url_path_old" id="url_path_old" value="<? echo $CONTENT['url_path_old']; ?>"/>
-            <label class="control-label" for="url_path_old">Старый адрес страницы*</label><i class="bar"></i>
+            <label class="control-label" for="url_path_old">Старый адрес страницы</label><i class="bar"></i>
             <div class="form_error" id="form_error_url_path_old"></div>
         </div> 
     </div>

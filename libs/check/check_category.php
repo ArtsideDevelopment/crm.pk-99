@@ -62,17 +62,22 @@ if(strlen(trim($Id['url_path_old']))==0){
 $objResponse->assign("form_error_url_path_old","innerHTML",$form_error_url_path_old);
 
 // Старый id категории
+/*
 $form_error_category_id_old="";
 if(strlen(trim($Id['category_id_old']))==0){
     $form_error_url_path_old="Поле должно быть заполнено"; 
     $errors++;
 }
 $objResponse->assign("form_error_category_id_old","innerHTML",$form_error_category_id_old);
+ */
 
 // Заголовок страницы
+/*
 $form_error_title="";
 if(strlen(trim($Id['title']))==0){
     $form_error_title="Поле должно быть заполнено"; 
     $errors++;
 }
 $objResponse->assign("form_error_title","innerHTML",$form_error_title);
+ * 
+ */

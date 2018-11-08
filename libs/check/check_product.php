@@ -62,13 +62,14 @@ if($Id['as_main_category_id']*1==0){
 $objResponse->assign("form_error_main_category","innerHTML",$form_error_main_category);
 
 // Старый url адрес
+/*
 $form_error_url_path_old="";
 if(strlen(trim($Id['url_path_old']))==0){
     $form_error_url_path_old="Поле должно быть заполнено"; 
     $errors++;
 }
 $objResponse->assign("form_error_url_path_old","innerHTML",$form_error_url_path_old);
-
+*/
 // Статус
 $form_error_status="";
 if($Id['as_status_id']*1==0){
@@ -78,9 +79,12 @@ if($Id['as_status_id']*1==0){
 $objResponse->assign("form_error_status","innerHTML",$form_error_status);
 
 // Заголовок страницы
+/*
 $form_error_title="";
 if(strlen(trim($Id['title']))==0){
     $form_error_title="Поле должно быть заполнено"; 
     $errors++;
 }
 $objResponse->assign("form_error_title","innerHTML",$form_error_title);
+ * 
+ */

@@ -352,6 +352,9 @@ function Add_Category($Id)
   } 
   else{
       $all_error="Проверьте правильность заполнения полей отмеченных *. ";
+      $dialog_msg = DialogMessages::validation_error;
+      $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+      $objResponse->call("ModalDialog.show('notice')");
   }
   $objResponse->assign("all_error","innerHTML", $all_error);
   return $objResponse;
@@ -394,11 +397,8 @@ function Delete_Category($Id){
                               ); 
             /*-----------------------------------*/
             DB::mysqliCommit();
-            $dialog_msg = DialogMessages::delete_category_success;
-            include_once AS_ROOT .'libs/shop_func.php'; 
-            $categories_table=  getCategoriesTable('catalog');
-            $objResponse->assign("catalog_table_replace", "innerHTML", $categories_table);
-            $objResponse->call("artside_data_tables.init('.dataTables', true)");
+            $dialog_msg = DialogMessages::delete_category_success;            
+            $objResponse->assign("category-id-".$catalog_id, "innerHTML", "");
         }
         catch (ExceptionDataBase $edb){
             $edb->HandleExeption(__FILE__."->".__FUNCTION__."->".__LINE__);

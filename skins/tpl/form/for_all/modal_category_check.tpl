@@ -1,8 +1,3 @@
-<!-- skins/tpl/form/pages/add_page.tpl begin -->
-
-<form id="AddProductForm" action="javascript:void(null);" onSubmit="tinyMCE.triggerSave(false,false); xajax_Add_Product(xajax.getFormValues('AddProductForm'));" novalidate> 
-    <?php include AS_ROOT.'skins/tpl/form/products/product_pattern.tpl';  ?>
-</form>
 <div class="modal-dialog-bg">   
     <!-- Контейнер с контентом внутри модального окна -->
     <div class="modal-dialog form-multiple-choice__modal" id="modal-dialog-categories">

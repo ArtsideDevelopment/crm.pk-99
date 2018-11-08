@@ -20,8 +20,9 @@ function getCategoriesTable($table){
         $table="
             <table width='100%' border='0' cellspacing='0' cellpadding='0' class='dataTables'>
                 <thead>
-                    <tr class='tr_header'>
+                    <tr class='tr_header'>                        
                         <th>Категории интернет-магазина</th>
+                        <th>Иконка</th>
                         <th>Ссылка</th>                        
                         <th>Действия</th>
                     </tr>
@@ -61,9 +62,11 @@ function getCategoriesStructTable($parent_id, $table, $hierarchy, $nbsp){
             $time_hierarchy="";			
             $time_hierarchy=$hierarchy.$row['hierarchy']."."; 
             $st.="
-            <tr>                    
+            <tr id='category-id-".$row['id']."'>   
                 <td align='left'>".$nbsp.$time_hierarchy." ".$row['name']."
-                    <div>".$nbsp."<a href='/shop/catalog/edit-category?category_id=".$row['id']."' class='btn btn-default' target='_blank'><i class='icon-note'></i> редактировать</a></div></td>
+                    <div class='action-btn'>".$nbsp."<a href='/shop/catalog/edit-category?category_id=".$row['id']."' class='btn btn-default' target='_blank'><i class='icon-note'></i> редактировать</a></div>
+                </td>
+                <td align='center'>".getCategoryIcon($row['img'])."</td>
                 <td align='left'><a href='".AS_SITE.$row['url_path']."' target='_blank'>".$row['url_path']."</a></td>                    
                 <td align='center'>                    
                     <a href='javascript:void(null);' onclick='if (confirm(\"Вы действительно хотите удалить категорию?\")) xajax_Delete_Category(".$row['id']."); return false;' class='btn btn-danger'><i class='icon-trash'></i></a>
@@ -75,6 +78,22 @@ function getCategoriesStructTable($parent_id, $table, $hierarchy, $nbsp){
         }
         return $st;
     }
+}
+/** 
+* Функция получения иконки категорий
+* Function get category icon
+* @param
+* @return string 
+*/ 
+function getCategoryIcon($img){
+    $icon = '';
+    if(strlen(trim($img))>0){
+        $icon = '<img width="40" src="'.AS_CATEGORY_IMG_THUMB.$img.'">';
+    }
+    else{
+        $icon = '<i class="icon-picture"></i>';
+    }
+    return $icon;
 }
 /** 
 * Функция получения массива категорий
@@ -175,7 +194,7 @@ function getProductsTable($categories_id=0, $as_vendor_id=0, $amount="", $button
     $num_rows = $res->num_rows;
     if($num_rows>0){
         $table="
-        <table width='100%' border='0' cellspacing='0' cellpadding='0' class='dataTables'>
+        <table width='100%' border='0' cellspacing='0' cellpadding='0' class='dataTablesProduct'>
             <thead>
                 <tr class='tr_header'>
                     <th width='20px'></th>
@@ -203,7 +222,7 @@ function getProductsTable($categories_id=0, $as_vendor_id=0, $amount="", $button
                     <td align='left'>
                         ".$row['name']."
                         <div class='product-url'><a href='".AS_SITE.$row['url_path']."' target='_blank'>".$row['url_path']."</a></div>
-                        <div><a href='/shop/products/edit-product?product_id=".$row['product_id']."' class='btn btn-default' target='_blank'><i class='icon-note'></i> редактировать</a> <a href='/shop/products/copy-product?product_id=".$row['product_id']."' class='btn btn-default' target='_blank'><i class='icon-note'></i> копировать</a></div>
+                        <div class='action-btn'><a href='/shop/products/edit-product?product_id=".$row['product_id']."' class='btn btn-default' target='_blank'><i class='icon-note'></i> редактировать</a> <a href='/shop/products/copy-product?product_id=".$row['product_id']."' class='btn btn-default' target='_blank'><i class='icon-note'></i> копировать</a></div>
                     </td>
                     <td align='left' id='category_".$row['product_id']."'>
                         ".$categories_array[$row['as_catalog_id']]."

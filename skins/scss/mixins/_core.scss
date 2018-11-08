@@ -82,6 +82,34 @@
     }    
      
 }
+@mixin round-button ($color, $size) {
+    @include box-shadow(rgba(black, 0.3) 0 2px 8px 1px, rgba(black, 0) 0 1px 2px 1px);    
+    text-align: center;
+    background-color: $color;
+    border: 2px solid $color;
+    @include border-radius(100px);
+    color: #fff;
+    text-transform:uppercase;
+    font-size: $size - 2px;
+    padding: 12px 20px;
+    margin: 0px;
+    cursor: pointer;
+    text-decoration: none;
+    @include transition(all .5s ease-out);
+    display: inline-block;
+    font-weight: normal;  
+    &:hover{
+        @include box-shadow(rgba(black, 0) 0 2px 8px 1px, rgba(black, 0.4) 0 1px 2px 1px);    
+        background-color: darken($color,10%);
+        border: 2px solid darken($color,10%);
+        color: #fff;
+        text-decoration: none;
+    }       
+    &:active {
+        @include box-shadow(rgba(black, 0) 0 3px 4px 1px, rgba(black, 0) 0 1px 2px 1px);
+    }    
+     
+}
 @mixin border-button ($color, $border-color, $size) {       
     text-align: center;
     background-color: none;
@@ -103,7 +131,10 @@
         text-decoration: none;
     }       
     &:active {
-       
+       border: 2px solid $border-color;
     }    
+    &:visited{
+        border: 2px solid $border-color;
+    }
      
 }
