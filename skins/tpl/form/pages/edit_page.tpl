@@ -5,14 +5,14 @@
         <div class="floating-block-bottom">
             <div class="row floating-block-bottom__block">
                 <div class="col-3">  
-                    <a href="javascript:void(null);" class="border-button" value="Сохранить без использования скрипта" onClick="tinyMCE.triggerSave(false,false); xajax_Edit_Page_Script_Free(xajax.getFormValues('EditPage'));">Сохранить без использования скрипта</a>
+                    <a href="javascript:void(null);" class="button" onClick="tinyMCE.triggerSave(false,false); xajax_Edit_Page_Script_Free(xajax.getFormValues('EditPage'));">Сохранить</a>
                     
                 </div>
                 <div class="col-6">     
-                    <input type="submit" name="send_form" id="send_form" class="button" value="Сохранить со скриптом" />
+                    <input type="submit" name="send_form" id="send_form" class="border-button" value="Сохранить со скриптом" />
                 </div>
                 <div class="col-3" id="preview_btn_replace">     
-
+                    <? echo $preview_btn; ?>
                 </div>
             </div>
         </div>        

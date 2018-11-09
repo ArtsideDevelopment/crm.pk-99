@@ -2,6 +2,7 @@
 <input type="hidden" name="parent_id_old" id="parent_id_old" value="<? echo $CONTENT['parent_id']; ?>"/>
 <input type="hidden" name="alias_old" id="alias_old" value="<? echo $CONTENT['alias']; ?>"/>
 <input type="hidden" name="hierarchy_old" id="hierarchy_old" value="<? echo $CONTENT['hierarchy']; ?>"/>
+<input type="hidden" name="url_path_current" id="url_path_current" value="<? echo $CONTENT['url_path']; ?>"/>
 <div class="form-row">
     <div class="form-input">
         <div class="form-group">
@@ -127,7 +128,8 @@
 </div>
 <div class="form-row">    
     <div class="form-group">
-        <p><strong>Описание под товаром</strong></p>
+        <p><strong>Описание под товаром</strong> &nbsp; &nbsp; &nbsp;<a href="javascript:void(null);" value="Сохранить без использования скрипта" onClick="tinyMCE.triggerSave(false,false); xajax_Edit_Category_Content_Bottom(xajax.getFormValues('EditCategory'));"><i class="icon-plus"></i> Сохранить "Описание под товаром"</a></p>
         <textarea name="content_bottom" id="content_bottom" class="tinymce"><? echo htmlspecialchars_decode($CONTENT['content_bottom']); ?></textarea>        
-    </div>   
+    </div>  
+    <div class="form_error" id="form_error_content_bottom"></div>
 </div>

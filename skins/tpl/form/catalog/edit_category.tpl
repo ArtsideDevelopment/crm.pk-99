@@ -12,7 +12,7 @@
                     <input type="submit" name="send_form" id="send_form" class="border-button" value="Сохранить со скриптом" />       
                 </div>
                 <div class="col-3" id="preview_btn_replace">     
-
+                    <? echo $preview_btn; ?>
                 </div>
             </div>
         </div>       

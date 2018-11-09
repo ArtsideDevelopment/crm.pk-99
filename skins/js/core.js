@@ -2,9 +2,10 @@ $(document).ready(function(){
     artside_main_sidebar.init();
     artside_data_tables.init('.dataTables', true, false);
     ModalDialog.init('categories');
-    artside_data_tables.init('.dataTablesProduct', false, true);
+    artside_data_tables.init('.dataTablesProduct', true, true);
     artside_data_tables.init('.dataTablesCategories', false, false);
     MultipleChoise.init();
+    
 });
 // 1. Common functions & variables
         

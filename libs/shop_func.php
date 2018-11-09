@@ -193,6 +193,7 @@ function getProductsTable($categories_id=0, $as_vendor_id=0, $amount="", $button
     }    
     $num_rows = $res->num_rows;
     if($num_rows>0){
+        
         $table="
         <table width='100%' border='0' cellspacing='0' cellpadding='0' class='dataTablesProduct'>
             <thead>
@@ -215,7 +216,7 @@ function getProductsTable($categories_id=0, $as_vendor_id=0, $amount="", $button
                 $old_cost = $row['cost_old'];
             }
             $table.="
-                <tr>
+                <tr id='product-id-".$row['product_id']."'>
                     <td>
                         <input type='checkbox' name='productsChecked[]' value='".$row['product_id']."' />
                     </td>
@@ -241,7 +242,7 @@ function getProductsTable($categories_id=0, $as_vendor_id=0, $amount="", $button
                         ".$row['amount']."                         
                     </td>
                     <td align='center'>                    
-                        <a href='javascript:void(null);' onclick='if (confirm(\"Вы действительно хотите удалить товар?\")) xajax_Delete_Category(".$row['product_id']."); return false;' class='btn btn-danger'><i class='icon-trash'></i></a>
+                        <a href='javascript:void(null);' onclick='if (confirm(\"Вы действительно хотите удалить товар?\")) xajax_Delete_Product(".$row['product_id']."); return false;' class='btn btn-danger'><i class='icon-trash'></i></a>
                                           
                     </td>
                 </tr>

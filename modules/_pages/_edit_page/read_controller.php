@@ -34,6 +34,7 @@
        $test='<p><a href="../uploads/test/test.jpg"><img src="../uploads/test/test.jpg?1534499008945" alt="" width="300"></a></p>';
        require_once(AS_ROOT .'libs/uploads_func.php');
        //$content = check_form(handleText($test));
+       $preview_btn = getPreviewButton($CONTENT['url_path']);
    }
    else{
        Router::routeAccessDenied();

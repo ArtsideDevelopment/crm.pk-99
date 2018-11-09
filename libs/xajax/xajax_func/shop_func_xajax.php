@@ -26,6 +26,8 @@ function Add_Product($Id)
       // проверяем все входящие переменные на наличие xss и sql инъекции
       $alias=str_replace(" ", "-", strtolower(trim(trim(check_form($Id['alias'])),"/")));
       $url_path='product/'.$alias;
+      require_once(AS_ROOT .'libs/uploads_func.php');
+      $description = check_form(handleText($Id['description']));
       try{
           /*
           * Добавляем продукт в базу данных
@@ -36,6 +38,7 @@ function Add_Product($Id)
                   `". AS_DBPREFIX ."products`
               SET 
                   ".m_query($new_product_str, $Id).",
+                  `description`='".$description."',
                   `alias`='".$alias."',
                   `url_path`='".$url_path."',
                   `date`='".$date."'
@@ -119,6 +122,8 @@ function Edit_Product($Id)
       $alias=str_replace(" ", "-", strtolower(trim(trim(check_form($Id['alias'])),"/")));
       $url_path='product/'.$alias;
       $date_change = date('Y-m-d H:i:s');
+      require_once(AS_ROOT .'libs/uploads_func.php');
+      $description = check_form(handleText($Id['description']));
       //$content = $Id['content'];
       /*----------------------------------------
       * Формируем url адрес страницы
@@ -134,6 +139,7 @@ function Edit_Product($Id)
                    `". AS_DBPREFIX ."products` 
                SET 
                    ".m_query($new_product_str, $Id).",
+                   `description`='".$description."',
                    `alias`='".$alias."',
                    `url_path`='".$url_path."',
                    `date_change`='".$date_change."'
@@ -215,48 +221,45 @@ function Edit_Product($Id)
 function Delete_Product($Id){
     if(strlen(trim($Id))!=0){
         $objResponse = new xajaxResponse();
-        parse_str($Id, $arr_var); // $content_id; $parent_id; $hierarchy
         /*
         * проверяем все входящие переменные на sql иньекции
         * check all input variables on sql injections
         */ 
-        $table=  check_form($arr_var['type']);
-        $content_id=  check_form($arr_var['id']);        
-        $parent_id=  check_form($arr_var['parent_id']);
-        $hierarchy=  check_form($arr_var['hierarchy']);
+        $product_id=  check_form($Id);        
         try {
+            DB::mysqliBegin(AS_DATABASE_SITE);
             /*
-            * Удаляем страницу
-            * Delete page      
+            * Удаляем категорию из таблицы as_product_categories
+            * Delete category from table as_product_categories      
             */ 
             $res_del = DB::mysqliQuery(AS_DATABASE_SITE,"
                 DELETE FROM   
-                    `". AS_DBPREFIX .$table."`
+                    `". AS_DBPREFIX ."product_categories`
                 WHERE 
-                    `id`=".$content_id.""  
+                    `as_products_id`=".$product_id.""  
                               ); 
             /*
-            * уменьшаем на 1 иерархию всех страниц являющихся братьями
-            * decrement hierarchy all brothers pages
+            * Удаляем категорию из таблицы as_catalog
+            * Delete category from table as_catalog
             */  
-            $res_hierarchy = DB::mysqliQuery(AS_DATABASE_SITE,"
-               UPDATE   
-                   `". AS_DBPREFIX .$table."` 
-               SET
-                   hierarchy = hierarchy - 1
-               WHERE  
-                   `parent_id`=".$parent_id." && hierarchy>".$hierarchy." "  
-                          );
+             $res_del = DB::mysqliQuery(AS_DATABASE_SITE,"
+                DELETE FROM   
+                    `". AS_DBPREFIX ."products`
+                WHERE 
+                    `id`=".$product_id.""  
+                              ); 
             /*-----------------------------------*/
-            include_once AS_ROOT .'libs/pages_func.php'; 
-            $pages_table=  getPagesTable('content');
-            $objResponse->assign("pages_table_replace", "innerHTML", $pages_table);
+            DB::mysqliCommit();
+            $dialog_msg = DialogMessages::delete_products_success;            
+            $objResponse->assign("product-id-".$product_id, "innerHTML", "");
         }
         catch (ExceptionDataBase $edb){
             $edb->HandleExeption(__FILE__."->".__FUNCTION__."->".__LINE__);
             $dialog_msg = $edb->GetNoticeExeption("save_error");
         }                 
     }
+    $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+    $objResponse->call("ModalDialog.show('notice')");
     return $objResponse;
 }
 /* 
@@ -691,6 +694,57 @@ function Edit_Category_Script_Free($Id)
       $all_error="Проверьте правильность заполнения полей, отмеченных *. ";
   }
   $objResponse->assign("all_error","innerHTML", $all_error);
+  return $objResponse;
+}
+/* 
+* Функция редактирования описания под товаром
+* Function to edit a content bottom
+* @param array $Id 
+* @return xajaxResponse 
+*/ 
+function Edit_Category_Content_Bottom($Id)
+{
+    $objResponse = new xajaxResponse();
+    $all_error = "";
+    if(strlen(trim($Id['content_bottom']))>0){
+        //инициализация переменных  
+        $url_path = $Id['url_path_current'];
+        require_once(AS_ROOT .'libs/uploads_func.php');
+        $content_bottom = check_form(handleOutText($Id['content_bottom'], 'categories/transfer', $url_path, $Id['url_path_old']));
+        $category_id=check_form($Id['category_id']);
+        try {          
+            /*
+            * Обновляем информацию в базе данных
+            * Update data in db      
+            */ 
+            $res_update = DB::mysqliQuery(AS_DATABASE_SITE,"
+               UPDATE   
+                   `". AS_DBPREFIX ."catalog` 
+               SET 
+                   `content_bottom`='".$content_bottom."'
+               WHERE
+                   `id`=".$category_id."
+               ");
+          
+          /*--------------------------------------*/
+          $dialog_msg= DB::GetSuccessExeption('success');          
+          $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+          $preview_btn = getPreviewButton($url_path);
+          $objResponse->assign("preview_btn_replace","innerHTML",  $preview_btn);
+          $objResponse->call("ModalDialog.show('notice')");
+          sleep(2);
+          $objResponse->script("window.location.reload()");
+      }
+      catch (ExceptionDataBase $edb){
+          $edb->HandleExeption(__FILE__."->".__FUNCTION__."->".__LINE__);
+          $dialog_msg = $edb->GetNoticeExeption("save_error");
+      }
+      
+  }
+  else{
+      $all_error="Поле \"Описание под товаром\" должно быть заполнено";
+  }
+  $objResponse->assign("form_error_content_bottom","innerHTML", $all_error);
   return $objResponse;
 }
 /* 
