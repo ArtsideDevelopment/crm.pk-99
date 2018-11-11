@@ -100,6 +100,99 @@ function Add_Product($Id)
   return $objResponse;
 }
 /* 
+* Функция добавления продукта
+* Function to add a new page
+* @param array $Id 
+* @return xajaxResponse 
+*/ 
+function Add_ProductScript($Id)
+{
+  $objResponse = new xajaxResponse();
+  require_once(AS_ROOT .'libs/query_set.php');
+  require_once(AS_ROOT .'libs/query_variables/query_product.php'); 
+  $all_error="";
+   // Подключаем проверку заполнения полей
+  include_once AS_ROOT .'libs/check/check_product.php';   
+  if($errors==0){   
+      $date = date('Y-m-d H:i:s');
+      //инициализация переменных
+      // проверяем все входящие переменные на наличие xss и sql инъекции
+      $alias=str_replace(" ", "-", strtolower(trim(trim(check_form($Id['alias'])),"/")));
+      $url_path='product/'.$alias;
+      require_once(AS_ROOT .'libs/uploads_func.php');
+      $description = check_form(handleOutText($Id['description'], 'products/transfer', $url_path, $Id['url_path_old']));
+      try{
+          /*
+          * Добавляем продукт в базу данных
+          * insert product in to db      
+          */ 
+          $res = DB::mysqliQuery(AS_DATABASE_SITE,"
+              INSERT INTO
+                  `". AS_DBPREFIX ."products`
+              SET 
+                  ".m_query($new_product_str, $Id).",
+                  `description`='".$description."',
+                  `alias`='".$alias."',
+                  `url_path`='".$url_path."',
+                  `date`='".$date."'
+              ");
+          $product_id=DB::getInsertId();
+          /*
+          * Добавляем категории
+          * insert categories     
+          */ 
+          // Основная категория
+          $main_category_id = check_form($Id['as_main_category_id']);
+          if($main_category_id*1>0){
+                $res = DB::mysqliQuery(AS_DATABASE_SITE,"
+                    INSERT 
+                    INTO ". AS_DBPREFIX ."product_categories 
+                    SET
+                        as_catalog_id= ". $main_category_id .",
+                        as_products_id= ".$product_id.",
+                        main_category_set=1    
+                    "  
+                ); 
+          }
+          // Дополнительные категории
+          if(isset($Id['categoriesChecked'])){
+            $categories_checked = $Id['categoriesChecked'];
+            $query="";            
+            foreach ($categories_checked as $category_id) {
+                if($main_category_id!==$category_id){
+                    $query.="(".$category_id.", ".$product_id."),";
+                }
+            }    
+            $res = DB::mysqliQuery(AS_DATABASE_SITE,"
+                INSERT 
+                INTO ". AS_DBPREFIX ."product_categories 
+                    (as_catalog_id, as_products_id)
+                VALUES
+                    ".trim(check_form($query), ",").";
+                "  
+            );                                
+          }          
+          $dialog_msg= DB::GetSuccessExeption('success');
+          $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+          $preview_btn = getPreviewButton($url_path);
+          $objResponse->assign("preview_btn_replace","innerHTML",  $preview_btn);
+          $objResponse->call("ModalDialog.show('notice')");
+      }
+      catch (ExceptionDataBase $edb){
+          $edb->HandleExeption(__FILE__."->".__FUNCTION__."->".__LINE__);
+          $dialog_msg = $edb->GetNoticeExeption("save_error");
+      }       
+  } 
+  else{
+      $all_error="Проверьте правильность заполнения полей отмеченных *. ";
+      $dialog_msg = DialogMessages::validation_error;
+      $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+      $objResponse->call("ModalDialog.show('notice')");
+  }
+  $objResponse->assign("all_error","innerHTML", $all_error);
+  return $objResponse;
+}
+/* 
 * Функция редактирования страницы 
 * Function to edit a page 
 * @param array $Id 
@@ -124,6 +217,119 @@ function Edit_Product($Id)
       $date_change = date('Y-m-d H:i:s');
       require_once(AS_ROOT .'libs/uploads_func.php');
       $description = check_form(handleText($Id['description']));
+      //$content = $Id['content'];
+      /*----------------------------------------
+      * Формируем url адрес страницы
+      * get url of new page   
+      -----------------------------------------*/
+      try {
+          /*
+          * Обновляем информацию странице в базе данных
+          * Update page data in db      
+          */ 
+          $res_update = DB::mysqliQuery(AS_DATABASE_SITE,"
+               UPDATE   
+                   `". AS_DBPREFIX ."products` 
+               SET 
+                   ".m_query($new_product_str, $Id).",
+                   `description`='".$description."',
+                   `alias`='".$alias."',
+                   `url_path`='".$url_path."',
+                   `date_change`='".$date_change."'
+               WHERE
+                   `id`=".$product_id."
+               ");         
+          /*
+          * Добавляем категории
+          * insert categories     
+          */ 
+          // удаляем все предыдущие значения
+          $res_del = DB::mysqliQuery(AS_DATABASE_SITE,"
+                DELETE                 
+                FROM 
+                    ". AS_DBPREFIX ."product_categories               
+                WHERE
+                    `as_products_id`=".$product_id." 
+                "  
+            ); 
+          // Основная категория
+          $main_category_id = check_form($Id['as_main_category_id']);
+          if($main_category_id*1>0){
+                $res = DB::mysqliQuery(AS_DATABASE_SITE,"
+                    INSERT 
+                    INTO ". AS_DBPREFIX ."product_categories 
+                    SET
+                        as_catalog_id= ". $main_category_id .",
+                        as_products_id= ".$product_id.",
+                        main_category_set=1    
+                    "  
+                ); 
+          }
+          // Дополнительные категории
+          if(isset($Id['categoriesChecked'])){
+            $categories_checked = $Id['categoriesChecked'];
+            $query="";            
+            foreach ($categories_checked as $category_id) {
+                if($main_category_id!==$category_id){
+                    $query.="(".$category_id.", ".$product_id."),";
+                }
+            }    
+            $res = DB::mysqliQuery(AS_DATABASE_SITE,"
+                INSERT 
+                INTO ". AS_DBPREFIX ."product_categories 
+                    (as_catalog_id, as_products_id)
+                VALUES
+                    ".trim(check_form($query), ",").";
+                "  
+            );                                
+          }          
+          /*--------------------------------------*/
+          $dialog_msg= DB::GetSuccessExeption('success');
+          $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+          $preview_btn = getPreviewButton($url_path);
+          $objResponse->assign("preview_btn_replace","innerHTML",  $preview_btn);
+          $objResponse->call("ModalDialog.show('notice')");
+      }
+      catch (ExceptionDataBase $edb){
+          $edb->HandleExeption(__FILE__."->".__FUNCTION__."->".__LINE__);
+          $dialog_msg = $edb->GetNoticeExeption("save_error");
+      }
+      
+  }
+  else{
+      $all_error="Проверьте правильность заполнения полей, отмеченных *. ";
+      $dialog_msg = DialogMessages::validation_error;
+      $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+      $objResponse->call("ModalDialog.show('notice')");
+  }
+  $objResponse->assign("all_error","innerHTML", $all_error);
+  return $objResponse;
+}
+/* 
+* Функция редактирования страницы 
+* Function to edit a page 
+* @param array $Id 
+* @return xajaxResponse 
+*/ 
+function Edit_Product_Script($Id)
+{
+  $objResponse = new xajaxResponse();
+  // подключаем необходимые библиотеки
+  require_once(AS_ROOT .'libs/query_set.php');
+  require_once(AS_ROOT .'libs/query_variables/query_product.php');
+  // Подключаем проверку заполнения полей
+  $all_error="";
+  include_once AS_ROOT .'libs/check/check_product.php';   
+  if($errors==0){
+      //инициализация переменных      
+      $url_path="";
+      // проверяем все входящие переменные на наличие xss и sql инъекции
+      $product_id = check_form($Id['product_id']);
+      $alias=str_replace(" ", "-", strtolower(trim(trim(check_form($Id['alias'])),"/")));
+      $url_path='product/'.$alias;
+      $date_change = date('Y-m-d H:i:s');
+      require_once(AS_ROOT .'libs/uploads_func.php');
+      $description = check_form(handleOutText($Id['description'], 'products/transfer', $url_path, $Id['url_path_old']));
       //$content = $Id['content'];
       /*----------------------------------------
       * Формируем url адрес страницы
