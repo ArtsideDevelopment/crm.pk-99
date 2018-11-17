@@ -36,6 +36,8 @@
        $token=md5('as_salt' . $timestamp);
        $alias_old = "";  
        $tranlit_class = "translit";
+       $form_name = 'AddCategory';
+       $preview_btn = '';
    }
    else{
        Router::routeAccessDenied();

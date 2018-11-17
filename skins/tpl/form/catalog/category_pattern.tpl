@@ -116,19 +116,41 @@
         <textarea name="content" id="content" class="tinymce"><? echo htmlspecialchars_decode($CONTENT['content']); ?></textarea>        
     </div>   
 </div>
-<div class="form-row">    
-    <div class="form-group">
-        <p><strong>Изображение раздела </strong></p>
-        <input type="hidden" id="upload_timestamp" name="upload_timestamp" value="<?php echo $timestamp;?>">
-        <input type="hidden" id="upload_token" name="upload_token" value="<?php echo $token;?>">
-        <input id="categories_img_upload" type="file" name="categories_img_upload" multiple="true"/>  
-        <div id="categories_img_data_block"><? echo $category_img; ?></div>                        
-        <div id="categories_img_queue"></div>              
-    </div>   
+<div class="form-row img-tabs">
+    <p><strong>Изображение раздела </strong></p>
+    <ul class="tabs" role="tablist">
+        <li>        
+            <input type="radio" name="tabs" id="tab1" checked /> 
+            <label for="tab1" role="tab" aria-selected="true" aria-controls="panel1" tabindex="0" class="tabs__control">Загрузить с компьютера</label>
+            <div id="tab-content1" class="tabs__content" role="tabpanel" aria-labelledby="description" aria-hidden="false">
+                <div class="form-group">                    
+                    <input type="hidden" id="upload_timestamp" name="upload_timestamp" value="<?php echo $timestamp;?>">
+                    <input type="hidden" id="upload_token" name="upload_token" value="<?php echo $token;?>">
+                    <input id="categories_img_upload" type="file" name="categories_img_upload" multiple="true"/>
+                    <div id="categories_img_queue"></div>              
+                </div>   
+            </div>
+        </li>
+        <li>        
+            <input type="radio" name="tabs" id="tab2" />    
+            <label for="tab2" role="tab" aria-selected="true" aria-controls="panel2" tabindex="0" class="tabs__control">Загрузить по ссылке</label>
+            <div id="tab-content2" class="tabs__content" role="tabpanel" aria-labelledby="description" aria-hidden="false">
+                <div class="form-group">
+                    <input type="hidden" required="required" name="img_folder" id="img_folder" value="categories"/>
+                    <input type="text" required="required" name="link_img_url_path" id="link_img_url_path" value=""/>
+                    <label class="control-label" for="link_img_url_path">Ссылка на изображение</label><i class="bar"></i>  
+                    <a href="javascript:void(null);" class="border-button" onClick="tinyMCE.triggerSave(false,false); xajax_Add_Link_Img(xajax.getFormValues('<? echo $form_name;?>'));"><i class="icon-plus"></i> Добавить изображение</a>
+                </div> 
+            </div>
+        </li>
+    </ul> 
+</div>
+<div class="form-row">
+    <div id="categories_img_data_block"><? echo $category_img; ?></div> 
 </div>
 <div class="form-row">    
     <div class="form-group">
-        <p><strong>Описание под товаром</strong> &nbsp; &nbsp; &nbsp;<a href="javascript:void(null);" value="Сохранить без использования скрипта" onClick="tinyMCE.triggerSave(false,false); xajax_Edit_Category_Content_Bottom(xajax.getFormValues('EditCategory'));"><i class="icon-plus"></i> Сохранить "Описание под товаром"</a></p>
+        <p><strong>Описание под товаром</strong> &nbsp; &nbsp; &nbsp;<a href="javascript:void(null);" onClick="tinyMCE.triggerSave(false,false); xajax_Edit_Category_Content_Bottom(xajax.getFormValues('<? echo $form_name;?>'));"><i class="icon-plus"></i> Сохранить "Описание под товаром"</a></p>
         <textarea name="content_bottom" id="content_bottom" class="tinymce"><? echo htmlspecialchars_decode($CONTENT['content_bottom']); ?></textarea>        
     </div>  
     <div class="form_error" id="form_error_content_bottom"></div>

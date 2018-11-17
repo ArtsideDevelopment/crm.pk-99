@@ -2109,6 +2109,10 @@ form .form-multiple-choice__delete {
   display: inline-block; }
   form .form-multiple-choice__delete:hover {
     color: #be006e; }
+form .img-tabs {
+  height: 300px; }
+  form .img-tabs .tabs__content {
+    padding: 24px 34px 24px 34px; }
 form fieldset {
   margin: 0 0 32px;
   padding: 0;
@@ -2180,8 +2184,7 @@ form .form-group textarea {
   background: none;
   padding: 8px 8px 4px;
   font-size: 16px;
-  border-width: 0;
-  border-color: transparent;
+  border: 1px solid #b4bfc5;
   width: 100%;
   color: transparent;
   transition: all 0.28s ease;

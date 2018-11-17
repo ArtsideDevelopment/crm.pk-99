@@ -79,39 +79,45 @@ form{
       
     }
     .form-multiple-choice{        
-            li{                
-                padding: 10px;                
-                border: 1px solid $gray-light;
-                margin: 5px;
-            }
-            &__button{
-                position: relative;
-                display: inline-block;
-                padding: 10px 10px 10px 35px;
-                border: 1px solid $gray-light;
-                cursor: pointer;
-                margin: 5px;
-                &:before{
-                    content: '+';
-                    position: absolute;
-                    left: 10px;
-                    top:10px;
-                    font-size: $font-size*2;
-                    font-weight: 400;
-                    color: $gray-light;
-                }
-            }
-            &__delete{ 
-                margin-left: 10px;
+        li{                
+            padding: 10px;                
+            border: 1px solid $gray-light;
+            margin: 5px;
+        }
+        &__button{
+            position: relative;
+            display: inline-block;
+            padding: 10px 10px 10px 35px;
+            border: 1px solid $gray-light;
+            cursor: pointer;
+            margin: 5px;
+            &:before{
+                content: '+';
+                position: absolute;
+                left: 10px;
+                top:10px;
+                font-size: $font-size*2;
+                font-weight: 400;
                 color: $gray-light;
-                cursor: pointer; 
-                display: inline-block;
-                &:hover{
-                    color: $red;
-                }
-               
             }
         }
+        &__delete{ 
+            margin-left: 10px;
+            color: $gray-light;
+            cursor: pointer; 
+            display: inline-block;
+            &:hover{
+                color: $red;
+            }
+
+        }
+    }
+    .img-tabs{
+        height: 300px;
+        .tabs__content{
+            padding: 24px 34px 24px 34px;
+        }
+    }
     fieldset {
 	margin: $mf-fieldset-margin;
 	padding: 0;
@@ -215,8 +221,7 @@ form{
                     background: none;
                     padding: $mf-spacer $mf-spacer ($mf-spacer / 2);
                     font-size: $mf-font-size;
-                    border-width: 0;
-                    border-color: transparent;                    
+                    border: 1px solid $gray-light;                  
                     width: 100%;
                     color: transparent;
                     transition: all $mf-transition-speed ease;

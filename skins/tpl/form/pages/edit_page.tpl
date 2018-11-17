@@ -1,6 +1,6 @@
 <!-- skins/tpl/form/pages/add_page.tpl begin -->
 <div class="as-card">
-    <form id="EditPage" action="javascript:void(null);" onSubmit="tinyMCE.triggerSave(false,false); if (confirm('Вы действительно хотите сохранить с использованием скрипта? Скрипт будет пытаться скачать изображения со старого сайта')) xajax_Edit_Page(xajax.getFormValues('EditPage'));"> 
+    <form id="EditPage" action="javascript:void(null);" onSubmit="tinyMCE.triggerSave(false,false); if (confirm('Вы действительно хотите сохранить с использованием скрипта? Скрипт будет пытаться скачать изображения со старого сайта')) xajax_Edit_Page(xajax.getFormValues('EditPage'));" novalidate> 
         <?php include AS_ROOT.'skins/tpl/form/pages/page_pattern.tpl';  ?> 
         <div class="floating-block-bottom">
             <div class="row floating-block-bottom__block">

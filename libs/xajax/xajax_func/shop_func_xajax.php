@@ -954,6 +954,68 @@ function Edit_Category_Content_Bottom($Id)
   return $objResponse;
 }
 /* 
+* Функция добавления изображения по ссылке
+* Function add image from link
+* @param array $Id 
+* @return xajaxResponse 
+*/ 
+function Add_Link_Img($Id)
+{
+    $objResponse = new xajaxResponse();
+    $all_error = "";
+    if(strlen(trim($Id['link_img_url_path']))>0 && strlen(trim($Id['img_folder']))){
+        //инициализация переменных  
+        $link_img = trim(trim((string)$Id['link_img_url_path'],'"'), '/');
+        $folder = $Id['img_folder'];
+        require_once(AS_ROOT .'libs/uploads_func.php');
+        $tempFile = uploadOutImagesCurlFromAnySource($link_img, $folder);
+        $fileParts = pathinfo($tempFile);
+        $uploadDir = AS_IMG_ROOT.trim($folder, '/').'/';
+        $fileDestName = trim($fileParts['filename'],'tmp_').".".strtolower($fileParts['extension']);
+        $fileDest = $uploadDir.$fileDestName;
+        if(file_exists($fileDest)){
+            $time = time();
+            $fileDest=$uploadDir.$fileParts['filename']."_".$time.".".strtolower($fileParts['extension']);          
+            $fileDestThumb=$uploadDir. "thumb_".$fileParts['filename']."_".$time.".".strtolower($fileParts['extension']);
+        }
+        else {
+            $fileDestThumb=$uploadDir. "thumb_".$fileDestName; 
+        }
+        $width = 0;
+        $thumb_width = 0;
+        switch($folder)  
+        {        
+            case 'categories':
+                $width = AS_CATEGORY_IMG_WIDTH;
+                $thumb_width = AS_CATEGORY_THUMB_IMG_WIDTH;
+            break;
+            case 'product':
+                      
+            break; 
+            default :
+            break;
+        } 
+        if($width>0){
+            imgResizeWidth($tempFile, $fileDest, $width);
+            imgResizeWidth($tempFile, $fileDestThumb, $thumb_width);
+        }
+        unlink($tempFile);
+
+        $dialog_msg= DB::GetSuccessExeption('success');          
+        $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+        $img_data_block = 
+                '<input type="hidden" name="img" id="img" value="'.$fileDestName.'">
+                <img src="'.AS_IMG_PATH.$folder.'/thumb_'.$fileDestName.'">';
+        $objResponse->assign($folder."_img_data_block","innerHTML",  $img_data_block);
+        $objResponse->call("ModalDialog.show('notice')");
+  }
+  else{
+      $all_error="Поле \"Ссылка на изображение\" должно быть заполнено";
+  }
+  $objResponse->assign("form_error_link_img","innerHTML", $all_error);
+  return $objResponse;
+}
+/* 
 * Функция формирвоания отчета
 * Function get report
 * @param array $Id 

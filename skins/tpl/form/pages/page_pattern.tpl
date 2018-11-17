@@ -79,7 +79,7 @@
     <div class="form-input">
         <div class="form-group">           
             <textarea name="title" id="title"><? echo $CONTENT['title']; ?></textarea>
-            <label class="control-label" for="meta_keywords">Заголовок (title):*</label><i class="bar"></i>
+            <label class="control-label" for="meta_keywords">Заголовок (title):</label><i class="bar"></i>
             <div class="form_error" id="form_error_title"></div>
         </div> 
     </div>

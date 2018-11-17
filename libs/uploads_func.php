@@ -198,6 +198,51 @@ function uploadOutImagesCurl($img_src_clear, $folder='', $prefix=''){
     return $new_img;
 }
 /** 
+* Функция функция скачивания изображения curl 
+* function curl function for upload out images
+* @param array $text
+* @return string $text_handled 
+*/ 
+function uploadOutImagesCurlFromAnySource($img_src_clear, $folder='', $prefix=''){  
+    $new_img="";
+    $dest_path="uploads/images/".trim($folder, '/').'/';
+    $dest_folder =AS_ROOT.$dest_path;
+    
+    $img_url = $img_src_clear;
+    $Headers = @get_headers($img_url); 
+    //dbg($Headers[0]);
+    //dbg($img_url);
+    if(preg_match("|200|", $Headers[0])) {            
+        $ch = curl_init($img_url);  
+        curl_setopt($ch, CURLOPT_HEADER, 0);  
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);  
+        curl_setopt($ch, CURLOPT_BINARYTRANSFER,1); 
+        if(curl_exec($ch) === false)
+        {
+            echo 'Ошибка curl: ' . curl_error($ch);
+        }
+        else{
+            $fileParts = pathinfo($img_src_clear); 
+            if(isset($fileParts['extension'])){
+                $img_extension = $fileParts['extension'];
+                $img_name = "tmp_".imgToTranslit($fileParts['filename']).".".strtolower($img_extension);  
+            }
+            else{
+                $img_name = "tmp_".imgToTranslit($fileParts['filename']);
+            }           
+            $out = curl_exec($ch);
+            $fileDest = $dest_folder.$img_name;
+            if(file_exists($fileDest)){
+                $time = time();
+                $fileDest = $dest_folder."tmp_".$time."_".$img_name;
+            }
+            $img_sc = file_put_contents($fileDest, $out);
+        }              
+        curl_close($ch);
+    }
+    return $fileDest;
+}
+/** 
 * Функция получения лога загрузки изображения
 * function get img log
 * @param 
@@ -459,19 +504,29 @@ function imgResizeWidth($src, $dest, $w)
   $size = getimagesize($src);
   $format = strtolower(substr($size['mime'], strpos($size['mime'], '/')+1));
   $icfunc = "imagecreatefrom" . $format;
+  $imagefunc = "image" . $format;
   if (!function_exists($icfunc)) return false;
+  if (!function_exists($imagefunc)) return false;
   $isrc = $icfunc($src);
   $w_src = imagesx($isrc); 
   $h_src = imagesy($isrc);
   $h=$h_src/$w_src*$w;
-  if($w_src<=$w){
-      imagejpeg($isrc, $dest, $quality);
+  // обрабатываем прозрачные изображения
+  
+  if($w_src<$w){
+      //imagejpeg($isrc, $dest, $quality);
+      copy($src, $dest);
   }
   else{
-    $idest = imagecreatetruecolor($w, $h);
-    imagecopyresampled($idest, $isrc, 0, 0, 0, 0, $w, $h, $w_src, $h_src);
-    imagejpeg($idest, $dest, $quality);
-    imagedestroy($idest);
+      $idest = imagecreatetruecolor($w, $h);
+      if($format=="png"){
+          $quality= 6;
+          imageAlphaBlending($idest, false);
+          imageSaveAlpha($idest, true);
+      }            
+      imagecopyresampled($idest, $isrc, 0, 0, 0, 0, $w, $h, $w_src, $h_src);
+      $imagefunc($idest, $dest, $quality);
+      imagedestroy($idest);      
   }
   imagedestroy($isrc);
   return true;

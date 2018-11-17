@@ -70,10 +70,3 @@ if($Id['as_content_type_id']*1==0){
 }
 $objResponse->assign("form_error_content_type","innerHTML",$form_error_content_type);
 
-// Заголовок страницы
-$form_error_title="";
-if(strlen(trim($Id['title']))==0){
-    $form_error_title="Поле должно быть заполнено"; 
-    $errors++;
-}
-$objResponse->assign("form_error_title","innerHTML",$form_error_title);

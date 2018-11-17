@@ -95,10 +95,21 @@
     
     define('AS_IMH_THUMB_PATH', 'uploads_thumbs/'); 
     
+    define('AS_IMG_ROOT', AS_ROOT.'uploads/images/');
+ 
+/** 
+* Establishes const for category images  
+* Устанавливает контсанты к изображениям категории
+*/     
+    define('AS_CATEGORY_IMG_WIDTH', 800);
+    define('AS_CATEGORY_THUMB_IMG_WIDTH', 120);
+
 /** 
 * Establishes a img path 
 * Устанавливает путь к изображениям
 */  
+    define('AS_IMG_PATH', AS_HOST.'uploads/images/');
+    
     define('AS_CATEGORY_IMG', AS_HOST.'uploads/images/categories/');
     
     define('AS_CATEGORY_IMG_THUMB', AS_HOST.'uploads/images/categories/thumb_');
