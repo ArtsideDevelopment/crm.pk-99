@@ -954,6 +954,57 @@ function Edit_Category_Content_Bottom($Id)
   return $objResponse;
 }
 /* 
+* Функция редактирования описания под товаром
+* Function to edit a content bottom
+* @param array $Id 
+* @return xajaxResponse 
+*/ 
+function Edit_Category_Content_Top($Id)
+{
+    $objResponse = new xajaxResponse();
+    $all_error = "";
+    if(strlen(trim($Id['content_bottom']))>0){
+        //инициализация переменных  
+        $url_path = $Id['url_path_current'];
+        require_once(AS_ROOT .'libs/uploads_func.php');
+        $content = check_form(handleOutText($Id['content'], 'categories/transfer', $url_path, $Id['url_path_old']));
+        $category_id=check_form($Id['category_id']);
+        try {          
+            /*
+            * Обновляем информацию в базе данных
+            * Update data in db      
+            */ 
+            $res_update = DB::mysqliQuery(AS_DATABASE_SITE,"
+               UPDATE   
+                   `". AS_DBPREFIX ."catalog` 
+               SET 
+                   `content`='".$content."'
+               WHERE
+                   `id`=".$category_id."
+               ");
+          
+          /*--------------------------------------*/
+          $dialog_msg= DB::GetSuccessExeption('success');          
+          $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+          $preview_btn = getPreviewButton($url_path);
+          $objResponse->assign("preview_btn_replace","innerHTML",  $preview_btn);
+          $objResponse->call("ModalDialog.show('notice')");
+          sleep(2);
+          $objResponse->script("window.location.reload()");
+      }
+      catch (ExceptionDataBase $edb){
+          $edb->HandleExeption(__FILE__."->".__FUNCTION__."->".__LINE__);
+          $dialog_msg = $edb->GetNoticeExeption("save_error");
+      }
+      
+  }
+  else{
+      $all_error="Поле \"Описание под товаром\" должно быть заполнено";
+  }
+  $objResponse->assign("form_error_content_bottom","innerHTML", $all_error);
+  return $objResponse;
+}
+/* 
 * Функция добавления изображения по ссылке
 * Function add image from link
 * @param array $Id 

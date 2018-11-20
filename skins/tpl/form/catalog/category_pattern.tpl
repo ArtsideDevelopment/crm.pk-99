@@ -112,7 +112,7 @@
 </div>
 <div class="form-row">    
     <div class="form-group">
-        <p><strong>Описание над товаром</strong></p>
+        <p><strong>Описание над товаром</strong> &nbsp; &nbsp; &nbsp;<a href="javascript:void(null);" onClick="tinyMCE.triggerSave(false,false); xajax_Edit_Category_Content_Top(xajax.getFormValues('<? echo $form_name;?>'));"><i class="icon-plus"></i> Сохранить описание над товаром со скриптом</a></p>
         <textarea name="content" id="content" class="tinymce"><? echo htmlspecialchars_decode($CONTENT['content']); ?></textarea>        
     </div>   
 </div>
@@ -150,7 +150,7 @@
 </div>
 <div class="form-row">    
     <div class="form-group">
-        <p><strong>Описание под товаром</strong> &nbsp; &nbsp; &nbsp;<a href="javascript:void(null);" onClick="tinyMCE.triggerSave(false,false); xajax_Edit_Category_Content_Bottom(xajax.getFormValues('<? echo $form_name;?>'));"><i class="icon-plus"></i> Сохранить "Описание под товаром"</a></p>
+        <p><strong>Описание под товаром</strong> &nbsp; &nbsp; &nbsp;<a href="javascript:void(null);" onClick="tinyMCE.triggerSave(false,false); xajax_Edit_Category_Content_Bottom(xajax.getFormValues('<? echo $form_name;?>'));"><i class="icon-plus"></i> Сохранить описание под товаром со скриптом</a></p>
         <textarea name="content_bottom" id="content_bottom" class="tinymce"><? echo htmlspecialchars_decode($CONTENT['content_bottom']); ?></textarea>        
     </div>  
     <div class="form_error" id="form_error_content_bottom"></div>
