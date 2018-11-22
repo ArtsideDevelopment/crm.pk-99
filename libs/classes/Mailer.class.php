@@ -197,9 +197,9 @@ class Mailer{
     */ 
     private function sendMail($subject, $mail_body) 
     { 
-        $to      = $to;
+        $to      = $this->_to;
         $subject = $subject;
-        $message = $mail_body;
+        $message = $this->createBody($mail_body);
         $headers = $this->createHeaders();
 
         mail($to, $subject, $message, $headers);  
@@ -212,9 +212,9 @@ class Mailer{
     */ 
     public function sendExeption($mail_body) 
     { 
-        $to      = $to;
-        $subject = $subject;
-        $message = $mail_body;
+        $to      = $this->_to;
+        $subject = "Исключение на ".AS_DOMAIN;
+        $message = $this->createBody($mail_body);
         $headers = $this->createHeaders();
 
         mail($to, $subject, $message, $headers);  

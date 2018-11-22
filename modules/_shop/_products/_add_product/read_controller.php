@@ -39,6 +39,8 @@
        $token=md5('as_salt' . $timestamp);
        $img = "";
        $tranlit_class="translit";
+       $preview_btn = "";
+       $action = 'add';
    }
    else{
        Router::routeAccessDenied();

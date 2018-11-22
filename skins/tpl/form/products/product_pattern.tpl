@@ -1,5 +1,6 @@
 <input type="hidden" name="product_id" id="product_id" value="<? echo $product_id; ?>"/>
 <input type="hidden" name="alias_old" id="alias_old" value="<? echo $alias_old; ?>"/>
+<input type="hidden" name="action" id="action" value="<? echo $action; ?>"/>
 
 <ul class="tabs" role="tablist">
     <li>        

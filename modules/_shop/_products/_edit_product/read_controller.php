@@ -42,6 +42,7 @@
        $alias_old = $CONTENT['alias'];
        $tranlit_class="no_tranlit";
        $preview_btn = getPreviewButton($CONTENT['url_path']);
+       $action = 'edit';
    }
    else{
        Router::routeAccessDenied();

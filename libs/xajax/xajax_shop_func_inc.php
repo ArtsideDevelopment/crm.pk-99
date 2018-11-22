@@ -5,6 +5,7 @@ $xajax->register(XAJAX_FUNCTION, "Edit_Product");
 $xajax->register(XAJAX_FUNCTION, "Edit_Product_Script");
 $xajax->register(XAJAX_FUNCTION, "Delete_Product");
 $xajax->register(XAJAX_FUNCTION, "Add_Category");
+$xajax->register(XAJAX_FUNCTION, "Add_Category_Script");
 $xajax->register(XAJAX_FUNCTION, "Edit_Category");
 $xajax->register(XAJAX_FUNCTION, "Edit_Category_Script_Free");
 $xajax->register(XAJAX_FUNCTION, "Edit_Category_Content_Bottom");

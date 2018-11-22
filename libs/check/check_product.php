@@ -16,7 +16,7 @@ if(strlen(trim($Id['alias']))==0){
 }
 else{
     // Добавление товара
-    if($Id['product_id']*1==0){
+    if($Id['action']=='add' || $Id['action']=='copy'){
         try {
             $res = DB::mysqliQuery(AS_DATABASE_SITE,"
                 SELECT 
@@ -24,7 +24,7 @@ else{
                 FROM 
                     `". AS_DBPREFIX ."products` 
                 WHERE 
-                    `url_path`='".  check_form($Id['alias'])."'
+                    `alias`='".  check_form($Id['alias'])."'
                 ");
         } catch (ExceptionDataBase $edb) {
             throw new ExceptionDataBase("Ошибка в запросе к базе данных",2, $edb);
@@ -33,7 +33,7 @@ else{
             $form_error_alias="Такой алиас товара уже существует в базе данных";
             $errors++;
         }
-    }      
+    }  
     else{
         if($Id['alias_old']!=$Id['alias']){
             $res = DB::mysqliQuery(AS_DATABASE_SITE,"
@@ -42,7 +42,7 @@ else{
                 FROM 
                     `". AS_DBPREFIX ."products` 
                 WHERE 
-                    `url_path`='".  check_form($Id['alias'])."' "  
+                    `alias`='".  check_form($Id['alias'])."' "  
                     );
             if($res->num_rows>0){
                 $form_error_alias="Такой алиас страницы уже существует в базе данных";

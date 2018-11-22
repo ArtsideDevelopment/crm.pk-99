@@ -533,8 +533,9 @@ function Add_Category($Id)
           */ 
           require_once(AS_ROOT .'libs/uploads_func.php');
           //$content = check_form(handleOutText($Id['content']));
-          $content = check_form($Id['content']);
-          $content_bottom = check_form($Id['content_bottom']);
+          $content = check_form(handleText($Id['content']));
+          $content_bottom = check_form(handleText($Id['content_bottom']));
+          
           $res = DB::mysqliQuery(AS_DATABASE_SITE,"
               INSERT INTO
                   `". AS_DBPREFIX ."catalog`
@@ -568,6 +569,108 @@ function Add_Category($Id)
   $objResponse->assign("all_error","innerHTML", $all_error);
   return $objResponse;
 }
+/* 
+* Функция добавления категории
+* Function to add a new category
+* @param array $Id 
+* @return xajaxResponse 
+*/ 
+function Add_Category_Script($Id)
+{
+  $objResponse = new xajaxResponse();
+  require_once(AS_ROOT .'libs/query_set.php');
+  require_once(AS_ROOT .'libs/query_variables/query_category.php'); 
+  $all_error="";
+   // Подключаем проверку заполнения полей
+  include_once AS_ROOT .'libs/check/check_category.php';   
+  if($errors==0){   
+      $date = date('Y-m-d H:i:s');
+      //инициализация переменных
+      $hierarchy =1;
+      $url_path="";
+      // проверяем все входящие переменные на наличие xss и sql инъекции
+      $parent_id=check_form($Id['parent_id']);
+      $alias=str_replace(" ", "-", strtolower(trim(trim(check_form($Id['alias'])),"/")));
+      try{
+          /*
+          * находим максимальное занчение hierarchy, записанное в bd, 
+          * для определения текущего значения hierarchy для добавляемой страницы       
+          */  
+          $res_hierarchy = DB::mysqliQuery(AS_DATABASE_SITE, "
+              SELECT 
+                  MAX(hierarchy) 
+              FROM
+                  `". AS_DBPREFIX ."catalog`
+              WHERE  
+                  `parent_id`=".$parent_id."
+              ");
+          if($res_hierarchy->num_rows>0){
+              $row_hierarchy = $res_hierarchy->fetch_array();
+              $hierarchy=$row_hierarchy[0]+1;
+          }
+          // находим url адрес родителя для построения текущего url адреса категории      
+          if($parent_id*1>0){
+              $res_parent = DB::mysqliQuery(AS_DATABASE_SITE,"
+                  SELECT 
+                      `url_path` 
+                  FROM
+                      `". AS_DBPREFIX ."catalog` 
+                  WHERE  
+                      `id`=".$parent_id."
+                  "); 
+              if($res_parent->num_rows>0){
+                   $row_parent = $res_parent->fetch_array();
+                   $url_path=trim($row_parent[0], "/"); // удаляем лишние / чтобы сформировать необходимый url
+              }
+          }
+          else{
+              $url_path="/catalog";
+          }
+          // формируем url адрес текущей страницы
+          $url_path=trim($url_path."/".$alias, "/"); // удаляем лишние / он появляется если parent_id = 0   
+          /*
+          * Добавляем информацию о новой странице в базу данных
+          * insert page data in to db      
+          */ 
+          require_once(AS_ROOT .'libs/uploads_func.php');
+          //$content = check_form(handleOutText($Id['content']));
+          $content = check_form(handleOutText($Id['content'], 'categories/transfer', $url_path, $Id['url_path_old']));
+          $content_bottom = check_form(handleOutText($Id['content_bottom'], 'categories/transfer', $url_path, $Id['url_path_old']));
+          
+          $res = DB::mysqliQuery(AS_DATABASE_SITE,"
+              INSERT INTO
+                  `". AS_DBPREFIX ."catalog`
+              SET 
+                  ".m_query($new_category_str, $Id).",                  
+                  `url_path`='".$url_path."', 
+                  `alias`='".$alias."', 
+                  `hierarchy`=".$hierarchy.",
+                  `date`='".$date."',
+                  `content`='".$content."',
+                  `content_bottom`='".$content_bottom."',
+                  `priority`=0.8
+              ");
+          $dialog_msg= DB::GetSuccessExeption('success');
+          $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+          $preview_btn = getPreviewButton($url_path);
+          $objResponse->assign("preview_btn_replace","innerHTML",  $preview_btn);
+          $objResponse->call("ModalDialog.show('notice')");
+      }
+      catch (ExceptionDataBase $edb){
+          $edb->HandleExeption(__FILE__."->".__FUNCTION__."->".__LINE__);
+          $dialog_msg = $edb->GetNoticeExeption("save_error");
+      }       
+  } 
+  else{
+      $all_error="Проверьте правильность заполнения полей отмеченных *. ";
+      $dialog_msg = DialogMessages::validation_error;
+      $objResponse->assign("modal-dialog-notice__replace","innerHTML",  $dialog_msg);
+      $objResponse->call("ModalDialog.show('notice')");
+  }
+  $objResponse->assign("all_error","innerHTML", $all_error);
+  return $objResponse;
+}
+
 /* 
 * Функция удаления категории 
 * Function to delete a category 
@@ -1083,7 +1186,7 @@ function Products_Filter($Id){
         $size_checked = isset($Id['size']) ? $Id['size'] : '';  
         $products_table=  getProductsTable($as_categories_id, $as_vendor_id, $amount, $button_link, $mail_text_checked, $size_checked);
         $objResponse->assign("products_table_replace","innerHTML",  $products_table);
-        
+        $objResponse->call("artside_data_tables.init('.dataTablesProduct', true, true)");
     return $objResponse;
 }
 /* 

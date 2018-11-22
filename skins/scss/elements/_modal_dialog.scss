@@ -35,6 +35,9 @@
     }
     &__content{
         padding: $modal-padding;
+        .error{
+            color: $error-color;
+        }
     }
     &__notice{
         padding: 30px 40px;
