@@ -131,11 +131,13 @@ function getCategoriesArray(){
 */ 
 function getProductsTable($categories_id=0, $as_vendor_id=0, $amount="", $button_link="", $mail_text="", $size=""){  
     $query = "";
+    $query_main_category_set = "AND main_category_set=1";
     // формирование запроса
     
     // Категория
     if($categories_id*1>0){                
-        $query.="product_categories.as_catalog_id=".check_form($categories_id)."  AND ";        
+        $query.="product_categories.as_catalog_id=".check_form($categories_id)."  AND ";  
+        $query_main_category_set = "";
     }
     // Производитель
     if($as_vendor_id*1>0){                
@@ -183,7 +185,8 @@ function getProductsTable($categories_id=0, $as_vendor_id=0, $amount="", $button
             JOIN
                 ". AS_DBPREFIX ."product_categories AS product_categories
             ON
-                products.id=product_categories.as_products_id
+                products.id=product_categories.as_products_id 
+                ".$query_main_category_set."
                 ".$query."
             "  
         );             
@@ -198,7 +201,7 @@ function getProductsTable($categories_id=0, $as_vendor_id=0, $amount="", $button
         <table width='100%' border='0' cellspacing='0' cellpadding='0' class='dataTablesProduct'>
             <thead>
                 <tr class='tr_header'>
-                    <th width='20px'></th>
+                    <th width='20px'><input type='checkbox' name='multipleCheck[]' value='' id='maincheck'/></th>
                     <th width='250px'>Товар</th>
                     <th width='150px'>Категория</th> 
                     <th width='100px'>Артикул</th>
@@ -218,7 +221,7 @@ function getProductsTable($categories_id=0, $as_vendor_id=0, $amount="", $button
             $table.="
                 <tr id='product-id-".$row['product_id']."'>
                     <td>
-                        <input type='checkbox' name='productsChecked[]' value='".$row['product_id']."' />
+                        <input type='checkbox' name='productsChecked[]' class='mc' value='".$row['product_id']."' />
                     </td>
                     <td align='left'>
                         ".$row['name']."

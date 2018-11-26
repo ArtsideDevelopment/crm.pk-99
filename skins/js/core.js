@@ -5,6 +5,7 @@ $(document).ready(function(){
     artside_data_tables.init('.dataTablesProduct', true, true);
     artside_data_tables.init('.dataTablesCategories', false, false);
     MultipleChoise.init();
+    MultipleCheck.init();
     
 });
 // 1. Common functions & variables
@@ -143,6 +144,19 @@ $(document).ready(function(){
                 $(".form-multiple-choice__checkbox_check-id-"+choice_id).prop( "checked", false );
                 li.remove();                
             }); 
+        }
+    };
+    var MultipleCheck = {
+        init: function(){
+            if($("#maincheck").length > 0) {    
+                $("#maincheck").click( function() {
+                    if($('#maincheck').prop('checked')){
+                        $('.mc').prop('checked', true);
+                    } else {
+                        $('.mc').prop('checked', false);
+                    }
+               });
+            }
         }
     };
 jQuery.fn.VerticalAlign = function () {

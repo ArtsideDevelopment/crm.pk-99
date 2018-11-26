@@ -23,6 +23,30 @@ var Uploadifive = function () {
                 }
             }); 
         },
+        init_products: function (target, name, main_width, thumb_width, timestamp, token) {
+           $('#'+target+'_img_upload').uploadifive({
+                'auto': true,
+                'multi'    : false,
+                'buttonText' : 'Выбрать изображение',
+                'checkScript'      : 'check-exists.php',                
+                'formData':{
+                       'folder': target+'/',
+                       'preffix': target+'_',               
+                       'timestamp': timestamp,
+                       'token'    : token,
+                       'main_width' : main_width,
+                       'thumb_width' : thumb_width
+                 },
+                'queueID': target+'_img_queue',
+                'uploadScript': '/libs/uploadifive/uploadifive.php',
+                'onUploadComplete': function(file, data) {
+                    var upload_block="<input type='hidden' name='"+name+"' id='"+name+"' value='uploads/images/"+target+'/'+data+"'>"+
+                            "<input type='hidden' name='thumb_"+name+"' id='thumb_"+name+"' value='uploads/images/"+target+'/thumb_'+data+"'>"+
+                            "<img src='/uploads/images/"+target+'/'+data+"'>";            
+                   $('#'+target+'_img_data_block').html(upload_block);           
+                }
+            }); 
+        },
         init_excel: function (target, timestamp, token) {
            $('#'+target+'_upload').uploadifive({
                 'auto': true,
@@ -53,5 +77,5 @@ $(function() {
    
     Uploadifive.init_excel('import_excel', timestamp, token);
     Uploadifive.init('categories', 'img', 800, 120, timestamp, token);
-    Uploadifive.init('product', 'img', 800, 120, timestamp, token);
+    Uploadifive.init_products('products', 'img', 800, 300, timestamp, token);
 });

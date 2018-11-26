@@ -54,12 +54,15 @@ else{
 $objResponse->assign("form_error_alias","innerHTML",$form_error_alias);
 
 // Старый url адрес
+/*
 $form_error_url_path_old="";
 if(strlen(trim($Id['url_path_old']))==0){
     $form_error_url_path_old="Поле должно быть заполнено"; 
     $errors++;
 }
 $objResponse->assign("form_error_url_path_old","innerHTML",$form_error_url_path_old);
+ * 
+ */
 
 // Старый id категории
 /*

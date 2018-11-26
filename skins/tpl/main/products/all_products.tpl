@@ -7,7 +7,7 @@
         </div>
     </div>
     <div class="page-header-right">
-        <a href="/shop/products/add-product" class="button">Добавить товар</a>
+        <a href="/shop/products/add-product" class="button" target="_blank">Добавить товар</a>
     </div>
 </div>
 <div class="as-card">

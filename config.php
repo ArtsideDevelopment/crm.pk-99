@@ -94,8 +94,6 @@
     define('AS_EXCEL_FILES_ROOT', AS_ROOT.'uploads/excel/'); 
     
     define('AS_IMH_THUMB_PATH', 'uploads_thumbs/'); 
-    
-    define('AS_IMG_ROOT', AS_ROOT.'uploads/images/');
  
 /** 
 * Establishes const for category images  
@@ -108,6 +106,10 @@
 * Establishes a img path 
 * Устанавливает путь к изображениям
 */  
+    define('AS_IMG_ROOT', AS_ROOT.'uploads/images/');
+    
+    define('AS_CATEGORY_IMG_ROOT', AS_IMG_ROOT.'categories/');
+    
     define('AS_IMG_PATH', AS_HOST.'uploads/images/');
     
     define('AS_CATEGORY_IMG', AS_HOST.'uploads/images/categories/');

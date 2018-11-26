@@ -10,6 +10,7 @@ $new_product_str= array( //переменные для записи в базу 
     "name"=>"str",
     "url_path_old"=>"str",
     "img"=>"str",
+    "thumb_img"=>"str",
     "as_vendor_id"=>"numb",
     "vendor_code"=>"str",
     "sizes_old"=>"str",

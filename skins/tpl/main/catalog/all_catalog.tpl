@@ -6,7 +6,7 @@
         </div>
     </div>
     <div class="page-header-right">
-        <a href="/shop/catalog/add-category" class="button">Добавить категорию</a>
+        <a href="/shop/catalog/add-category" class="button" target="_blank">Добавить категорию</a>
     </div>
 </div>
 <div class="as-table-card" id="catalog_table_replace">

@@ -64,7 +64,7 @@ $(function(){
             $('#alias').val(alias_en);
         }
     });
-    $('.chosen-select').chosen({no_results_text: 'По вашему апросу ничего не найдено!', width:'100%'}); 
+    $('.chosen-select').chosen({no_results_text: 'По вашему апросу ничего не найдено!', width:'100%'});     
 });
 // перевод строки в транслит
 function aliasTranslit(str){

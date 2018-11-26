@@ -384,3 +384,47 @@ function getImageInput($input_name, $img_src){
    
     return $image_input;    
 }
+/** 
+* Функция получения поля для редактирования изображения
+* function get image input
+* @param string $input_name, string $img_src 
+* @return string $radio_input 
+*/ 
+function getProductImageInput($input_name, $img_src, $thumb_img_src){
+    $image_input = "";
+    $img_dest = AS_ROOT.$img_src;
+    if(file_exists($img_dest)){
+        $image_input.="
+            <img src='/".$img_src."'>
+            <input id='".$input_name."' name='".$input_name."' type='hidden' value='".$img_src."'>
+            <input id='thumb_".$input_name."' name='thumb_".$input_name."' type='hidden' value='".$thumb_img_src."'>";
+    }
+    else{
+        $image_input.="            
+            <input id='".$input_name."' name='".$input_name."' type='hidden' value='".$img_src."'>";
+    }   
+   
+    return $image_input;    
+}
+/** 
+* Функция получения поля для редактирования изображения
+* function get image input
+* @param string $input_name, string $img_src 
+* @return string $radio_input 
+*/ 
+function getCategoryImageInput($input_name, $img_src){
+    $image_input = "";
+    $img_dest = AS_CATEGORY_IMG_ROOT.$img_src;
+    if(file_exists($img_dest)){
+        $image_input.="
+            <img src='".AS_CATEGORY_IMG.$img_src."'>
+            <input id='".$input_name."' name='".$input_name."' type='hidden' value='".$img_src."'>
+            <input id='thumb_".$input_name."' name='thumb_".$input_name."' type='hidden' value='thumb_".$img_src."'>";
+    }
+    else{
+        $image_input.="            
+            <input id='".$input_name."' name='".$input_name."' type='hidden' value='".$img_src."'>";
+    }   
+   
+    return $image_input;    
+}

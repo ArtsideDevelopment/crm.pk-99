@@ -30,7 +30,7 @@
        $as_select_parent = getParentSelect('catalog', $CONTENT['parent_id']);
        $as_status = getSelectBlock(AS_DATABASE_SITE, "status", "name", "as_status_id", $CONTENT['as_status_id']);
        $menu_hidden_set = getCheckBoxSet('menu_hidden_set', $CONTENT['menu_hidden_set']);
-       $category_img = "";
+       $img = getCategoryImageInput('img', $CONTENT['img']);
        // Переменная для безопасности работы uploadifive
        $timestamp = time();
        $token=md5('as_salt' . $timestamp);

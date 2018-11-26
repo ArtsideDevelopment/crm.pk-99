@@ -35,7 +35,7 @@
        $as_main_category_select = getParentSelect("catalog", $main_category_id, "as_main_category_id");
        $noindex_set = getCheckBoxSet('noindex_set', $CONTENT['noindex_set']); 
        $button_link_show_set = getCheckBoxSet('button_link_show_set', $CONTENT['button_link_show_set']);
-       $img = getImageInput('img', $CONTENT['img']);
+       $img = getProductImageInput('img', $CONTENT['img'], $CONTENT['thumb_img']);
        // Переменная для безопасности работы uploadifive
        $timestamp = time();
        $token=md5('as_salt' . $timestamp);

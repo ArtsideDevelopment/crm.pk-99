@@ -4,8 +4,8 @@
             <p><strong>Основное изображение товара*</strong></p>
             <input type="hidden" id="upload_timestamp" name="upload_timestamp" value="<?php echo $timestamp;?>">
             <input type="hidden" id="upload_token" name="upload_token" value="<?php echo $token;?>">
-            <input id="product_img_upload" type="file" name="product_img_upload" multiple="true"/>
-            <div id="product_img_queue"></div>  
+            <input id="products_img_upload" type="file" name="products_img_upload" multiple="true"/>
+            <div id="products_img_queue"></div>  
             <div class="form_error" id="form_error_img"></div>
         </div> 
     </div>
@@ -14,7 +14,7 @@
     </div>
     <div class="clear"></div>
     <div class="form-img">
-        <div id="product_img_data_block"><? echo $img; ?></div>
+        <div id="products_img_data_block"><? echo $img; ?></div>
     </div>
 </div>  
 <!--
