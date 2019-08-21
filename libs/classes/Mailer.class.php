@@ -17,6 +17,7 @@ class Mailer{
     private $_to;
     private $_to_admin = "support@artside.su";
     private $_from = "no-reply";
+    private $_sendgrid_api = "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";
     /** 
     * Конструктор класса
     * Class construct
@@ -195,14 +196,28 @@ class Mailer{
     * @param 
     * @return boolean 
     */ 
-    private function sendMail($subject, $mail_body) 
+    protected function sendMail($subject, $mail_body) 
     { 
+        /*
         $to      = $this->_to;
         $subject = $subject;
         $message = $this->createBody($mail_body);
         $headers = $this->createHeaders();
 
         mail($to, $subject, $message, $headers);  
+         * 
+         */
+        require(AS_ROOT ."libs/sendgrid-php/sendgrid-php.php");
+        $sendgrid = new SendGrid($this->_sendgrid_api);
+        $email = new SendGrid\Email();
+        $email
+            ->addTo($this->_to)
+            //->addTo('bar@foo.com') //One of the most notable changes is how `addTo()` behaves. We are now using our Web API parameters instead of the X-SMTPAPI header. What this means is that if you call `addTo()` multiple times for an email, **ONE** email will be sent with each email address visible to everyone.
+            ->setFrom($this->_from."@".AS_DOMAIN)
+            ->setSubject($subject)
+            ->setHtml($this->createBody($mail_body))
+        ;
+        $sendgrid->send($email);     
     }
     /** 
     * Функция создания тела письма

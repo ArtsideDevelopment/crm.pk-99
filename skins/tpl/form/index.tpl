@@ -46,7 +46,6 @@
         <script src="/skins/js/core.js"></script>
         <script src="/skins/js/form.js"></script>
         <script src="/skins/js/uploadifive_init.js" type="text/javascript"></script>
-        <script src="/skins/js/modal_dialog.js"></script>
         <?php $xajax->printJavascript(); ?>
     </body>
 </html>
